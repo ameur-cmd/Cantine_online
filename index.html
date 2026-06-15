@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leoni Cantine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800&family=Space+Mono:wght=400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#FAFAF8;
@@ -114,11 +114,6 @@
   td { padding: 14px 16px; border-bottom: 1px solid var(--line); color: var(--ink); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
 
-  /* Status Badges */
-  .status-badge { display: inline-block; padding: 4px 8px; font-size: 0.72rem; font-weight: 700; border-radius: 6px; text-transform: uppercase; }
-  .status-badge.available { background: var(--green-soft); color: var(--green); }
-  .status-badge.unavailable { background: #FBEAE6; color: #B23A2E; }
-
   /* ---------- Categories & Cards ---------- */
   .section-head{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:18px; gap:16px; flex-wrap:wrap; }
   .section-head h2{font-size:1.35rem;}
@@ -160,7 +155,7 @@
   .cart-line{ display:flex; justify-content:space-between; gap:10px; font-size:0.86rem; margin-bottom:10px; align-items:flex-start; }
   .cart-line .name{flex:1;}
   .cart-line .name small{display:block; color:var(--muted); font-size:0.72rem;}
-  .cart-line .amt font-family:'Space Mono',monospace; font-weight:700; text-align:right;}
+  .cart-line .amt{font-family:'Space Mono',monospace; font-weight:700; text-align:right;}
   .cart-empty{font-size:0.84rem; color:var(--muted); padding:8px 0;}
   .cart-divider{border-top:1px solid var(--line); margin:14px 0;}
   .cart-row{display:flex; justify-content:space-between; font-size:0.86rem; margin-bottom:6px; color:var(--muted);}
@@ -177,14 +172,10 @@
   .modal{ background:var(--paper); border-radius:14px; padding:26px; max-width:480px; width:100%; max-height:88vh; overflow-y:auto; border:1px solid var(--line); }
   .modal h3{margin-bottom:16px;}
   
-  .ticket-box { background: var(--blue-soft); border: 2px dashed var(--blue); color: var(--blue); font-family: 'Space Mono', monospace; font-size: 1.8rem; font-weight: 700; padding: 16px; border-radius: 10px; margin: 20px 0; text-align: center; letter-spacing: 0.05em;}
+  .ticket-box { background: var(--blue-soft); border: 2px dashed var(--blue); color: var(--blue); font-family: 'Space Mono', monospace; font-size: 2.2rem; font-weight: 700; padding: 16px; border-radius: 10px; margin: 20px 0; text-align: center; letter-spacing: 0.05em;}
   
   .toast{ position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff; padding:14px 22px; border-radius:10px; font-size:0.88rem; font-weight:600; opacity:0; transform:translateY(12px); transition:all .25s ease; pointer-events:none; z-index:200;}
   .toast.show{opacity:1; transform:translateY(0);}
-  
-  /* Loading Spinner Element */
-  .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle;}
-  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -197,10 +188,10 @@
         <h1>Sign in</h1>
         <p>Order tonight's dinner before the kitchen closes.</p>
       </div>
-      <div class="field"><label>Email</label><input type="email" id="loginEmail" value="ameur.essouayed@leoni.com"></div>
-      <div class="field"><label>Password</label><input type="password" id="loginPassword" value="123"></div>
+      <div class="field"><label>Email</label><input type="email" id="loginEmail" value="worker@leoni.com"></div>
+      <div class="field"><label>Password</label><input type="password" id="loginPassword" value="password123"></div>
       <div style="margin-top:20px;">
-        <button class="btn btn-primary" id="loginBtn" style="width:100%;" onclick="processLogin()">Sign in</button>
+        <button class="btn btn-primary" style="width:100%;" onclick="processLogin()">Sign in</button>
       </div>
       <p style="text-align:center; font-size:0.84rem; margin-top:16px; color:var(--muted)">
         New to Cantine? <a href="#" style="color:var(--orange); font-weight:600;" onclick="toggleAuthView(true)">Create an account</a>
@@ -213,21 +204,20 @@
         <h1>Create Account</h1>
         <p>Register your details to start ordering.</p>
       </div>
-      <div class="field"><label>First Name</label><input type="text" id="regFirstName" placeholder="First Name"></div>
-      <div class="field"><label>Last Name</label><input type="text" id="regLastName" placeholder="Last Name"></div>
+      <div class="field"><label>Full Name</label><input type="text" id="regName" placeholder="Ameur Ben Salah"></div>
       <div class="field"><label>Email Address</label><input type="email" id="regEmail" placeholder="name@leoni.com"></div>
       <div class="field"><label>Password</label><input type="password" id="regPassword" placeholder="Minimum 6 characters"></div>
       
       <div class="field">
         <label>Account Role</label>
         <div class="role-select-box">
-          <div class="role-option selected" id="roleUser" onclick="setRegRole('employee')">Normal User</div>
+          <div class="role-option selected" id="roleUser" onclick="setRegRole('user')">Normal User</div>
           <div class="role-option" id="roleCantine" onclick="setRegRole('cantine')">Cantine Manager</div>
         </div>
       </div>
       
       <div style="margin-top:20px;">
-        <button class="btn btn-primary" id="registerBtn" style="width:100%;" onclick="processRegister()">Register Account</button>
+        <button class="btn btn-primary" style="width:100%;" onclick="processRegister()">Register Account</button>
       </div>
       <p style="text-align:center; font-size:0.84rem; margin-top:16px; color:var(--muted)">
         Already have an account? <a href="#" style="color:var(--orange); font-weight:600;" onclick="toggleAuthView(false)">Sign in here</a>
@@ -238,7 +228,7 @@
 
 <div id="employeeApp" class="hidden">
   <div class="topbar">
-    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">EMPLOYEE</span></div>
+    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">USER</span></div>
     <div class="topbar-right">
       <span class="who" id="empWho">User Workspace</span>
       <button class="btn btn-ghost btn-small" onclick="logout()">Sign out</button>
@@ -250,7 +240,7 @@
       <div class="section-head">
         <div>
           <div class="eyebrow-label">Leoni Dinner Portal</div>
-          <h2>Tonight's Menu Selection</h2>
+          <h2>Tonight's Dinner Menu</h2>
         </div>
       </div>
 
@@ -274,7 +264,7 @@
             </div>
 
             <div style="margin-top:16px;">
-              <button class="btn btn-primary" style="width:100%;" id="checkoutBtn" onclick="openCheckout()" disabled>Confirm Order</button>
+              <button class="btn btn-primary" style="width:100%;" id="checkoutBtn" onclick="openCheckout()" disabled>Place Dinner Order</button>
             </div>
           </div>
         </div>
@@ -312,23 +302,21 @@
 
     <div class="manager-layout">
       <div>
-        <div class="section-head"><div><h3>Product Catalog & Stock Management</h3></div></div>
+        <div class="section-head"><div><h3>Product Catalog Management</h3></div></div>
         <div class="table-wrapper">
           <table>
             <thead>
-              <tr><th>Item Structure</th><th>Category</th><th>Current Price</th><th>Availability Status</th><th>Action</th></tr>
+              <tr><th>Item Structure</th><th>Category</th><th>Current Price</th><th>Action</th></tr>
             </thead>
             <tbody id="managerProductTable"></tbody>
           </table>
         </div>
       </div>
 
-      <div style="background:var(--paper); border:1.5px solid var(--line); padding:24px; border-radius:var(--radius); position: sticky; top: 90px;">
-        <h3 style="margin-bottom:14px; font-size:1.1rem;">Add New Item / Component</h3>
+      <div style="background:var(--paper); border:1.5px solid var(--line); padding:24px; border-radius:var(--radius);">
+        <h3 style="margin-bottom:14px; font-size:1.1rem;">Add New Item</h3>
         <div class="field"><label>Category Slot</label>
           <select id="newProdCat">
-            <option value="daily_plate_bases">Dinner — Plate Base</option>
-            <option value="daily_plate_addons">Dinner — Plate Addon</option>
             <option value="sandwiches">Sandwich / Fast Food</option>
             <option value="drinks">Cold Drink</option>
             <option value="coffees">Hot Drink / Coffee</option>
@@ -336,10 +324,10 @@
             <option value="icecreams">Snack — Ice Cream</option>
           </select>
         </div>
-        <div class="field"><label>Brand or Extra Info</label><input type="text" id="newProdBrand" placeholder="e.g. Coca-Cola, Saida, Spicy Sauce description"></div>
-        <div class="field"><label>Item Name</label><input type="text" id="newProdName" placeholder="e.g. Couscous Base, Escalope, Boga"></div>
+        <div class="field"><label>Brand Manufacturer</label><input type="text" id="newProdBrand" placeholder="e.g. Coca-Cola, Saida, Lavazza"></div>
+        <div class="field"><label>Item Name</label><input type="text" id="newProdName" placeholder="e.g. Boga Cidre 330ml"></div>
         <div class="field"><label>Price (DT)</label><input type="number" step="0.01" id="newProdPrice" placeholder="0.00"></div>
-        <button class="btn btn-primary" id="addProdBtn" style="width:100%; margin-top:10px;" onclick="addNewProduct()">Add Item to Menu</button>
+        <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="addNewProduct()">Add Item to Menu</button>
       </div>
     </div>
 
@@ -375,7 +363,7 @@
     <div style="font-size: 3rem; margin-bottom: 8px;">✅</div>
     <h3>Order Placed Successfully!</h3>
     <p style="color: var(--muted); font-size: 0.88rem; margin-top: 6px;">Show this ticket confirmation number at the counter to collect your tray.</p>
-    <div class="ticket-box" id="generatedOrderNum">ORD-00000000-000</div>
+    <div class="ticket-box" id="generatedOrderNum">#0000</div>
     <div style="margin-top: 24px;">
       <button class="btn btn-primary" style="width:100%;" onclick="closeModal('checkoutModal')">Got it, Clear Tray</button>
     </div>
@@ -385,45 +373,33 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// Paste your complete Web App URL deployment link here
-const API_URL = "https://script.google.com/macros/s/AKfycbxjHG38cFyw1CEfbJOYjyTZbFCGN0V9la1QzPpX90YUmAQwvfRTlS253xADtC0vCI7QLA/exec";
+// ====================== API CONFIGURATION ======================
+// Paste your deployed Apps Script Web App URL here (ends in /exec)
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjHG38cFyw1CEfbJOYjyTZbFCGN0V9la1QzPpX90YUmAQwvfRTlS253xADtC0vCI7QLA/exec";
 
-let DB = {
-  users: [],
-  products: { daily_plate_bases: [], daily_plate_addons: [], sandwiches: [], drinks: [], coffees: [], biscuits: [], icecreams: [] },
-  sales: [],
-  orders: []
-};
+// Generic JSON API call. Apps Script Web Apps support CORS for
+// ContentService JSON responses, so we can use normal fetch (no no-cors)
+// and read the response back.
+async function api(action, payload) {
+  const body = Object.assign({ action }, payload || {});
+  const res = await fetch(SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" }, // avoids CORS preflight
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error("Network error: " + res.status);
+  return res.json();
+}
 
-let currentUser = null;
-let currentRegRole = 'employee';
+// ====================== STATE ======================
+let currentUser = null;       // { id, role, firstName, lastName, email, leoniId, position, plant, canteenId, office }
+let currentRegRole = 'user';  // 'user' (employee) or 'cantine'
 let cart = [];
 let builderState = { type: null, itemId: null };
 
-// Fetch full synchronized operational database from Google Sheets API on load
-async function initializeData() {
-  if (API_URL.includes("YOUR_GOOGLE_SCRIPT")) {
-    console.warn("API URL link not structured yet. Running fallback localized mode.");
-    return;
-  }
-  try {
-    const res = await fetch(`${API_URL}?action=getDatabase`);
-    const data = await res.json();
-    if(data.status === "success") {
-      DB = data.db;
-      console.log("Central cloud pipeline refreshed successfully.");
-      if (currentUser) {
-        if (currentUser.role === 'cantine') loadManagerPanel(); else renderUserPortal();
-      }
-    }
-  } catch (error) {
-    console.error("Pipeline failure fetching configurations.", error);
-    showToast("Network mismatch pulling live database rows.");
-  }
-}
+let MENU = { products: { sandwiches: [], drinks: [], coffees: [], biscuits: [], icecreams: [] }, bases: [], addons: [] };
 
-window.onload = initializeData;
-
+// ====================== AUTH VIEW TOGGLING ======================
 function toggleAuthView(showRegister) {
   document.getElementById('loginView').classList.toggle('hidden', showRegister);
   document.getElementById('registerView').classList.toggle('hidden', !showRegister);
@@ -431,76 +407,70 @@ function toggleAuthView(showRegister) {
 
 function setRegRole(role) {
   currentRegRole = role;
-  document.getElementById('roleUser').classList.toggle('selected', role === 'employee');
+  document.getElementById('roleUser').classList.toggle('selected', role === 'user');
   document.getElementById('roleCantine').classList.toggle('selected', role === 'cantine');
 }
 
+// ====================== AUTH PROCESSING ======================
 async function processRegister() {
-  const firstName = document.getElementById('regFirstName').value.trim();
-  const lastName = document.getElementById('regLastName').value.trim();
+  const name = document.getElementById('regName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value.trim();
-  
-  if(!firstName || !lastName || !email || !password) { alert("Fields incomplete."); return; }
-  
-  const btn = document.getElementById('registerBtn');
-  btn.disabled = true;
-  btn.innerHTML = `<span class="spinner"></span>Registering...`;
+
+  if (!name || !email || !password) { alert("Please fill out all registration fields."); return; }
+
+  const btn = document.querySelector('#registerView .btn-primary');
+  const originalLabel = btn.textContent;
+  btn.disabled = true; btn.textContent = "Registering...";
 
   try {
-    const payload = { action: "register", firstName, lastName, email, password, role: currentRegRole };
-    const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
-    const result = await res.json();
+    const role = currentRegRole === 'cantine' ? 'cantine' : 'employee';
+    const res = await api('register', { name, email, password, role });
 
-    if(result.status === "success") {
-      showToast("Registration updated on Sheet! Access below.");
-      await initializeData(); // Sync up local cache
-      toggleAuthView(false);
-    } else {
-      alert("Error: " + result.message);
-    }
-  } catch (e) {
-    alert("API connection timed out on phone cell network.");
+    if (!res.ok) { alert(res.error || "Registration failed."); return; }
+
+    showToast("Account successfully registered! Please log in.");
+    toggleAuthView(false);
+    document.getElementById('loginEmail').value = email;
+    document.getElementById('loginPassword').value = '';
+  } catch (err) {
+    alert("Connection error: " + err.message);
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = "Register Account";
+    btn.disabled = false; btn.textContent = originalLabel;
   }
 }
 
 async function processLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value.trim();
-  
-  if(!email || !password) return;
 
-  const btn = document.getElementById('loginBtn');
-  btn.disabled = true;
-  btn.innerHTML = `<span class="spinner"></span>Verifying...`;
+  const btn = document.querySelector('#loginView .btn-primary');
+  const originalLabel = btn.textContent;
+  btn.disabled = true; btn.textContent = "Signing in...";
 
   try {
-    // Sync down freshly logged users directly out of Google Sheets database matrix rows
-    await initializeData();
-    const account = DB.users.find(u => u.email.toLowerCase() === email.toLowerCase() && String(u.password) === String(password));
-    
-    if(!account) { alert("Invalid credentials."); return; }
-    
-    currentUser = account;
+    const res = await api('login', { email, password });
+
+    if (!res.ok) { alert(res.error || "Invalid credentials entered."); return; }
+
+    currentUser = res.user;
     document.getElementById('authPage').classList.add('hidden');
-    
-    if(account.role === 'cantine') {
+
+    const displayName = [currentUser.firstName, currentUser.lastName].filter(Boolean).join(' ') || currentUser.email;
+
+    if (currentUser.role === 'cantine') {
       document.getElementById('cantineApp').classList.remove('hidden');
-      document.getElementById('managerWho').textContent = `${account.firstName} ${account.lastName}`;
-      loadManagerPanel();
+      document.getElementById('managerWho').textContent = displayName;
+      await loadManagerPanel();
     } else {
       document.getElementById('employeeApp').classList.remove('hidden');
-      document.getElementById('empWho').textContent = `${account.firstName} ${account.lastName}`;
-      renderUserPortal();
+      document.getElementById('empWho').textContent = displayName;
+      await renderUserPortal();
     }
-  } catch(e) {
-    alert("Could not complete verification trace.");
+  } catch (err) {
+    alert("Connection error: " + err.message);
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = "Sign in";
+    btn.disabled = false; btn.textContent = originalLabel;
   }
 }
 
@@ -512,89 +482,109 @@ function logout() {
   document.getElementById('authPage').classList.remove('hidden');
 }
 
-function renderUserPortal() {
+// ====================== MENU LOADING ======================
+async function loadMenu() {
+  const res = await api('getMenu');
+  if (!res.ok) { showToast("Could not load menu: " + (res.error || "")); return; }
+  MENU = { products: res.products, bases: res.bases, addons: res.addons };
+}
+
+// ====================== USER PORTAL RENDERING ======================
+async function renderUserPortal() {
+  await loadMenu();
+
   const categories = [
-    { id:'main', label:'Daily Plates (Customizable)' },
-    { id:'sandwiches', label:'Sandwiches & Fast Food' },
-    { id:'drinks', label:'Cold Drinks' },
-    { id:'coffees', label:'Hot Drinks & Coffee' },
-    { id:'biscuits', label:'Snacks — Biscuits' },
-    { id:'icecreams', label:'Snacks — Ice Creams' }
+    { id: 'main', label: 'Dinner Plates (Customizable)' },
+    { id: 'sandwiches', label: 'Sandwiches & Fast Food' },
+    { id: 'drinks', label: 'Cold Drinks' },
+    { id: 'coffees', label: 'Hot Drinks & Coffee' },
+    { id: 'biscuits', label: 'Snacks — Biscuits' },
+    { id: 'icecreams', label: 'Snacks — Ice Creams' }
   ];
-  
+
   const wrap = document.getElementById('empCategories'); wrap.innerHTML = '';
-  
+
   categories.forEach(cat => {
     const block = document.createElement('div');
     block.className = 'category-block';
     block.innerHTML = `<div class="category-title">${cat.label}<div class="category-line"></div></div><div class="item-grid"></div>`;
     const grid = block.querySelector('.item-grid');
-    
-    if(cat.id === 'main') {
-      const activeBases = DB.products.daily_plate_bases.filter(b => b.available || b.available === undefined);
-      if(activeBases.length > 0) {
+
+    if (cat.id === 'main') {
+      grid.innerHTML += `
+        <div class="item-card builder-card">
+          <h4>Custom Leoni Dinner Plate</h4>
+          <div class="desc">Select primary local recipe bases (Couscous, Pasta, Rice) and combine premium proteins.</div>
+          <div class="bottom-row"><div class="price">From 4.00 DT</div><button class="btn btn-primary btn-small" onclick="openBuilderModal('plate', null)">Customize</button></div>
+        </div>`;
+    } else if (cat.id === 'sandwiches') {
+      (MENU.products.sandwiches || []).forEach(s => {
         grid.innerHTML += `
           <div class="item-card builder-card">
-            <h4>Custom Dinner Plate</h4>
-            <div class="desc">Select your warm base and add desired proteins or extras.</div>
-            <div class="bottom-row"><div class="price">Variable Price</div><button class="btn btn-primary btn-small" onclick="openBuilderModal('plate', null)">Customize</button></div>
+            <h4>${s.name}</h4>
+            <div class="desc">${s.desc || ''}</div>
+            <div class="bottom-row">
+              <div class="price">${parseFloat(s.price).toFixed(2)} DT</div>
+              <button class="btn btn-primary btn-small" onclick="openBuilderModal('sandwich', '${s.id}')">Customize</button>
+            </div>
           </div>`;
-      }
+      });
     } else {
-      (DB.products[cat.id] || []).forEach(p => {
-        if(p.available || p.available === undefined) {
-          grid.innerHTML += `
-            <div class="item-card">
-              <h4>${p.name}</h4>
-              <div class="desc">${p.brand || p.description || ''}</div>
-              <div class="bottom-row">
-                <div class="price">${parseFloat(p.price).toFixed(2)} DT</div>
-                <button class="btn btn-primary btn-small" onclick="addDirectToTray('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${p.price})">Add to Tray</button>
-              </div>
-            </div>`;
-        }
+      (MENU.products[cat.id] || []).forEach(p => {
+        grid.innerHTML += `
+          <div class="item-card">
+            <h4>${p.name}</h4>
+            <div class="desc">${p.brand ? 'Brand: ' + p.brand : ''}</div>
+            <div class="bottom-row">
+              <div class="price">${parseFloat(p.price).toFixed(2)} DT</div>
+              <button class="btn btn-primary btn-small" onclick="addDirectToTray('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${p.price})">Add to Tray</button>
+            </div>
+          </div>`;
       });
     }
-    if (grid.children.length > 0) wrap.appendChild(block);
+    wrap.appendChild(block);
   });
   renderCart();
 }
 
 function addDirectToTray(id, name, price) {
   const match = cart.find(i => i.cartId === id);
-  if(match) match.qty++; else cart.push({ cartId: id, name, price: parseFloat(price), qty: 1 });
+  if (match) match.qty++; else cart.push({ cartId: id, name, price: parseFloat(price), qty: 1 });
   renderCart();
-  showToast(`Added ${name}`);
+  showToast(`Added ${name} to tray.`);
 }
 
+// ====================== MODAL BUILDER LOGIC ======================
 function openBuilderModal(type, itemId) {
   builderState = { type, itemId };
+
   const basesSection = document.getElementById('buildBasesSection');
   const basesList = document.getElementById('buildBasesList');
   const addonsList = document.getElementById('buildAddonsList');
-  
-  addonsList.innerHTML = DB.products.daily_plate_addons.filter(a => a.available || a.available === undefined).map(a => `
+
+  const addons = MENU.addons || [];
+  addonsList.innerHTML = addons.map(a => `
     <label class="option-label">
-      <div style="display:flex; gap:10px; align-items:center;">
-        <input type="checkbox" name="a_check" value="${a.id}" data-price="${a.price}" data-name="${a.name}" onchange="calcBuilderTotal()">
-        <div><b>${a.name}</b></div>
-      </div>
+      <div style="display:flex; gap:10px; align-items:center;"><input type="checkbox" name="a_check" value="${a.id}" data-price="${a.price}" data-name="${a.name.replace(/"/g, '&quot;')}" onchange="calcBuilderTotal()"><div><b>${a.name}</b></div></div>
       <div class="mono">+${parseFloat(a.price).toFixed(2)} DT</div>
     </label>`).join('');
 
-  if(type === 'plate') {
-    document.getElementById('buildItemTitle').textContent = "Assemble Dinner Plate";
+  if (type === 'plate') {
+    document.getElementById('buildItemTitle').textContent = "Build Your Custom Plate";
     basesSection.classList.remove('hidden');
-    basesList.innerHTML = DB.products.daily_plate_bases.filter(b => b.available || b.available === undefined).map(b => `
+    const bases = MENU.bases || [];
+    basesList.innerHTML = bases.map(b => `
       <label class="option-label">
-        <div style="display:flex; gap:10px; align-items:center;">
-          <input type="radio" name="b_radio" value="${b.id}" data-price="${b.price}" data-name="${b.name}" onchange="calcBuilderTotal()">
-          <div class="option-info"><span class="option-name">${b.name}</span><span class="option-desc">${b.brand || ''}</span></div>
-        </div>
+        <div style="display:flex; gap:10px; align-items:center;"><input type="radio" name="b_radio" value="${b.id}" data-price="${b.price}" data-name="${b.name.replace(/"/g, '&quot;')}" onchange="calcBuilderTotal()"><div class="option-info"><span class="option-name">${b.name}</span><span class="option-desc">${b.desc || ''}</span></div></div>
         <div class="mono">${parseFloat(b.price).toFixed(2)} DT</div>
       </label>`).join('');
+  } else {
+    const sandwich = (MENU.products.sandwiches || []).find(s => s.id === itemId);
+    document.getElementById('buildItemTitle').textContent = "Customize: " + sandwich.name;
+    basesSection.classList.add('hidden');
+    builderState.basePrice = parseFloat(sandwich.price);
   }
-    
+
   calcBuilderTotal();
   document.getElementById('buildItemModal').classList.remove('hidden');
 }
@@ -603,8 +593,11 @@ function calcBuilderTotal() {
   let sum = 0;
   if (builderState.type === 'plate') {
     const base = document.querySelector('input[name="b_radio"]:checked');
-    if(base) sum += parseFloat(base.getAttribute('data-price'));
+    if (base) sum += parseFloat(base.getAttribute('data-price'));
+  } else {
+    sum += builderState.basePrice;
   }
+
   document.querySelectorAll('input[name="a_check"]:checked').forEach(el => sum += parseFloat(el.getAttribute('data-price')));
   document.getElementById('buildTotal').textContent = sum.toFixed(2) + " DT";
 }
@@ -614,12 +607,19 @@ function confirmBuildItem() {
   let price = 0;
   let parts = [];
 
-  const baseEl = document.querySelector('input[name="b_radio"]:checked');
-  if(!baseEl) { alert("A structural base recipe must be checked."); return; }
-  name = baseEl.getAttribute('data-name');
-  price += parseFloat(baseEl.getAttribute('data-price'));
-  parts.push(baseEl.value);
-  
+  if (builderState.type === 'plate') {
+    const baseEl = document.querySelector('input[name="b_radio"]:checked');
+    if (!baseEl) { alert("Please select a base plate first!"); return; }
+    name = baseEl.getAttribute('data-name');
+    price += parseFloat(baseEl.getAttribute('data-price'));
+    parts.push(baseEl.value);
+  } else {
+    const sandwich = (MENU.products.sandwiches || []).find(s => s.id === builderState.itemId);
+    name = sandwich.name;
+    price += parseFloat(sandwich.price);
+    parts.push(sandwich.id);
+  }
+
   const addons = document.querySelectorAll('input[name="a_check"]:checked');
   let addonNames = [];
   addons.forEach(a => {
@@ -627,26 +627,27 @@ function confirmBuildItem() {
     price += parseFloat(a.getAttribute('data-price'));
     parts.push(a.value);
   });
-  
-  if(addonNames.length > 0) name += ` + [${addonNames.join(', ')}]`;
-  
+
+  if (addonNames.length > 0) name += ` (+ ${addonNames.join(', ')})`;
+
   const cartId = parts.join('_');
   const match = cart.find(i => i.cartId === cartId);
-  if(match) match.qty++; else cart.push({ cartId, name, price, qty: 1 });
-  
+  if (match) match.qty++; else cart.push({ cartId, name, price, qty: 1 });
+
   closeModal('buildItemModal');
   renderCart();
 }
 
+// ====================== CART RENDERING ======================
 function renderCart() {
   const lines = document.getElementById('cartLines');
-  if(cart.length === 0) {
+  if (cart.length === 0) {
     lines.innerHTML = '<div class="cart-empty">Your tray is empty.</div>';
     document.getElementById('checkoutBtn').disabled = true;
   } else {
     lines.innerHTML = cart.map(i => `
       <div class="cart-line">
-        <div class="name">${i.name} <small>x${i.qty}</small></div>
+        <div class="name">${i.name} <small>x${i.qty} &middot; ${i.price.toFixed(2)} DT</small></div>
         <div class="amt mono">${(i.price * i.qty).toFixed(2)} DT <button class="remove-x" onclick="removeCartItem('${i.cartId}')">[X]</button></div>
       </div>`).join('');
     document.getElementById('checkoutBtn').disabled = false;
@@ -658,80 +659,68 @@ function renderCart() {
 
 function removeCartItem(id) { cart = cart.filter(i => i.cartId !== id); renderCart(); }
 
+// ====================== CHECKOUT ======================
 async function openCheckout() {
-  const rand = Math.floor(100 + Math.random() * 900);
-  const ticketId = `ORD-${new Date().toISOString().slice(0,10).replace(/-/g, '')}-${rand}`;
   const total = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
-  const itemsCount = cart.reduce((acc, i) => acc + i.qty, 0);
   const pickupTime = document.getElementById('pickupTimeSelect').value;
 
-  const checkoutBtn = document.getElementById('checkoutBtn');
-  checkoutBtn.disabled = true;
-  checkoutBtn.innerHTML = `<span class="spinner"></span>Processing...`;
+  const btn = document.getElementById('checkoutBtn');
+  const originalLabel = btn.textContent;
+  btn.disabled = true; btn.textContent = "Placing order...";
 
   try {
-    const payload = {
-      action: "submitOrder",
-      orderNumber: ticketId,
-      email: currentUser.email,
+    const res = await api('placeOrder', {
+      userEmail: currentUser ? currentUser.email : '',
+      items: cart,
       total: total,
-      itemsCount: itemsCount,
-      pickupTime: pickupTime,
-      details: JSON.stringify(cart)
-    };
+      pickupTime: pickupTime
+    });
 
-    const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
-    const data = await res.json();
+    if (!res.ok) { alert(res.error || "Could not place order."); return; }
 
-    if(data.status === "success") {
-      document.getElementById('generatedOrderNum').textContent = ticketId;
-      document.getElementById('checkoutModal').classList.remove('hidden');
-      await initializeData();
-    } else {
-      alert("Checkout rejection tracking: " + data.message);
-    }
+    document.getElementById('generatedOrderNum').textContent = '#' + res.orderNumber;
+    document.getElementById('checkoutModal').classList.remove('hidden');
   } catch (err) {
-    alert("Network packet drops while filing receipt details.");
+    alert("Connection error: " + err.message);
   } finally {
-    checkoutBtn.disabled = false;
-    checkoutBtn.innerHTML = "Confirm Order";
+    btn.disabled = false; btn.textContent = originalLabel;
+    renderCart();
   }
 }
 
-function loadManagerPanel() {
-  loadAnalytics();
+// ====================== MANAGER FUNCTIONS ======================
+async function loadManagerPanel() {
+  await loadMenu();
+  await loadAnalytics();
   renderManagerProducts();
 }
 
-function loadAnalytics() {
+async function loadAnalytics() {
   const filter = document.getElementById('salesDurationFilter').value;
-  let targetedRecords = DB.sales || [];
-  if(filter === 'today') {
-    targetedRecords = (DB.sales || []).filter(s => new Date(s.timestamp).toDateString() === new Date().toDateString());
+
+  try {
+    const res = await api('getSales', { filter });
+    if (!res.ok) { showToast("Could not load sales: " + (res.error || "")); return; }
+
+    document.getElementById('statRevenue').textContent = parseFloat(res.revenue).toFixed(2) + " DT";
+    document.getElementById('statOrders').textContent = res.ordersCount;
+    document.getElementById('statItemsCount').textContent = res.itemsCount;
+  } catch (err) {
+    showToast("Connection error: " + err.message);
   }
-  const rev = targetedRecords.reduce((acc, s) => acc + parseFloat(s.total || 0), 0);
-  document.getElementById('statRevenue').textContent = rev.toFixed(2) + " DT";
-  document.getElementById('statOrders').textContent = targetedRecords.length;
-  document.getElementById('statItemsCount').textContent = targetedRecords.reduce((acc, s) => acc + parseInt(s.itemsCount || 0), 0);
 }
 
 function renderManagerProducts() {
   const tbody = document.getElementById('managerProductTable');
   tbody.innerHTML = '';
-  const keys = ['daily_plate_bases', 'daily_plate_addons', 'sandwiches', 'drinks', 'coffees', 'biscuits', 'icecreams'];
-  
+  const keys = ['sandwiches', 'drinks', 'coffees', 'biscuits', 'icecreams'];
   keys.forEach(key => {
-    (DB.products[key] || []).forEach(p => {
-      if(p.available === undefined) p.available = true;
+    (MENU.products[key] || []).forEach(p => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td><b>${p.name}</b><br><small style="color:var(--muted)">${p.brand || 'Standard kitchen recipe'}</small></td>
-        <td><span class="tag">${key.replace(/_/g, ' ').toUpperCase()}</span></td>
-        <td><input type="number" step="0.01" value="${parseFloat(p.price).toFixed(2)}" class="mono" style="padding:6px; width:90px; border:1px solid var(--line); border-radius:6px;" onchange="updateProductPrice('${key}', '${p.id}', this.value)"> DT</td>
-        <td>
-          <span class="status-badge ${p.available ? 'available' : 'unavailable'}">${p.available ? 'In Stock' : 'Out of Stock'}</span>
-          <input type="checkbox" ${p.available ? 'checked' : ''} style="margin-left: 8px; cursor:pointer;" onchange="toggleAvailability('${key}', '${p.id}', this.checked)">
-        </td>
+        <td><b>${p.name}</b><br><small style="color:var(--muted)">${p.brand || 'Leoni Kitchen'}</small></td>
+        <td><span class="tag">${key.toUpperCase()}</span></td>
+        <td><input type="number" step="0.01" value="${parseFloat(p.price).toFixed(2)}" class="mono" style="padding:4px 8px; width:90px; border:1px solid var(--line); border-radius:6px;" onchange="updateProductPrice('${key}', '${p.id}', this.value)"> DT</td>
         <td><button class="btn btn-ghost btn-small" style="color:#B23A2E; border-color:#F1D8D2;" onclick="deleteProduct('${key}', '${p.id}')">Delete</button></td>
       `;
       tbody.appendChild(tr);
@@ -739,34 +728,22 @@ function renderManagerProducts() {
   });
 }
 
-async function toggleAvailability(cat, id, state) {
-  try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      body: JSON.stringify({ action: "updateAvailability", category: cat, id: id, available: state })
-    });
-    const d = await res.json();
-    if(d.status === "success") {
-      showToast("Availability status tracked.");
-      await initializeData();
-    }
-  } catch(e) { showToast("Error syncing field updates."); }
-}
-
 async function updateProductPrice(cat, id, newPrice) {
   const val = parseFloat(newPrice);
-  if(isNaN(val) || val <= 0) return;
+  if (isNaN(val) || val <= 0) { alert("Enter a valid price."); return; }
+
   try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      body: JSON.stringify({ action: "updatePrice", category: cat, id: id, price: val })
-    });
-    const d = await res.json();
-    if(d.status === "success") {
-      showToast("Price adjusted on Cloud matrix rows.");
-      await initializeData();
-    }
-  } catch(e) { showToast("Error saving target adjustments."); }
+    const res = await api('updateProductPrice', { category: cat, id, price: val });
+    if (!res.ok) { alert(res.error || "Could not update price."); return; }
+
+    const item = (MENU.products[cat] || []).find(p => p.id === id);
+    if (item) item.price = val;
+
+    showToast(`Updated price.`);
+    await loadAnalytics();
+  } catch (err) {
+    alert("Connection error: " + err.message);
+  }
 }
 
 async function addNewProduct() {
@@ -774,50 +751,48 @@ async function addNewProduct() {
   const brand = document.getElementById('newProdBrand').value.trim();
   const name = document.getElementById('newProdName').value.trim();
   const price = parseFloat(document.getElementById('newProdPrice').value);
-  
-  if(!name || isNaN(price) || price <= 0) { alert("Please complete required entries."); return; }
-  
-  const btn = document.getElementById('addProdBtn');
-  btn.disabled = true;
-  
+
+  if (!name || isNaN(price) || price <= 0) { alert("Please complete all product fields."); return; }
+
   try {
-    const prefix = cat.startsWith('daily') ? 'comp_' : 'item_';
-    const payload = { action: "addProduct", category: cat, id: prefix + Date.now(), name, price, brand: brand || "" };
-    
-    const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
-    const data = await res.json();
-    
-    if(data.status === "success") {
-      document.getElementById('newProdBrand').value = '';
-      document.getElementById('newProdName').value = '';
-      document.getElementById('newProdPrice').value = '';
-      showToast("Component tracking active.");
-      await initializeData();
-    }
-  } catch(e) {
-    alert("Connection reset adding raw configuration metrics.");
-  } finally {
-    btn.disabled = false;
+    const res = await api('addProduct', { category: cat, brand, name, price });
+    if (!res.ok) { alert(res.error || "Could not add product."); return; }
+
+    if (!MENU.products[cat]) MENU.products[cat] = [];
+    MENU.products[cat].push(res.product);
+
+    document.getElementById('newProdBrand').value = '';
+    document.getElementById('newProdName').value = '';
+    document.getElementById('newProdPrice').value = '';
+
+    showToast("Item added successfully.");
+    renderManagerProducts();
+  } catch (err) {
+    alert("Connection error: " + err.message);
   }
 }
 
 async function deleteProduct(cat, id) {
-  if(!confirm("Remove resource permanently?")) return;
+  if (!confirm("Delete this item from the menu?")) return;
+
   try {
-    const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "deleteProduct", category: cat, id: id }) });
-    const d = await res.json();
-    if(d.status === "success") {
-      showToast("Resource dropped.");
-      await initializeData();
-    }
-  } catch(e) { showToast("Could not drop reference line."); }
+    const res = await api('deleteProduct', { category: cat, id });
+    if (!res.ok) { alert(res.error || "Could not delete product."); return; }
+
+    MENU.products[cat] = (MENU.products[cat] || []).filter(p => p.id !== id);
+    renderManagerProducts();
+    showToast("Product deleted.");
+  } catch (err) {
+    alert("Connection error: " + err.message);
+  }
 }
 
+// ====================== MISC ======================
 function closeModal(id) {
   document.getElementById(id).classList.add('hidden');
-  if(id === 'checkoutModal') { cart = []; renderCart(); }
+  if (id === 'checkoutModal') { cart = []; renderCart(); }
 }
-function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
 </script>
 </body>
 </html>
