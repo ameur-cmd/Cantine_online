@@ -4,13 +4,13 @@
     "role": "employee",
     "firstName": "Ameur",
     "lastName": "Ben Salah",
-    "email": "ameur.worker@leoni.com",
-    "password": "password123",
-    "leoniId": "104521",
-    "position": "Automation Engineer",
+    "email": "ameur.essouayed@leoni.com",
+    "password": "123",
+    "leoniId": "73309",
+    "position": "3D harness designer",
     "plant": "LTN3",
     "canteenId": "LTN3-A",
-    "office": "Building A, 2nd floor, Office 214"
+    "office": "Building A, 3nd floor, Office 214"
   },
   {
     "id": "u_default_2",

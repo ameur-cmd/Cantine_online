@@ -1,8 +1,8 @@
 {
   "sandwiches": [
-    { "id": "snd_01", "name": "Chapatie El Mahdia", "price": 4.50, "available": true },
-    { "id": "snd_02", "name": "Makloub Escalope", "price": 5.50, "available": true },
-    { "id": "snd_03", "name": "Kafteji Sandwich", "price": 3.50, "available": true }
+    { "id": "snd_01", "name": "Chapatie", "price": 4.50, "available": true },
+    { "id": "snd_02", "name": "Makloub", "price": 5.50, "available": true },
+    { "id": "snd_03", "name": "Kafteji", "price": 3.50, "available": true }
   ],
   "daily_plate_bases": [
     { "id": "base_01", "name": "Couscous Base", "price": 4.50, "description": "Traditional Tunisian steamed semolina", "available": true },
