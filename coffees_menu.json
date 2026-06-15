@@ -1,9 +1,0 @@
-{
-  "coffees": [
-    { "id": "cof_01", "name": "Café Direct", "price": 1.50, "available": true },
-    { "id": "cof_02", "name": "Express / Capucin", "price": 1.80, "available": true },
-    { "id": "cof_03", "name": "Café au Lait", "price": 2.00, "available": true },
-    { "id": "cof_04", "name": "Direct Large (Grand)", "price": 2.50, "available": true },
-    { "id": "cof_05", "name": "Thé Vert / Noir (Tea)", "price": 1.20, "available": true }
-  ]
-}
