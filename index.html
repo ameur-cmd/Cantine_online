@@ -101,6 +101,17 @@
   .auth-header h1{font-size:1.7rem; margin-bottom:4px;}
   .auth-header p{color:var(--muted); font-size:0.9rem;}
 
+  .role-toggle{
+    display:flex; background:var(--bg); border-radius:10px; padding:4px;
+    margin-bottom:20px; border:1px solid var(--line);
+  }
+  .role-toggle button{
+    flex:1; border:none; background:transparent; padding:9px 8px;
+    border-radius:8px; font-weight:700; font-size:0.83rem; color:var(--muted);
+    transition: all .15s ease;
+  }
+  .role-toggle button.active{background:var(--blue); color:#fff;}
+
   .field{margin-bottom:13px;}
   .field label{
     display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px;
@@ -161,6 +172,11 @@
   .item-card .price{font-family:'Space Mono', monospace; font-weight:700; color:var(--blue); font-size:0.9rem;}
   .item-card .bottom-row{display:flex; justify-content:space-between; align-items:center; margin-top:auto;}
   
+  .qty-control{display:flex; align-items:center; gap:8px;}
+  .qty-control button{
+    width:28px; height:28px; border-radius:7px; border:1.5px solid var(--line);
+    background:var(--bg); font-size:1rem; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
   .add-btn{
     background:var(--blue); color:#fff; border:none; border-radius:7px;
     padding:7px 13px; font-weight:600; font-size:0.78rem;
@@ -205,26 +221,9 @@
   .pickup-row{display:flex; flex-direction:column; gap:8px;}
   .pickup-row select{width:100%; padding:10px; border-radius:9px; border:1.5px solid var(--line); background:var(--bg); color:var(--ink);}
 
-  /* ---------- Modal Windows ---------- */
   .modal-overlay{ position:fixed; inset:0; background:rgba(34,39,46,0.4); display:flex; align-items:center; justify-content:center; z-index:300; padding:20px; }
   .modal{ background:var(--paper); border-radius:14px; padding:26px; max-width:480px; width:100%; max-height:88vh; overflow-y:auto; border:1px solid var(--line); }
   .modal h3{margin-bottom:16px;}
-  
-  /* Verification Pill / Ticket styles */
-  .ticket-box {
-    background: var(--blue-soft);
-    border: 2px dashed var(--blue);
-    color: var(--blue);
-    font-family: 'Space Mono', monospace;
-    font-size: 2.2rem;
-    font-weight: 700;
-    padding: 16px;
-    border-radius: 10px;
-    margin: 20px 0;
-    text-align: center;
-    letter-spacing: 0.05em;
-  }
-  
   .toast{ position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff; padding:14px 22px; border-radius:10px; font-size:0.88rem; font-weight:600; opacity:0; transform:translateY(12px); transition:all .25s ease; pointer-events:none; z-index:200;}
   .toast.show{opacity:1; transform:translateY(0);}
 </style>
@@ -318,18 +317,10 @@
 </div>
 
 <div id="checkoutModal" class="modal-overlay hidden">
-  <div class="modal" style="text-align: center; padding: 32px 24px;">
-    <div style="font-size: 3rem; margin-bottom: 8px;">✅</div>
-    <h3>Order Placed Successfully!</h3>
-    <p style="color: var(--muted); font-size: 0.88rem; margin-top: 6px; line-height: 1.5;">
-      Your dinner choices have been submitted to the kitchen. Show the ticket confirmation number below at the counter to collect your tray.
-    </p>
-    
-    <div class="ticket-box" id="generatedOrderNum">#0000</div>
-    
-    <div style="margin-top: 24px;">
-      <button class="btn btn-primary" style="width:100%;" onclick="closeModal('checkoutModal')">Got it, Clear Tray</button>
-    </div>
+  <div class="modal">
+    <h3>Order placed!</h3>
+    <p>Your dinner order has been sent to the kitchen.</p>
+    <div class="modal-actions"><button class="btn btn-primary" onclick="closeModal('checkoutModal')">Close</button></div>
   </div>
 </div>
 
@@ -346,7 +337,7 @@ const CATEGORIES = [
   { id:'icecreams',  label:'Snacks — Ice Cream' }
 ];
 
-// Food Menu Sourced Data
+// Food Menu JSON Sourced Data
 const FOOD_DATA = {
   sandwiches: [
     { id: "snd_01", name: "Chapatie El Mahdia", price: 4.50, desc: "Tunisian street food flatbread" },
@@ -366,7 +357,7 @@ const FOOD_DATA = {
   ]
 };
 
-// Drinks Menu Sourced Data
+// Drinks Menu JSON Sourced Data
 const DRINKS_DATA = [
   { "id": "drk_01", "brand": "Coca-Cola", "name": "Coca-Cola 330ml Can", "price": 2.20, "available": true },
   { "id": "drk_02", "brand": "Boga", "name": "Boga Cidre 330ml Can", "price": 2.00, "available": true },
@@ -375,7 +366,7 @@ const DRINKS_DATA = [
   { "id": "drk_05", "brand": "Viva", "name": "Jus d'Orange 1L", "price": 4.00, "available": true }
 ];
 
-// Snacks Menu Sourced Data
+// Snacks Menu JSON Sourced Data
 const SNACKS_DATA = {
   "biscuits": [
     { "id": "snk_b1", "brand": "Saida", "name": "Prince Chocolat", "price": 1.20, "available": true },
@@ -639,23 +630,8 @@ function removeFromCart(cartId){
   renderCart();
 }
 
-/* --- Trigger Checkout and Create Random Ticket Number --- */
-function openCheckout(){ 
-  // Generate a random ticket number between 1000 and 9999
-  const ticketNumber = Math.floor(1000 + Math.random() * 9000);
-  document.getElementById('generatedOrderNum').textContent = '#' + ticketNumber;
-  
-  document.getElementById('checkoutModal').classList.remove('hidden'); 
-}
-
-function closeModal(id){ 
-  document.getElementById(id).classList.add('hidden'); 
-  if(id==='checkoutModal'){ 
-    cart = []; 
-    renderCart(); 
-  } 
-}
-
+function openCheckout(){ document.getElementById('checkoutModal').classList.remove('hidden'); }
+function closeModal(id){ document.getElementById(id).classList.add('hidden'); if(id==='checkoutModal'){ cart=[]; renderCart(); } }
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2000); }
 </script>
 </body>
