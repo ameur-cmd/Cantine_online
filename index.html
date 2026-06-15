@@ -3,358 +3,305 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leoni Cantine — Market Testing Hub</title>
+<title>Leoni Cantine · Enterprise Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#FAFAF8;
-    --paper:#FFFFFF;
-    --ink:#22272E;
-    --muted:#8A9099;
-    --line:#EAEBE8;
-    --orange:#FF6A13;
-    --orange-soft:#FFEDE0;
-    --blue:#1E4E8C;
-    --blue-soft:#E7EFF8;
-    --green-soft:#E6F2E6;
-    --green:#3F7D44;
-    --radius:12px;
-    --shadow: 0 2px 14px rgba(34,39,46,0.05);
+  :root {
+    --bg: #F8FAFC;
+    --paper: #FFFFFF;
+    --ink: #0F172A;
+    --muted: #64748B;
+    --line: #E2E8F0;
+    --orange: #FF6A13;
+    --orange-soft: #FFF7ED;
+    --blue: #1E4E8C;
+    --blue-soft: #EFF6FF;
+    --green-soft: #F0FDF4;
+    --green: #16A34A;
+    --radius: 16px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 20px -2px rgba(15,23,42,0.06);
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  body{
-    font-family:'Inter', sans-serif;
-    background:var(--bg);
-    color:var(--ink);
-    min-height:100vh;
-    -webkit-font-smoothing:antialiased;
-    line-height:1.45;
-  }
-  h1,h2,h3,h4{font-weight:700; letter-spacing:-0.01em; color:var(--ink);}
-  .mono{font-family:'Space Mono', monospace;}
-  .hidden{display:none !important;}
-  button{font-family:inherit; cursor:pointer;}
-  a{color:inherit;}
 
-  /* ---------- Top bar ---------- */
-  .topbar{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:16px 28px;
-    background:var(--paper);
-    border-bottom:1px solid var(--line);
-    position:sticky; top:0; z-index:50;
-  }
-  .brand{
-    display:flex; align-items:center; gap:8px;
-    font-weight:800; font-size:1.15rem; letter-spacing:-0.01em;
-  }
-  .brand .dot{
-    width:10px; height:10px; border-radius:50%;
-    background: var(--orange);
-    display:inline-block;
-  }
-  .brand .tag{
-    font-family:'Space Mono', monospace; font-size:0.6rem; font-weight:700;
-    color:var(--blue); border:1px solid var(--blue-soft); background:var(--blue-soft);
-    padding:3px 7px; border-radius:6px; letter-spacing:0.06em; margin-left:4px;
-  }
-  .topbar-right{display:flex; align-items:center; gap:14px; font-size:0.88rem;}
-  .topbar-right .who{color:var(--muted); font-size:0.82rem;}
-  .btn{
-    border:none; border-radius:9px; padding:10px 18px;
-    font-weight:600; font-size:0.9rem;
-    transition: transform .12s ease, box-shadow .12s ease, background .15s ease, border-color .15s ease;
-    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  }
-  .btn:active{transform:translateY(1px);}
-  .btn-primary{background:var(--orange); color:#fff;}
-  .btn-primary:hover{background:#E65E0E;}
-  .btn-ghost{background:transparent; color:var(--ink); border:1px solid var(--line);}
-  .btn-ghost:hover{border-color:var(--muted);}
-  .btn-outline{background:var(--paper); color:var(--ink); border:1.5px solid var(--line);}
-  .btn-outline:hover{border-color:var(--blue);}
-  .btn-small{padding:6px 12px; font-size:0.8rem; border-radius:8px;}
-  .btn-danger{background:#fff; color:#B23A2E; border:1.5px solid #F1D8D2;}
-  .btn-danger:hover{background:#FBEAE6;}
-  .btn:disabled{opacity:0.4; cursor:not-allowed;}
-
-  /* ---------- Layout ---------- */
-  .page{max-width:1180px; margin:0 auto; padding:28px 24px 80px;}
-  .auth-page{
-    min-height:100vh; display:flex; align-items:center; justify-content:center;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
     background: var(--bg);
-    padding:24px;
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+  .mono { font-family: 'Space Mono', monospace; }
+  .hidden { display: none !important; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+  input, select, textarea { font-family: inherit; }
+
+  /* ---------- Top Bar Layout ---------- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 32px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 50;
+    box-shadow: var(--shadow-sm);
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em;
+    color: var(--blue);
+  }
+  .brand .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--orange);
+    display: inline-block;
+  }
+  .brand .tag {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem; font-weight: 700;
+    color: var(--orange); border: 1px solid var(--orange-soft); background: var(--orange-soft);
+    padding: 3px 8px; border-radius: 6px; letter-spacing: 0.05em; margin-left: 4px;
+  }
+  .topbar-right { display: flex; align-items: center; gap: 20px; font-size: 0.9rem; }
+  .topbar-right .who { color: var(--muted); font-size: 0.85rem; background: var(--bg); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); }
+
+  /* ---------- UI Button Utilities ---------- */
+  .btn {
+    border-radius: 10px; padding: 11px 22px;
+    font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    transition: var(--transition);
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--orange); color: #fff; }
+  .btn-primary:hover { background: #E65E0E; box-shadow: 0 4px 12px rgba(255,106,19,0.2); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .btn-ghost:hover { border-color: var(--muted); background: var(--bg); }
+  .btn-outline { background: var(--paper); color: var(--blue); border: 1.5px solid var(--blue-soft); }
+  .btn-outline:hover { background: var(--blue-soft); }
+  .btn-small { padding: 6px 14px; font-size: 0.8rem; border-radius: 8px; }
+  .btn-danger { background: #FFF5F5; color: #C53030; border: 1px solid #FEB2B2; }
+  .btn-danger:hover { background: #FFF5F5; border-color: #C53030; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none !important; }
+
+  /* ---------- Responsive Structural Grid ---------- */
+  .page { max-width: 1280px; margin: 0 auto; padding: 32px 24px 80px; }
+  .auth-page {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at top right, var(--blue-soft), var(--bg));
+    padding: 24px;
   }
 
-  /* ---------- Loader Overlay ---------- */
-  .app-loader{
-    position: fixed; inset: 0; background: rgba(250,250,248,0.85);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    z-index: 2000; gap: 12px; font-size: 0.9rem; font-weight: 600; color: var(--blue);
+  /* ---------- Identity Gateway Auth Card ---------- */
+  .auth-card {
+    background: var(--paper); border-radius: 20px; padding: 40px;
+    width: 100%; max-width: 500px;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-md);
   }
-  .spinner {
-    width: 32px; height: 32px; border: 3px solid var(--line);
-    border-top-color: var(--blue); border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+  .auth-header { margin-bottom: 24px; }
+  .auth-header .eyebrow {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 8px;
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .auth-header h1 { font-size: 1.9rem; margin-bottom: 6px; color: var(--blue); }
+  .auth-header p { color: var(--muted); font-size: 0.95rem; }
 
-  /* ---------- Auth card ---------- */
-  .auth-card{
-    background:var(--paper); border-radius:16px; padding:36px;
-    width:100%; max-width:460px;
-    border:1px solid var(--line);
-    box-shadow: var(--shadow);
+  .role-toggle {
+    display: flex; background: var(--bg); border-radius: 12px; padding: 4px;
+    margin-bottom: 24px; border: 1px solid var(--line);
   }
-  .auth-header{margin-bottom:22px;}
-  .auth-header .eyebrow{
-    font-family:'Space Mono', monospace; font-size:0.66rem; letter-spacing:0.14em;
-    text-transform:uppercase; color:var(--orange); font-weight:700; margin-bottom:8px;
+  .role-toggle button {
+    flex: 1; padding: 10px; text-align: center;
+    border-radius: 8px; font-weight: 700; font-size: 0.85rem; color: var(--muted);
+    transition: var(--transition);
   }
-  .auth-header h1{font-size:1.7rem; margin-bottom:4px;}
-  .auth-header p{color:var(--muted); font-size:0.9rem;}
+  .role-toggle button.active { background: var(--blue); color: #fff; box-shadow: var(--shadow-sm); }
 
-  .role-toggle{
-    display:flex; background:var(--bg); border-radius:10px; padding:4px;
-    margin-bottom:20px; border:1px solid var(--line);
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;
+    color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;
   }
-  .role-toggle button{
-    flex:1; border:none; background:transparent; padding:9px 8px;
-    border-radius:8px; font-weight:700; font-size:0.83rem; color:var(--muted);
-    transition: all .15s ease;
+  .field input, .field select {
+    width: 100%; padding: 12px 14px; border-radius: 10px;
+    border: 1.5px solid var(--line); font-size: 0.95rem;
+    background: var(--bg); color: var(--ink); transition: var(--transition);
   }
-  .role-toggle button.active{background:var(--blue); color:#fff;}
+  .field input:focus, .field select:focus { outline: none; border-color: var(--blue); background: var(--paper); }
+  .field-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-  .field{margin-bottom:13px;}
-  .field label{
-    display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px;
-    color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;
-  }
-  .field input, .field select{
-    width:100%; padding:11px 13px; border-radius:9px;
-    border:1.5px solid var(--line); font-size:0.92rem;
-    font-family:inherit; background:var(--bg); color:var(--ink);
-    transition: border-color .15s ease;
-  }
-  .field input:focus, .field select:focus{outline:none; border-color:var(--blue); background:var(--paper);}
-  .field-grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-
-  .auth-actions{margin-top:18px; display:flex; flex-direction:column; gap:10px;}
-  .auth-switch{margin-top:16px; text-align:center; font-size:0.84rem; color:var(--muted);}
-  .auth-switch button{background:none; border:none; color:var(--orange); font-weight:700; padding:0;}
-  .auth-error{
-    background:#FBEAE6; color:#B23A2E; padding:10px 14px; border-radius:8px;
-    font-size:0.84rem; margin-bottom:12px;
+  .auth-actions { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .auth-switch { text-align: center; font-size: 0.88rem; color: var(--muted); margin-top: 16px; }
+  .auth-switch button { color: var(--orange); font-weight: 700; }
+  .auth-error {
+    background: #FFF5F5; color: #C53030; padding: 12px 16px; border-radius: 10px;
+    font-size: 0.88rem; margin-bottom: 16px; border-left: 4px solid #C53030;
   }
 
-  /* ---------- Section headers ---------- */
-  .section-head{
-    display:flex; align-items:baseline; justify-content:space-between;
-    margin-bottom:18px; gap:16px; flex-wrap:wrap;
+  /* ---------- Functional Navigation System ---------- */
+  .section-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px; gap: 16px; flex-wrap: wrap;
   }
-  .section-head h2{font-size:1.35rem;}
-  .eyebrow-label{
-    font-family:'Space Mono', monospace; font-size:0.66rem; letter-spacing:0.14em;
-    text-transform:uppercase; color:var(--orange); font-weight:700; margin-bottom:4px;
+  .section-head h2 { font-size: 1.6rem; color: var(--blue); }
+  .eyebrow-label {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--orange); font-weight: 700; margin-bottom: 4px;
   }
 
-  /* ---------- Day tabs ---------- */
-  .day-tabs{
-    display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; margin-bottom:20px;
-    -ms-overflow-style:none; scrollbar-width:none;
+  .day-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 24px; }
+  .day-tab {
+    flex: 0 0 auto; background: var(--paper); border: 1.5px solid var(--line);
+    border-radius: 30px; padding: 10px 20px; font-weight: 600; font-size: 0.9rem;
+    color: var(--muted); transition: var(--transition); text-align: left;
   }
-  .day-tabs::-webkit-scrollbar{display:none;}
-  .day-tab{
-    flex:0 0 auto; background:var(--paper); border:1.5px solid var(--line);
-    border-radius:24px; padding:9px 16px; font-weight:600; font-size:0.83rem;
-    color:var(--muted); transition:all .15s ease; white-space:nowrap;
+  .day-tab .d { display: block; font-size: 0.65rem; font-family: 'Space Mono', monospace; text-transform: uppercase; opacity: 0.7; }
+  .day-tab.active { background: var(--blue); color: #fff; border-color: var(--blue); box-shadow: 0 4px 12px rgba(30,78,140,0.15); }
+  .day-tab.past { opacity: 0.4; cursor: not-allowed; }
+
+  /* ---------- Marketplace Menu Presentation Layout ---------- */
+  .menu-layout { display: grid; grid-template-columns: 1fr 380px; gap: 32px; align-items: start; }
+  @media (max-width: 992px) { .menu-layout { grid-template-columns: 1fr; } }
+
+  .category-block { margin-bottom: 32px; }
+  .category-title {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    font-size: 1.1rem; font-weight: 700; color: var(--blue);
   }
-  .day-tab .d{display:block; font-size:0.64rem; font-family:'Space Mono',monospace; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; opacity:0.7;}
-  .day-tab.active{background:var(--blue); color:#fff; border-color:var(--blue);}
-  .day-tab.past{opacity:0.35; cursor:not-allowed;}
+  .category-title .count { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--muted); font-weight: 400; }
+  .category-line { flex: 1; height: 1px; background: var(--line); }
 
-  /* ---------- Layout Elements ---------- */
-  .menu-layout{display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;}
-  @media (max-width:920px){ .menu-layout{grid-template-columns:1fr;} }
-
-  .category-block{margin-bottom:28px;}
-  .category-title{
-    display:flex; align-items:center; gap:10px; margin-bottom:12px;
-    font-size:0.95rem; font-weight:700; color:var(--ink);
+  .item-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .item-card {
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 20px; display: flex; flex-direction: column; gap: 10px;
+    box-shadow: var(--shadow-sm); transition: var(--transition); position: relative;
   }
-  .category-title .count{
-    font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); font-weight:400;
+  .item-card:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .item-card h4 { font-size: 1.05rem; line-height: 1.3; font-weight: 700; }
+  .item-card .desc { font-size: 0.85rem; color: var(--muted); line-height: 1.4; flex: 1; }
+  .item-card .price { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--blue); font-size: 1rem; }
+  
+  .badge {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 6px; width: fit-content;
   }
-  .category-line{flex:1; height:1px; background:var(--line);}
+  .badge.offer { background: var(--orange-soft); color: var(--orange); }
+  .badge.out { background: var(--line); color: var(--muted); }
 
-  .item-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:12px;}
-  .item-card{
-    background:var(--paper); border:1.5px solid var(--line); border-radius:var(--radius);
-    padding:14px; display:flex; flex-direction:column; gap:6px;
-    transition: border-color .15s ease;
+  /* ---------- Tunisian Plate Builder Component Widget ---------- */
+  .builder-box {
+    background: linear-gradient(135deg, var(--blue-soft), #FFFFFF);
+    border: 1.5px dashed var(--blue); border-radius: var(--radius);
+    padding: 20px; margin-bottom: 20px;
   }
-  .item-card:hover{border-color:#D9DCD6;}
-  .item-card .top-row{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
-  .item-card h4{font-size:0.95rem; line-height:1.25; font-weight:600;}
-  .item-card .desc{font-size:0.8rem; color:var(--muted); line-height:1.4; flex:1;}
-  .item-card .price{font-family:'Space Mono', monospace; font-weight:700; color:var(--blue); font-size:0.9rem;}
-  .badge{
-    font-family:'Space Mono', monospace; font-size:0.6rem; font-weight:700;
-    text-transform:uppercase; letter-spacing:0.07em; padding:3px 7px; border-radius:6px;
-    white-space:nowrap;
+  .builder-title { font-size: 1.1rem; font-weight: 700; color: var(--blue); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .opt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .opt-pill {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 8px;
+    text-align: center; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: var(--transition);
   }
-  .badge.offer{background:var(--orange-soft); color:var(--orange);}
-  .badge.out{background:var(--line); color:var(--muted);}
-  .item-card .bottom-row{display:flex; justify-content:space-between; align-items:center; margin-top:auto;}
-  .qty-control{display:flex; align-items:center; gap:8px;}
-  .qty-control button{
-    width:28px; height:28px; border-radius:7px; border:1.5px solid var(--line);
-    background:var(--bg); font-size:1rem; font-weight:700; line-height:1; color:var(--ink);
-    display:flex; align-items:center; justify-content:center;
+  .opt-pill:hover { border-color: var(--blue); }
+  .opt-pill.selected { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .opt-pill .p-add { display: block; font-family: 'Space Mono', monospace; font-size: 0.7rem; opacity: 0.8; margin-top: 2px; }
+
+  /* ---------- Sidebar Order Bill (Ticket) ---------- */
+  .ticket {
+    background: var(--paper); border-radius: var(--radius);
+    border: 1px solid var(--line); padding: 24px;
+    position: sticky; top: 100px; box-shadow: var(--shadow-md);
   }
-  .qty-control button:hover{border-color:var(--blue);}
-  .qty-control .qty{min-width:16px; text-align:center; font-weight:700; font-family:'Space Mono',monospace; font-size:0.85rem;}
-  .add-btn{
-    background:var(--blue); color:#fff; border:none; border-radius:7px;
-    padding:7px 13px; font-weight:600; font-size:0.78rem;
+  .ticket h3 { font-size: 1.15rem; margin-bottom: 4px; border-bottom: 2px solid var(--orange); width: fit-content; padding-bottom: 2px; }
+  .ticket .ticket-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 16px; }
+  .cart-line { display: flex; justify-content: space-between; gap: 12px; font-size: 0.9rem; margin-bottom: 12px; align-items: flex-start; }
+  .cart-line .name { flex: 1; font-weight: 500; }
+  .cart-line .name small { display: block; color: var(--muted); font-size: 0.75rem; font-weight: 400; margin-top: 2px; }
+  .cart-line .amt { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--blue); }
+  .cart-divider { border-top: 1px solid var(--line); margin: 16px 0; }
+  .cart-total { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2rem; font-family: 'Space Mono', monospace; color: var(--ink); }
+  .remove-x { color: #EF4444; font-size: 0.75rem; font-weight: 700; margin-left: 8px; text-transform: uppercase; }
+
+  .delivery-toggle {
+    margin-top: 16px; display: flex; align-items: center; justify-content: space-between;
+    padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg);
   }
-  .add-btn:hover{background:#173e6e;}
+  .delivery-toggle label { font-size: 0.85rem; font-weight: 600; }
+  .delivery-toggle .fee { font-size: 0.75rem; color: var(--muted); font-family: 'Space Mono', monospace; }
+  
+  /* ---------- Toggle Switch Component ---------- */
+  .switch { position: relative; width: 40px; height: 24px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; cursor: pointer; inset: 0; background: var(--line); border-radius: 24px; transition: .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .2s; }
+  .switch input:checked + .slider { background: var(--blue); }
+  .switch input:checked + .slider::before { transform: translateX(16px); }
 
-  /* ---------- Cart / ticket ---------- */
-  .ticket{
-    background:var(--paper); border-radius:var(--radius); border:1.5px solid var(--line);
-    padding:20px; position:sticky; top:90px;
+  /* ---------- Modern Tabular Data Templates ---------- */
+  .table-wrap { background: var(--paper); border-radius: var(--radius); border: 1px solid var(--line); overflow: hidden; box-shadow: var(--shadow-sm); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { padding: 14px 20px; text-align: left; border-bottom: 1px solid var(--line); }
+  th { font-family: 'Space Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); background: var(--bg); font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+  
+  .status-pill { font-family: 'Space Mono', monospace; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
+  .status-pending { background: var(--orange-soft); color: var(--orange); }
+  .status-confirmed { background: var(--blue-soft); color: var(--blue); }
+  .status-ready { background: var(--green-soft); color: var(--green); }
+  .status-completed { background: var(--line); color: var(--muted); }
+  .status-cancelled { background: #FEE2E2; color: #991B1B; }
+
+  /* ---------- Micro Notification Toast Popups ---------- */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; background: var(--ink); color: #fff;
+    padding: 14px 24px; border-radius: 10px; font-size: 0.9rem; font-weight: 600;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3); z-index: 200;
+    opacity: 0; transform: translateY(12px); transition: var(--transition); pointer-events: none;
   }
-  .ticket h3{font-size:1rem; margin-bottom:2px;}
-  .ticket .ticket-sub{font-size:0.78rem; color:var(--muted); margin-bottom:14px;}
-  .cart-line{
-    display:flex; justify-content:space-between; gap:10px; font-size:0.86rem; margin-bottom:10px;
-    align-items:flex-start;
-  }
-  .cart-line .name{flex:1;}
-  .cart-line .name small{display:block; color:var(--muted); font-size:0.72rem;}
-  .cart-line .amt{font-family:'Space Mono',monospace; font-weight:700; white-space:nowrap; text-align:right;}
-  .cart-empty{font-size:0.84rem; color:var(--muted); padding:8px 0;}
-  .cart-divider{border-top:1px solid var(--line); margin:14px 0;}
-  .cart-row{display:flex; justify-content:space-between; font-size:0.86rem; margin-bottom:6px; color:var(--muted);}
-  .cart-total{
-    display:flex; justify-content:space-between; font-weight:800; font-size:1.05rem;
-    padding-top:10px; font-family:'Space Mono',monospace;
-  }
-  .remove-x{background:none; border:none; color:var(--orange); font-size:0.72rem; font-weight:700; padding:0 0 0 8px;}
+  .toast.show { opacity: 1; transform: translateY(0); }
 
-  .pickup-box{margin-top:16px;}
-  .pickup-box label{display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;}
-  .pickup-row{display:flex; flex-direction:column; gap:8px;}
-  .pickup-row select{width:100%; padding:10px; border-radius:9px; border:1.5px solid var(--line); background:var(--bg); font-family:inherit; color:var(--ink);}
-  .deadline-note{font-size:0.76rem; color:var(--muted); margin-top:8px; font-weight:500;}
-  .deadline-note.warn{color:var(--orange);}
+  /* ---------- Modal Dialog Windows ---------- */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 300; padding: 20px; }
+  .modal { background: var(--paper); border-radius: var(--radius); padding: 32px; max-width: 520px; width: 100%; border: 1px solid var(--line); box-shadow: var(--shadow-md); }
+  .modal h3 { font-size: 1.4rem; margin-bottom: 12px; color: var(--blue); }
+  .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
 
-  .delivery-toggle{
-    margin-top:14px; display:flex; align-items:center; justify-content:space-between;
-    padding:10px 12px; border:1.5px solid var(--line); border-radius:9px; background:var(--bg);
-  }
-  .delivery-toggle label{font-size:0.85rem; font-weight:600; cursor:pointer;}
-  .delivery-toggle .fee{font-size:0.76rem; color:var(--muted); font-family:'Space Mono',monospace;}
-  .switch{position:relative; width:38px; height:22px; flex-shrink:0;}
-  .switch input{opacity:0; width:0; height:0;}
-  .switch .slider{position:absolute; cursor:pointer; inset:0; background:var(--line); border-radius:22px; transition:.2s;}
-  .switch .slider::before{content:""; position:absolute; height:16px; width:16px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.2s;}
-  .switch input:checked + .slider{background:var(--blue);}
-  .switch input:checked + .slider::before{transform:translateX(16px);}
-  .office-field{margin-top:10px;}
-  .office-field input{width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line); background:var(--bg); font-family:inherit; font-size:0.86rem; color:var(--ink);}
+  .pay-card { border: 1.5px solid var(--line); border-radius: 12px; padding: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: var(--transition); }
+  .pay-card.selected { border-color: var(--blue); background: var(--blue-soft); }
+  .pay-card .pay-icon { width: 40px; height: 40px; border-radius: 8px; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+  .pay-card.selected .pay-icon { background: var(--blue); color: #fff; }
 
-  /* ---------- Tables ---------- */
-  .table-wrap{background:var(--paper); border-radius:var(--radius); border:1.5px solid var(--line); overflow:hidden;}
-  table{width:100%; border-collapse:collapse; font-size:0.86rem;}
-  th, td{padding:11px 16px; text-align:left; border-bottom:1px solid var(--line);}
-  th{font-family:'Space Mono',monospace; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:700; background:var(--bg);}
-  tr:last-child td{border-bottom:none;}
-  .status-pill{
-    font-family:'Space Mono',monospace; font-size:0.64rem; font-weight:700; text-transform:uppercase;
-    letter-spacing:0.06em; padding:4px 9px; border-radius:20px; display:inline-block;
-  }
-  .status-pending{background:var(--orange-soft); color:var(--orange);}
-  .status-confirmed{background:var(--blue-soft); color:var(--blue);}
-  .status-ready{background:var(--green-soft); color:var(--green);}
-  .status-completed{background:var(--line); color:var(--muted);}
-  .status-cancelled{background:#F6D8D2; color:#a33;}
+  .top-link { font-weight: 700; font-size: 0.95rem; color: var(--muted); border-bottom: 3px solid transparent; padding: 6px 0; margin-right: 20px; transition: var(--transition); }
+  .top-link.active { color: var(--blue); border-bottom-color: var(--orange); }
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
 
-  /* ---------- Panels ---------- */
-  .panel{background:var(--paper); border-radius:var(--radius); border:1.5px solid var(--line); padding:22px; margin-bottom:22px;}
-  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
-  @media (max-width:600px){ .grid-2{grid-template-columns:1fr;} }
-  .form-row{margin-bottom:12px;}
-  .form-row label{display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;}
-  .form-row input, .form-row select, .form-row textarea{width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line); font-family:inherit; font-size:0.88rem; background:var(--bg); color:var(--ink);}
-  .form-row textarea{resize:vertical; min-height:56px;}
-  .checkbox-row{display:flex; align-items:center; gap:8px; margin-bottom:12px;}
-
-  .menu-item-row{display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);}
-  .menu-item-row:last-child{border-bottom:none;}
-  .menu-item-row .mi-info{flex:1;}
-  .menu-item-row .mi-info h4{font-size:0.92rem; margin-bottom:2px; font-weight:600;}
-  .menu-item-row .mi-info p{font-size:0.78rem; color:var(--muted);}
-  .menu-item-row .mi-price{font-family:'Space Mono',monospace; font-weight:700; min-width:60px; text-align:right; font-size:0.88rem;}
-  .empty-state{text-align:center; padding:46px 20px; color:var(--muted);}
-  .empty-state h3{color:var(--ink); margin-bottom:8px; font-size:1.05rem;}
-
-  .toast{
-    position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff;
-    padding:14px 22px; border-radius:10px; font-size:0.88rem; font-weight:600;
-    box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:200;
-    opacity:0; transform:translateY(12px); transition:all .25s ease; pointer-events:none;
-  }
-  .toast.show{opacity:1; transform:translateY(0);}
-
-  .modal-overlay{position:fixed; inset:0; background:rgba(34,39,46,0.4); display:flex; align-items:center; justify-content:center; z-index:300; padding:20px;}
-  .modal{background:var(--paper); border-radius:14px; padding:26px; max-width:480px; width:100%; max-height:88vh; overflow-y:auto; border:1px solid var(--line);}
-  .modal h3{margin-bottom:16px;}
-  .modal-actions{display:flex; gap:10px; justify-content:flex-end; margin-top:18px;}
-
-  .pay-card{border:1.5px solid var(--line); border-radius:10px; padding:14px; margin-bottom:10px; display:flex; align-items:center; gap:12px; cursor:pointer;}
-  .pay-card.selected{border-color:var(--blue); background:var(--blue-soft);}
-  .pay-card .pay-icon{width:36px; height:36px; border-radius:8px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:1.05rem;}
-  .pay-card.selected .pay-icon{background:var(--blue); color:#fff;}
-  .small-muted{font-size:0.8rem; color:var(--muted); line-height:1.5;}
-
-  .top-link{background:none; border:none; color:var(--muted); font-weight:600; font-size:0.88rem; border-bottom:2px solid transparent; padding:4px 0; margin-right:12px;}
-  .top-link.active{color:var(--ink); border-bottom-color:var(--orange);}
-
-  .order-number-box{text-align:center; padding:28px 20px; background:var(--blue-soft); border-radius:12px; margin-bottom:18px;}
-  .order-number-box .lbl{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--blue); font-weight:700; margin-bottom:8px;}
-  .order-number-box .num{font-family:'Space Mono',monospace; font-size:2.1rem; font-weight:700; color:var(--blue); letter-spacing:0.05em;}
-  .order-num-pill{font-family:'Space Mono',monospace; font-weight:700; font-size:0.8rem; color:var(--blue); background:var(--blue-soft); padding:2px 8px; border-radius:6px;}
+  .order-number-box { text-align: center; padding: 24px; background: var(--blue-soft); border-radius: 12px; margin-bottom: 16px; border: 1px solid #DBEAFE; }
+  .order-number-box .lbl { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--blue); margin-bottom: 4px; }
+  .order-number-box .num { font-family: 'Space Mono', monospace; font-size: 2.2rem; font-weight: 700; color: var(--blue); }
 </style>
 </head>
 <body>
 
-<div id="appLoader" class="app-loader hidden">
-  <div class="spinner"></div>
-  <div id="loaderText">Synchronizing Database...</div>
-</div>
-
 <div id="authPage" class="auth-page">
   <div class="auth-card">
     <div class="auth-header">
-      <div class="eyebrow">Leoni Cantine · Testing Sandbox</div>
+      <div class="eyebrow">Leoni Industrial Ecosystem</div>
       <h1 id="authTitle">Sign in</h1>
-      <p id="authSubtitle">Access plant canteens across your work shifts.</p>
+      <p id="authSubtitle">Access internal plant culinary counters and custom orders.</p>
     </div>
 
     <div class="role-toggle">
-      <button id="roleEmployeeBtn" class="active" onclick="setAuthRole('employee')">Employee</button>
-      <button id="roleCantineBtn" onclick="setAuthRole('cantine')">Cantine staff</button>
+      <button id="roleEmployeeBtn" class="active" onclick="setAuthRole('employee')">Leoni Employee</button>
+      <button id="roleCantineBtn" onclick="setAuthRole('cantine')">Kitchen Staff</button>
     </div>
 
     <div id="authError" class="auth-error hidden"></div>
 
     <div id="loginFields">
       <div class="field">
-        <label>Email</label>
-        <input type="email" id="loginEmail" placeholder="you@leoni.com">
+        <label>Corporate Email</label>
+        <input type="email" id="loginEmail" placeholder="username@leoni.com">
       </div>
       <div class="field">
         <label>Password</label>
@@ -365,140 +312,153 @@
     <div id="signupFields" class="hidden">
       <div class="field-grid2">
         <div class="field">
-          <label>First name</label>
+          <label>First Name</label>
           <input type="text" id="signupFirstName" placeholder="Ameur">
         </div>
         <div class="field">
-          <label>Last name</label>
+          <label>Last Name</label>
           <input type="text" id="signupLastName" placeholder="Ben Salah">
         </div>
       </div>
       <div class="field">
-        <label>Email</label>
-        <input type="email" id="signupEmail" placeholder="you@leoni.com">
+        <label>Email Address</label>
+        <input type="email" id="signupEmail" placeholder="ameur.worker@leoni.com">
       </div>
       <div class="field">
         <label>Password</label>
-        <input type="password" id="signupPassword" placeholder="Choose password">
+        <input type="password" id="signupPassword" placeholder="Create high-security token">
       </div>
 
       <div id="employeeSignupFields">
         <div class="field-grid2">
           <div class="field">
-            <label>Leoni ID</label>
-            <input type="text" id="signupLeoniId" placeholder="104523">
+            <label>Leoni Serial ID</label>
+            <input type="text" id="signupLeoniId" placeholder="e.g. 104521">
           </div>
           <div class="field">
-            <label>Position</label>
-            <input type="text" id="signupPosition" placeholder="Automation Engineer">
+            <label>Professional Assignment</label>
+            <input type="text" id="signupPosition" placeholder="e.g. Automation Engineer">
           </div>
         </div>
         <div class="field">
-          <label>Plant Workspace</label>
+          <label>Manufacturing Plant Asset</label>
           <select id="signupPlant" onchange="onSignupPlantChange()"></select>
         </div>
         <div class="field">
-          <label>Assigned Default Canteen</label>
+          <label>Assigned Default Kitchen Counter</label>
           <select id="signupEmployeeCanteen"></select>
         </div>
         <div class="field">
-          <label>Office / workshop location</label>
-          <input type="text" id="signupOffice" placeholder="Building A, Office 214">
+          <label>Physical Office / Workshop Node</label>
+          <input type="text" id="signupOffice" placeholder="e.g. Building A, 2nd floor, Office 214">
         </div>
       </div>
 
       <div class="field hidden" id="signupCantineField">
-        <label>Cantine you manage</label>
+        <label>Canteen Point of Management</label>
         <select id="signupCantine"></select>
       </div>
     </div>
 
     <div class="auth-actions">
-      <button class="btn btn-primary" id="authSubmitBtn" onclick="handleAuthSubmit()">Sign in</button>
-    </div>
-
-    <div class="auth-switch">
-      <span id="authSwitchText">New here?</span>
-      <button id="authSwitchBtn" onclick="toggleAuthMode()">Create an account</button>
+      <button class="btn btn-primary" id="authSubmitBtn" onclick="handleAuthSubmit()">Authenticate Profile</button>
+      <div class="auth-switch">
+        <span id="authSwitchText">New operative within the framework?</span>
+        <button id="authSwitchBtn" onclick="toggleAuthMode()">Register Profile</button>
+      </div>
     </div>
   </div>
 </div>
 
 <div id="employeeApp" class="hidden">
   <div class="topbar">
-    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">EMPLOYEE</span></div>
+    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">EMPLOYEE HUB</span></div>
     <div class="topbar-right">
-      <button class="top-link active" data-emp-view="menu" onclick="switchEmployeeView('menu')">Counter</button>
-      <button class="top-link" data-emp-view="orders" onclick="switchEmployeeView('orders')">My Orders</button>
+      <button class="top-link active" id="navEmpMenu" onclick="switchEmpView('menu')">Food Catalog</button>
+      <button class="top-link" id="navEmpOrders" onclick="switchEmpView('orders')">My History</button>
       <span class="who" id="empWho"></span>
-      <button class="btn btn-ghost btn-small" onclick="logout()">Sign out</button>
+      <button class="btn btn-ghost btn-small" onclick="logout()">Terminate Session</button>
     </div>
   </div>
 
   <div class="page">
-    <div id="empMenuView">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow-label" id="empPlantLabel"></div>
-          <h2>Today's Counter Lines</h2>
-        </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <label style="font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase;">Dining Hall:</label>
-          <select id="empCanteenSelect" onchange="onEmpCanteenChange()" style="padding: 6px 12px; border-radius: 8px; border: 1.5px solid var(--line); font-size: 0.85rem; font-weight: 600; background: var(--paper); color: var(--ink);"></select>
-        </div>
-      </div>
-
-      <div class="day-tabs" id="empDayTabs"></div>
-
-      <div class="menu-layout">
-        <div id="empCategories"></div>
-        <div>
-          <div class="ticket">
-            <h3>Your Meal Tray</h3>
-            <div class="ticket-sub" id="ticketDayLabel"></div>
-            <div id="cartLines"></div>
-
-            <div class="cart-divider"></div>
-            <div class="cart-row" id="cartSubtotalRow"><span>Subtotal</span><span class="mono">0.00 DT</span></div>
-            <div class="cart-row hidden" id="cartDeliveryRow"><span>Office Delivery</span><span class="mono">+2.00 DT</span></div>
-            <div class="cart-total"><span>Total</span><span id="cartTotal">0.00 DT</span></div>
-
-            <div class="pickup-box">
-              <label>Scheduling Logistics</label>
-              <div class="pickup-row">
-                <select id="pickupDaySelect" onchange="onPickupDateChange()"></select>
-                <select id="pickupTimeSelect" onchange="renderCart()"></select>
-              </div>
-              <div class="deadline-note" id="deadlineNote"></div>
-            </div>
-
-            <div class="delivery-toggle">
-              <div>
-                <label for="deliveryToggle">Deliver directly to my office</label>
-                <div class="fee">+2.00 DT logistics fee</div>
-              </div>
-              <div class="switch">
-                <input type="checkbox" id="deliveryToggle" onchange="onDeliveryToggle()">
-                <span class="slider"></span>
-              </div>
-            </div>
-            <div class="office-field hidden" id="officeFieldWrap">
-              <input type="text" id="officeOverride" placeholder="Confirm floor/office location text">
-            </div>
-
-            <div style="margin-top:16px;">
-              <button class="btn btn-primary" style="width:100%;" id="checkoutBtn" onclick="openCheckout()">Checkout &amp; Pay</button>
-            </div>
+    <div id="empMenuView" class="menu-layout">
+      <div>
+        <div class="section-head">
+          <div>
+            <div class="eyebrow-label" id="empCanteenContextLabel">Active Counter Context</div>
+            <h2 id="empGreeting">Welcome Operative</h2>
+          </div>
+          <div class="field" style="margin:0; min-width:240px;">
+            <select id="empCanteenSwitcher" onchange="onEmpCanteenSwitch()" style="padding:8px 12px; background:var(--paper);"></select>
           </div>
         </div>
+
+        <div class="day-tabs" id="empDayTabs"></div>
+
+        <div class="builder-box" id="plateBuilderSection">
+          <div class="builder-title">🇹🇳 Custom Tunisian Daily Plate Architect</div>
+          <p style="font-size:0.82rem; color:var(--muted); margin-bottom:12px;">Mix your base carbohydrate matrix and premium additive toppings together. Price structures formulate instantly.</p>
+          <div class="field"><label>Plate Base Matrix</label><div class="opt-grid" id="builderBases"></div></div>
+          <div class="field"><label>Topping Multi-Select Addons</label><div class="opt-grid" id="builderAddons"></div></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; background:var(--paper); padding:12px 16px; border-radius:10px; border:1px solid var(--line);">
+            <div>
+              <div style="font-weight:700; font-size:0.9rem;" id="builderPlateName">Select Base...</div>
+              <div class="mono" style="font-weight:700; color:var(--blue); font-size:0.85rem;" id="builderPlatePrice">0.00 DT</div>
+            </div>
+            <button class="btn btn-primary btn-small" id="addBuiltPlateBtn" onclick="addCustomPlateToCart()" disabled>Inject To Ticket</button>
+          </div>
+        </div>
+
+        <div id="empCategories"></div>
+      </div>
+
+      <div class="ticket">
+        <h3>Order Ticket</h3>
+        <div class="ticket-sub" id="ticketCanteenName">Processing Hub</div>
+        <div id="cartLines"></div>
+        <div class="cart-divider"></div>
+        
+        <div class="pickup-box">
+          <div class="field">
+            <label>Target Delivery / Pickup Day</label>
+            <select id="pickupDaySelect" onchange="onPickupDateChange()"></select>
+          </div>
+          <div class="field">
+            <label>Fulfillment Time-Window Slot</label>
+            <select id="pickupTimeSelect" onchange="renderCart()"></select>
+          </div>
+          <div id="deadlineNote" class="deadline-note"></div>
+        </div>
+
+        <div class="delivery-toggle" id="officeDeliveryWrapper">
+          <div>
+            <label for="deliveryToggle">Deliver directly to my office station</label>
+            <div class="fee">+2.00 DT logistics processing</div>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="deliveryToggle" onchange="onDeliveryToggle()">
+            <span class="slider"></span>
+          </div>
+        </div>
+        <div class="office-field hidden" id="officeFieldWrap">
+          <input type="text" id="officeOverride" placeholder="Confirm precise structural desk location">
+        </div>
+
+        <div class="cart-divider"></div>
+        <div class="cart-row" id="cartSubtotalRow"><span>Subtotal</span><span class="mono">0.00 DT</span></div>
+        <div class="cart-row hidden" id="cartDeliveryRow"><span>Office Delivery Fee</span><span class="mono">2.00 DT</span></div>
+        <div class="cart-total"><span>Total Payable</span><span id="cartTotal">0.00 DT</span></div>
+        
+        <button class="btn btn-primary" style="width:100%; margin-top:16px;" id="checkoutBtn" onclick="openCheckout()" disabled>Proceed with Liquidation</button>
       </div>
     </div>
 
     <div id="empOrdersView" class="hidden">
       <div class="section-head">
         <div>
-          <div class="eyebrow-label">Order History Log</div>
-          <h2>My Real-time Orders</h2>
+          <div class="eyebrow-label">Historical Audit Trail</div>
+          <h2>My Culinary Orders</h2>
         </div>
       </div>
       <div id="empOrdersList"></div>
@@ -508,12 +468,12 @@
 
 <div id="cantineApp" class="hidden">
   <div class="topbar">
-    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">KITCHEN</span></div>
+    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">KITCHEN MONITOR</span></div>
     <div class="topbar-right">
-      <button class="top-link active" data-can-view="menu" onclick="switchCantineView('menu')">Manage Stock</button>
-      <button class="top-link" data-can-view="orders" onclick="switchCantineView('orders')">Live Queue</button>
+      <button class="top-link active" id="navCanMenu" onclick="switchCantineView('menu')">Counter Catalog</button>
+      <button class="top-link" id="navCanOrders" onclick="switchCantineView('orders')">Fulfillment Queue</button>
       <span class="who" id="canWho"></span>
-      <button class="btn btn-ghost btn-small" onclick="logout()">Sign out</button>
+      <button class="btn btn-ghost btn-small" onclick="logout()">Terminate Session</button>
     </div>
   </div>
 
@@ -521,14 +481,12 @@
     <div id="canMenuView">
       <div class="section-head">
         <div>
-          <div class="eyebrow-label" id="canPlantLabel"></div>
-          <h2>Counter Control Dashboard</h2>
+          <div class="eyebrow-label" id="canPlantLabel">Operational Workspace</div>
+          <h2>Inventory Management Grid</h2>
         </div>
-        <button class="btn btn-primary btn-small" onclick="openItemModal()">+ Stock New Item</button>
+        <button class="btn btn-primary btn-small" onclick="openItemModal()">+ Inject Fresh Item</button>
       </div>
-
       <div class="day-tabs" id="canDayTabs"></div>
-
       <div class="panel">
         <div id="canMenuList"></div>
       </div>
@@ -537,357 +495,1135 @@
     <div id="canOrdersView" class="hidden">
       <div class="section-head">
         <div>
-          <div class="eyebrow-label">Live Spreadsheet Flow</div>
-          <h2>Production Queue Intake</h2>
+          <div class="eyebrow-label">Live Processing Queue</div>
+          <h2>Order Routing Protocol</h2>
         </div>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Order #</th><th>Employee</th><th>Day</th><th>Fulfillment target</th><th>Items Lineup</th><th>Delivery</th><th>Total Billing</th><th>Status</th><th>Actions Engine</th></tr>
+            <tr>
+              <th>Order Number</th>
+              <th>Employee Identity</th>
+              <th>Fulfillment Day</th>
+              <th>Target Window</th>
+              <th>Items Demanded</th>
+              <th>Office Logistics</th>
+              <th>Financial Valuation</th>
+              <th>Current Status</th>
+              <th>Fulfillment Control Action</th>
+            </tr>
           </thead>
-          <tbody id="canOrdersBody"></tbody>
+          <tbody id="canOrdersTableBody"></tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
 
-<div id="checkoutModal" class="modal-overlay hidden">
+<div class="modal-overlay hidden" id="itemModal">
   <div class="modal">
-    <h3>Secure Portal Gateway</h3>
-    <div id="checkoutSummary" class="small-muted" style="margin-bottom:14px;"></div>
-    
-    <label style="font-size:0.74rem; font-weight:700; color:var(--muted); text-transform:uppercase; margin-bottom:8px; display:block;">Payment Gateway</label>
-    <div class="pay-card selected" data-pay="card" onclick="selectPayMethod(this)">
-      <div class="pay-icon">💳</div>
-      <div><strong>Corporate/Personal Cards</strong><div class="small-muted">Visa, Mastercard, e-Dinar corporate channels</div></div>
-    </div>
-    <div class="pay-card" data-pay="wallet" onclick="selectPayMethod(this)">
-      <div class="pay-icon">📱</div>
-      <div><strong>Mobile API Rails</strong><div class="small-muted">D17 Sandbox, Flouci Network</div></div>
-    </div>
-
-    <div id="cardFields" style="margin-top:14px;">
-      <div class="form-row"><label>Card Primary Account Number</label><input type="text" placeholder="4242 4242 4242 4242"></div>
-      <div class="grid-2">
-        <div class="form-row"><label>Expiry</label><input type="text" placeholder="MM/YY"></div>
-        <div class="form-row"><label>CVC Security</label><input type="text" placeholder="123"></div>
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal('checkoutModal')">Abort</button>
-      <button class="btn btn-primary" onclick="confirmPayment()" id="payButton">Execute Billing &amp; Submit</button>
-    </div>
-  </div>
-</div>
-
-<div id="confirmModal" class="modal-overlay hidden">
-  <div class="modal">
-    <h3>Transaction Verified &amp; Saved</h3>
-    <div class="order-number-box">
-      <div class="lbl">Production Queue Token</div>
-      <div class="num" id="confirmOrderNumber"></div>
-      <div class="hint">This exact row is dropped straight into the kitchen monitoring spreadsheet line tracking sheets.</div>
-    </div>
-    <div id="confirmSummary" class="small-muted"></div>
-    <div class="modal-actions">
-      <button class="btn btn-primary" onclick="closeModal('confirmModal')">Return to Workspace</button>
-    </div>
-  </div>
-</div>
-
-<div id="itemModal" class="modal-overlay hidden">
-  <div class="modal">
-    <h3 id="itemModalTitle">Stock Control Sheet Row</h3>
+    <h3 id="itemModalTitle">Modify Inventory Node</h3>
     <input type="hidden" id="itemEditId">
+    <input type="hidden" id="itemDay">
     <div class="form-row">
-      <label>Operational Weekday Index</label>
-      <select id="itemDay"></select>
+      <label>Item Nomenclature</label>
+      <input type="text" id="itemName" placeholder="e.g. Tunisian Lamb Couscous">
     </div>
     <div class="form-row">
-      <label>Product Title Name</label>
-      <input type="text" id="itemName" placeholder="e.g., Artisanal Gelato Cup">
-    </div>
-    <div class="form-row">
-      <label>Menu Descriptor Text</label>
-      <textarea id="itemDesc" placeholder="e.g., Boutique line item details..."></textarea>
+      <label>Product Description Matrix</label>
+      <textarea id="itemDesc" placeholder="Describe nutritional parameters and ingredients..."></textarea>
     </div>
     <div class="grid-2">
       <div class="form-row">
-        <label>Unit Valuation Price (DT)</label>
-        <input type="number" id="itemPrice" min="0" step="0.1">
+        <label>Financial Valuation (DT)</label>
+        <input type="number" id="itemPrice" step="0.100" placeholder="6.500">
       </div>
       <div class="form-row">
-        <label>Category Sorting Group</label>
+        <label>Functional Category</label>
         <select id="itemCategory">
-          <option value="main">Main plates</option>
-          <option value="salad">Salads &amp; soups</option>
-          <option value="drink">Drinks &amp; water</option>
-          <option value="snack">Snacks &amp; biscuits</option>
-          <option value="coffee">Coffee &amp; hot drinks</option>
-          <option value="dessert">Desserts / Boutique Lines</option>
+          <option value="main">Main Plates</option>
+          <option value="salad">Salads &amp; Soups</option>
+          <option value="drink">Drinks &amp; Water</option>
+          <option value="snack">Snacks &amp; Biscuits</option>
+          <option value="coffee">Coffee &amp; Hot Drinks</option>
+          <option value="dessert">Desserts</option>
         </select>
       </div>
     </div>
-    <div class="checkbox-row">
+    <div class="checkbox-row" style="margin-top:10px;">
       <input type="checkbox" id="itemOffer">
-      <label for="itemOffer" style="font-weight:600; font-size:0.85rem;">Inject as Daily Boutique Special Offer</label>
+      <label for="itemOffer">Flag as Shift Special Offer</label>
     </div>
     <div class="checkbox-row">
       <input type="checkbox" id="itemAvailable" checked>
-      <label for="itemAvailable" style="font-weight:600; font-size:0.85rem;">Visibility State (Active inside live arrays)</label>
+      <label for="itemAvailable">Active Catalog Visibility Status</label>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal('itemModal')">Dismiss</button>
-      <button class="btn btn-primary" onclick="saveMenuItem()">Commit to Storage Row</button>
+      <button class="btn btn-ghost" onclick="closeModal('itemModal')">Abort</button>
+      <button class="btn btn-primary" onclick="saveMenuItem()">Commit State Changes</button>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="modal-overlay hidden" id="checkoutModal">
+  <div class="modal">
+    <h3>Corporate Payment Terminal</h3>
+    <p style="font-size:0.88rem; color:var(--muted); margin-bottom:16px;">Verify payload and select your validation architecture token:</p>
+    <div id="checkoutSummary" style="background:var(--bg); padding:14px; border-radius:10px; font-size:0.85rem; line-height:1.5; margin-bottom:16px; border:1px solid var(--line);"></div>
+    
+    <div class="pay-card selected" id="payCardBadge" onclick="setPaymentMethod('badge')">
+      <div class="pay-icon">💳</div>
+      <div>
+        <div style="font-weight:700; font-size:0.9rem;">Leoni Corporate Badge Smart-Deduction</div>
+        <div style="font-size:0.75rem; color:var(--muted);">Automated extraction against serial account ledger</div>
+      </div>
+    </div>
+    <div class="pay-card" id="payCardCash" onclick="setPaymentMethod('cash')">
+      <div class="pay-icon">💶</div>
+      <div>
+        <div style="font-weight:700; font-size:0.9rem;">Liquid Cash Liquidation at Counter</div>
+        <div style="font-size:0.75rem; color:var(--muted);">Settle balance manually with the shift manager</div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('checkoutModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmOrderPlacement()">Authorize Order Signature</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="confirmModal">
+  <div class="modal" style="text-align:center;">
+    <div style="font-size:2.5rem; margin-bottom:8px;">🚀</div>
+    <h3>Order Broadcast Successful</h3>
+    <p style="font-size:0.9rem; color:var(--muted); margin-bottom:16px;">The transaction signature has been successfully logged on the kitchen pipeline grid.</p>
+    <div class="order-number-box">
+      <div class="lbl">Assigned Validation ID Token</div>
+      <div class="num" id="confirmOrderNumber">#0000</div>
+    </div>
+    <div id="confirmOrderDetails" style="font-size:0.84rem; color:var(--muted); text-align:left; line-height:1.4; background:var(--bg); padding:12px; border-radius:10px;"></div>
+    <div class="modal-actions" style="justify-content:center;">
+      <button class="btn btn-primary" onclick="closeModal('confirmModal')">Return to Workspace Hub</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Notification Engine Active</div>
 
 <script>
-/**
- * LEONI CANTINE — GOOGLE SPREADSHEET BACKEND RELATIONAL ENGINE
- * Configured explicitly to read/write columns asynchronously into Apps Script lines.
- */
-
-// Paste your Google Apps Script Deployment URL here
-const API_URL = "https://script.google.com/macros/s/AKfycbw0pZ7-fDscq4Y8Kx8qO1T1rM82Rj0wT1H2A2X_ABC123/exec"; 
-
 const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const CATEGORIES = [
-  { id:'main',    label:'Main plates' },
-  { id:'salad',   label:'Salads & soups' },
-  { id:'drink',   label:'Drinks & water' },
-  { id:'snack',   label:'Snacks & biscuits' },
-  { id:'coffee',  label:'Coffee & hot drinks' },
-  { id:'dessert', label:'Desserts & Boutique Specials' }
+  { id: 'main', label: 'Main Plates' },
+  { id: 'salad', label: 'Salads & Soups' },
+  { id: 'drink', label: 'Drinks & Water' },
+  { id: 'snack', label: 'Snacks & Biscuits' },
+  { id: 'coffee', label: 'Coffee & Hot Drinks' },
+  { id: 'dessert', label: 'Desserts' }
 ];
-const DELIVERY_FEE = 2.0;
+const DELIVERY_FEE = 2.00;
+const NEXT_STATUS = { 'pending': 'confirmed', 'confirmed': 'ready', 'ready': 'completed' };
 
-// Hardcoded relational definitions for operational scaling
-const PLANTS = [
-  { id:'LTN1', name:'LTN1 — Mateur Plant', canteens: [{id:'LTN1-A', name:'Building A Main Counter'}] },
-  { id:'LTN2', name:'LTN2 — Mateur 2 Plant', canteens: [{id:'LTN2-C', name:'Building C Main Counter'}] },
-  { id:'BIZ1', name:'BIZ1 — Bizerte Plant', canteens: [{id:'BIZ1-G', name:'Ground Floor Dining'}] },
-  { id:'MGD1', name:'MGD1 — Megrine Plant', canteens: [{id:'MGD1-L', name:'Logistics Dining Hub'}] },
-  { id:'LTN3', name:'LTN3 — Mateur 3 Plant', canteens: [
-      {id:'LTN3-A', name:'Cantine A (Boutique & Ice Creams)'},
-      {id:'LTN3-B', name:'Cantine B (Standard Hot Plates)'}
-    ]
-  }
-];
-
-// In-Memory Relational Database State Engine
-let STATE = {
-  users: [],
-  menus: [],
-  purchases: []
-};
+// Runtime State Memory Cache
+let PLANTS = [];
+let ALL_MENUS = { food: {}, drinks: [], snacks: {}, coffees: [] };
+let DB = { users: [], orders: [], menus: {} };
 
 let session = JSON.parse(sessionStorage.getItem('leoniSession') || 'null');
 let authMode = 'login';
 let authRole = 'employee';
 
+let empPlant = 'LTN3';
+let empCanteenId = 'LTN3-A';
+let empSelectedDay = 'Monday';
 let cart = [];
-let empSelectedDay = currentDayName();
-let empPlant = null;
-let empCanteenId = null;
 let deliverToOffice = false;
+let selectedPaymentMethod = 'badge';
 
-let canSelectedDay = currentDayName();
-let canCanteenId = null;
+// Custom Tunisian Plate Architect Selection Tracking
+let activeBuilderBase = null;
+let activeBuilderAddons = [];
 
-/* ------ NETWORK WRAPPER CONTROLLERS ------ */
-function showLoader(txt) {
-  document.getElementById('loaderText').textContent = txt || "Synchronizing data layers...";
-  document.getElementById('appLoader').classList.remove('hidden');
-}
-function hideLoader() {
-  document.getElementById('appLoader').classList.add('hidden');
-}
-
-/**
- * Optimistic Engine Interface Module
- * Pulls all synchronized data structures at once via custom Apps Script action grouping
- */
-async function syncDatabaseState() {
-  if (!API_URL || API_URL.includes("ABC123")) {
-    console.warn("Spreadsheet Endpoint token missing. Activating emergency local database engine mock values.");
-    loadMockSandboxEngine();
-    return;
-  }
-  
+/* ---------------- Asynchronous Bootstrapper Initialization ---------------- */
+async function init() {
   try {
-    showLoader("Pulling database sheets rows...");
-    const resp = await fetch(`${API_URL}?action=getAllTables`, {
-      method: "GET",
-      redirect: "follow"
-    });
-    const result = await resp.json();
-    if(result && result.status === "success") {
-      STATE.users = result.tables.users || [];
-      STATE.menus = result.tables.menus || [];
-      STATE.purchases = result.tables.purchases || [];
-      console.log("Database synchronization complete:", STATE);
+    showToast("Synchronizing system file registries...");
+    
+    // 1. Fetch dynamic workspace grid layout configuration
+    const canteensResponse = await fetch('./canteens.json');
+    const plantConfigData = await canteensResponse.json();
+    PLANTS = plantConfigData.map(p => ({
+      id: p.plantId,
+      name: p.plantName,
+      canteens: p.canteens.map(c => ({
+        id: c.id,
+        name: c.name,
+        type: c.type,
+        workingHours: c.workingHours,
+        deadlines: c.orderDeadlines,
+        officeDelivery: c.officeDelivery
+      }))
+    }));
+
+    // 2. Fetch seed worker profile registers
+    const usersResponse = await fetch('./user.json');
+    const defaultUsers = await usersResponse.json();
+
+    // 3. Parallel fetch catalog lists from individual item profiles
+    try {
+      const [fRes, dRes, sRes, cRes] = await Promise.all([
+        fetch('./food_menu.JSON').then(r => r.json()),
+        fetch('./drinks_menu.json').then(r => r.json()),
+        fetch('./snacks_menu.JSON').then(r => r.json()),
+        fetch('./coffees_menu.json').then(r => r.json())
+      ]);
+      ALL_MENUS.food = fRes;
+      ALL_MENUS.drinks = dRes.drinks || [];
+      ALL_MENUS.snacks = sRes;
+      ALL_MENUS.coffees = cRes.coffees || [];
+    } catch (menuErr) {
+      console.warn("Item profiles not found. Loading unified internal fallbacks...", menuErr);
+      loadCatalogFallbacks();
     }
-  } catch (err) {
-    console.error("Network IO initialization failure. Reverting to sandbox.", err);
-    loadMockSandboxEngine();
-  } finally {
-    hideLoader();
+
+    // 4. Mount database state engine
+    loadApplicationDatabase(defaultUsers);
+
+    // 5. Initialize layout pickers
+    populatePlantSelects();
+    setupCurrentDateContexts();
+
+    if (session) {
+      enterApp();
+    } else {
+      showAuth();
+    }
+  } catch (error) {
+    console.error("Critical boot exception encountered:", error);
+    showToast("Network Error: Loading internal failover memory bank...");
+    loadCompleteFailoverState();
   }
 }
 
-async function writeToSpreadsheetRow(sheetName, actionType, dataPayload) {
-  if (!API_URL || API_URL.includes("ABC123")) {
-    executeOptimisticFallback(sheetName, actionType, dataPayload);
-    return { status: "success", mock: true };
+function setupCurrentDateContexts() {
+  const today = currentDayName();
+  empSelectedDay = DAYS.slice(0,5).includes(today) ? today : 'Monday';
+}
+
+function currentDayName() {
+  return new Date().toLocaleDateString('en-US', { weekday: 'long' });
+}
+
+/* ---------------- Database Local Storage State Mapping ---------------- */
+function loadApplicationDatabase(defaultUsers) {
+  const localRaw = localStorage.getItem('leoni_db');
+  if (localRaw) {
+    DB = JSON.parse(localRaw);
+  } else {
+    DB = { users: [], orders: [], menus: {} };
   }
 
-  try {
-    showLoader("Writing entry into remote cell row...");
-    const payload = {
-      action: actionType,
-      sheet: sheetName,
-      rowData: dataPayload
-    };
+  // Synchronize dynamic personnel keys safely without modifying execution logs
+  defaultUsers.forEach(seedUser => {
+    const idx = DB.users.findIndex(u => u.email.toLowerCase() === seedUser.email.toLowerCase());
+    if (idx === -1) DB.users.push(seedUser);
+    else DB.users[idx] = { ...seedUser, ...DB.users[idx] };
+  });
 
-    const resp = await fetch(API_URL, {
-      method: "POST",
-      redirect: "follow",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+  // Hydrate empty inventory lines with item matrix mappings if not customized
+  PLANTS.forEach(p => {
+    if (!DB.menus[p.id]) DB.menus[p.id] = {};
+    p.canteens.forEach(c => {
+      if (!DB.menus[p.id][c.id]) {
+        DB.menus[p.id][c.id] = {};
+        DAYS.forEach(day => {
+          DB.menus[p.id][c.id][day] = generateCounterInventoryFromProfiles(c.id, day);
+        });
+      }
     });
-    return await resp.json();
-  } catch (err) {
-    console.warn("Pipeline redirection intercept active. Running local cache validation state optimization engine.", err);
-    executeOptimisticFallback(sheetName, actionType, dataPayload);
-    return { status: "success", mock: true };
-  } finally {
-    hideLoader();
-  }
+  });
+
+  saveDB(DB);
 }
 
-/* ------ FALLBACK DEVELOPMENT CONFIGURATIONS ------ */
-function loadMockSandboxEngine() {
-  if(STATE.users.length > 0) return; 
-  STATE.users = [
-    { id:'u1', role:'employee', firstName:'Ameur', lastName:'Ben Salah', email:'alice@leoni.com', password:'pass123', leoniId:'104521', position:'Automation Engineer', plant:'LTN3', canteenId:'LTN3-A', office:'Building A, Office 214' },
-    { id:'u2', role:'cantine', firstName:'Kitchen Counter A', lastName:'Staff', email:'cantine.ltn1@leoni.com', password:'pass123', plant:'LTN3', canteenId:'LTN3-A' }
-  ];
+function saveDB(dataState) {
+  localStorage.setItem('leoni_db', JSON.stringify(dataState));
+}
+
+/* ---------------- Inventory Profile Combination Factory ---------------- */
+function generateCounterInventoryFromProfiles(canteenId, day) {
+  let list = [];
   
-  // Construct a base menu profile array
-  const mockDishes = [
-    ['Couscous with lamb','Slow-cooked lamb couscous with seasonal vegetables', 9.0, 'main', false],
-    ['Tunisian Salad Row','Fresh dicing configuration parameters', 2.5, 'salad', false],
-    ['Mineral Water 0.5L','Refrigerated packs', 1.0, 'drink', false],
-    ['Espresso Shot','Premium Italian alignment variables', 1.2, 'coffee', false]
-  ];
+  // Inject standard sandwiches
+  if (ALL_MENUS.food?.sandwiches) {
+    ALL_MENUS.food.sandwiches.forEach((s, idx) => {
+      list.push({ id: `${canteenId}-${day}-snd-${idx}`, day, name: s.name, desc: 'Fresh preparation bread choice', price: s.price, category: 'main', offer: idx===0, available: true });
+    });
+  }
+
+  // Inject beverages
+  if (ALL_MENUS.drinks) {
+    ALL_MENUS.drinks.forEach((d, idx) => {
+      list.push({ id: `${canteenId}-${day}-drk-${idx}`, day, name: `${d.brand} ${d.name}`, desc: 'Chilled beverage unit', price: d.price, category: 'drink', offer: false, available: d.available });
+    });
+  }
+
+  // Inject hot items
+  if (ALL_MENUS.coffees) {
+    ALL_MENUS.coffees.forEach((c, idx) => {
+      list.push({ id: `${canteenId}-${day}-cof-${idx}`, day, name: c.name, desc: 'Hot espresso selection', price: c.price, category: 'coffee', offer: false, available: c.available });
+    });
+  }
+
+  // Inject matching snacks based on facility designations
+  if (canteenId === 'LTN3-A' && ALL_MENUS.snacks?.icecreams) {
+    ALL_MENUS.snacks.icecreams.forEach((i, idx) => {
+      list.push({ id: `${canteenId}-${day}-ice-${idx}`, day, name: `${i.brand} ${i.name}`, desc: 'Gourmet boutique treat', price: i.price, category: 'dessert', offer: true, available: true });
+    });
+  } else if (ALL_MENUS.snacks?.biscuits) {
+    ALL_MENUS.snacks.biscuits.forEach((b, idx) => {
+      list.push({ id: `${canteenId}-${day}-snk-${idx}`, day, name: `${b.brand} ${b.name}`, desc: 'Crunchy confectionery treat', price: b.price, category: 'snack', offer: false, available: true });
+    });
+  }
+
+  return list;
+}
+
+/* ---------------- Relational Selector Filtering ---------------- */
+function populatePlantSelects() {
+  const pSelect = document.getElementById('signupPlant');
+  const sCanteenSelect = document.getElementById('signupCantine');
+  if (!pSelect) return;
+
+  pSelect.innerHTML = '';
+  if (sCanteenSelect) sCanteenSelect.innerHTML = '';
 
   PLANTS.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id; opt.textContent = p.name;
+    pSelect.appendChild(opt);
+
     p.canteens.forEach(c => {
-      DAYS.slice(0,5).forEach(d => {
-        mockDishes.forEach((md, i) => {
-          STATE.menus.push({
-            id: `${c.id}-${d}-${i}`, plantId: p.id, canteenId: c.id, day: d, name: md[0], desc: md[1], price: md[2], category: md[3], offer: md[4], available: true
-          });
-        });
-        if(c.id === 'LTN3-A') {
-          STATE.menus.push({ id: `${c.id}-${d}-ice1`, plantId: p.id, canteenId: c.id, day: d, name: 'Artisanal Italian Gelato Cup', desc: 'Vanilla and chocolate formulation metrics', price: 4.5, category: 'dessert', offer: true, available: true });
-          STATE.menus.push({ id: `${c.id}-${d}-ice2`, plantId: p.id, canteenId: c.id, day: d, name: 'Boutique Ice Cream Multi-Pack', desc: 'Premium selection pack of 4 mini lines', price: 12.0, category: 'dessert', offer: false, available: true });
-        }
-      });
+      if (sCanteenSelect) {
+        const sOpt = document.createElement('option');
+        sOpt.value = `${p.id}|${c.id}`;
+        sOpt.textContent = `${p.id} · ${c.name}`;
+        sCanteenSelect.appendChild(sOpt);
+      }
     });
   });
-}
-
-function executeOptimisticFallback(sheetName, actionType, dataPayload) {
-  if(actionType === "insertRow") {
-    STATE[sheetName === "purchases" ? "purchases" : sheetName].push(dataPayload);
-  } else if (actionType === "updateRow") {
-    const targetArr = STATE[sheetName === "purchases" ? "purchases" : sheetName];
-    const idx = targetArr.findIndex(x => x.id === dataPayload.id);
-    if(idx !== -1) targetArr[idx] = Object.assign(targetArr[idx], dataPayload);
-  } else if (actionType === "deleteRow") {
-    STATE[sheetName] = STATE[sheetName].filter(x => x.id !== dataPayload.id);
-  }
-}
-
-/* ------ CORE APPLICATION INITIALIZATION AND LIFECYCLE CONTROLS ------ */
-async function init(){
-  populatePlantSelects();
-  await syncDatabaseState();
-  if(session){
-    enterApp();
-  } else {
-    showAuth();
-  }
-}
-
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2400);
-}
-
-function currentDayName(){
-  const d = new Date();
-  const idx = (d.getDay()+6)%7;
-  return DAYS[idx] === 'Saturday' || DAYS[idx] === 'Sunday' ? 'Monday' : DAYS[idx];
-}
-
-/* ------ SECURITY CONTROLLER AUTHENTICATION ENGINE ------ */
-function setAuthRole(role){
-  authRole = role;
-  document.getElementById('roleEmployeeBtn').classList.toggle('active', role==='employee');
-  document.getElementById('roleCantineBtn').classList.toggle('active', role==='cantine');
-  document.getElementById('employeeSignupFields').classList.toggle('hidden', role!=='employee');
-  document.getElementById('signupCantineField').classList.toggle('hidden', role!=='cantine');
-  document.getElementById('authError').classList.add('hidden');
-}
-
-function toggleAuthMode(){
-  authMode = authMode==='login' ? 'signup' : 'login';
-  const isSignup = authMode==='signup';
-  document.getElementById('loginFields').classList.toggle('hidden', isSignup);
-  document.getElementById('signupFields').classList.toggle('hidden', !isSignup);
-  document.getElementById('authTitle').textContent = isSignup ? 'Create account mapping' : 'Sign in';
-  document.getElementById('authSubmitBtn').textContent = isSignup ? 'Instantiate Data Row' : 'Sign in';
-  document.getElementById('authSwitchText').textContent = isSignup ? 'Registered cell already exists?' : 'New here?';
-  document.getElementById('authSwitchBtn').textContent = isSignup ? 'Sign in' : 'Create an account';
-  document.getElementById('authError').classList.add('hidden');
-  if(isSignup) { onSignupPlantChange(); }
-}
-
-function populatePlantSelects(){
-  const pSel = document.getElementById('signupPlant'); pSel.innerHTML = '';
-  PLANTS.forEach(p=>{
-    const opt = document.createElement('option'); opt.value = p.id; opt.textContent = p.name; pSel.appendChild(opt);
-  });
-  const cSel = document.getElementById('signupCantine'); cSel.innerHTML = '';
-  PLANTS.forEach(p=>{
-    p.canteens.forEach(c => {
-      const opt = document.createElement('option'); opt.value = `${p.id}|${c.id}`; opt.textContent = `${p.id} — ${c.name}`; cSel.appendChild(opt);
-    });
-  });
+  onSignupPlantChange();
 }
 
 function onSignupPlantChange() {
-  const pId = document.getElementById('signupPlant').value;
-  const empCSel = document.getElementById('signupEmployeeCanteen'); empCSel.innerHTML = '';
-  const plant = PLANTS.find(p => p.id === pId);
-  if(plant) {
-    plant.canteens.forEach(c => {
-      const opt = document.createElement('option'); opt.value = c.id; opt.textContent = c.name; empCSel.appendChild(opt);
+  const plantId = document.getElementById('signupPlant').value;
+  const canteenSelect = document.getElementById('signupEmployeeCanteen');
+  if (!canteenSelect) return;
+  canteenSelect.innerHTML = '';
+
+  const matched = PLANTS.find(p => p.id === plantId);
+  if (matched && matched.canteens) {
+    matched.canteens.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id; opt.textContent = c.name;
+      canteenSelect.appendChild(opt);
     });
   }
 }
 
-async function handleAuthSubmit(){
+/* ---------------- Authentication Access Logic ---------------- */
+function setAuthRole(role) {
+  authRole = role;
+  document.getElementById('roleEmployeeBtn').classList.toggle('active', role === 'employee');
+  document.getElementById('roleCantineBtn').classList.toggle('active', role === 'cantine');
+  document.getElementById('employeeSignupFields').classList.toggle('hidden', role !== 'employee');
+  document.getElementById('signupCantineField').classList.toggle('hidden', role !== 'cantine');
   document.getElementById('authError').classList.add('hidden');
-  if(authMode==='login'){
+}
+
+function toggleAuthMode() {
+  authMode = (authMode === 'login') ? 'signup' : 'login';
+  document.getElementById('authTitle').textContent = (authMode === 'login') ? 'Sign in' : 'Create Credentials';
+  document.getElementById('authSubtitle').textContent = (authMode === 'login') ? 'Access internal plant culinary counters and custom orders.' : 'Register corporate profile mapping inside the facility framework.';
+  document.getElementById('loginFields').classList.toggle('hidden', authMode !== 'login');
+  document.getElementById('signupFields').classList.toggle('hidden', authMode !== 'signup');
+  document.getElementById('authSwitchText').textContent = (authMode === 'login') ? 'New operative within the framework?' : 'Already hold credentials?';
+  document.getElementById('authSwitchBtn').textContent = (authMode === 'login') ? 'Register Profile' : 'Sign In';
+  document.getElementById('authError').classList.add('hidden');
+}
+
+function showAuthError(msg) {
+  const err = document.getElementById('authError');
+  err.textContent = msg; err.classList.remove('hidden');
+}
+
+function handleAuthSubmit() {
+  document.getElementById('authError').classList.add('hidden');
+  if (authMode === 'login') {
     const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const pwd = document.getElementById
+    const pass = document.getElementById('loginPassword').value;
+    if (!email || !pass) return showAuthError("Provide comprehensive matching authentication tokens.");
+    
+    const user = DB.users.find(u => u.email.toLowerCase() === email && u.password === pass);
+    if (!user) return showAuthError("Profile signature missing or password invalid.");
+    if (user.role !== authRole) return showAuthError(`Target token lacks authorized clearance permissions for: ${authRole.toUpperCase()}`);
+
+    session = { userId: user.id };
+    sessionStorage.setItem('leoniSession', JSON.stringify(session));
+    enterApp();
+  } else {
+    // Signup execution track
+    const first = document.getElementById('signupFirstName').value.trim();
+    const last = document.getElementById('signupLastName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+    const pwd = document.getElementById('signupPassword').value;
+
+    if (!first || !last || !email || !pwd) return showAuthError("All standard identity parameters are required.");
+    if (DB.users.find(u => u.email.toLowerCase() === email)) return showAuthError("Identity signature conflict. Token match discovered.");
+
+    let userObj;
+    if (authRole === 'employee') {
+      const lid = document.getElementById('signupLeoniId').value.trim();
+      const pos = document.getElementById('signupPosition').value.trim();
+      const off = document.getElementById('signupOffice').value.trim();
+      const plt = document.getElementById('signupPlant').value;
+      const cnt = document.getElementById('signupEmployeeCanteen').value;
+      if (!lid || !pos || !off) return showAuthError("Complete Leoni Corporate Serial ID and Office coordinates.");
+
+      userObj = { id: 'u_' + Date.now(), role: 'employee', firstName: first, lastName: last, email, password: pwd, leoniId: lid, position: pos, plant: plt, canteenId: cnt, office: off };
+    } else {
+      const composite = document.getElementById('signupCantine').value.split('|');
+      userObj = { id: 'u_' + Date.now(), role: 'cantine', firstName: first, lastName: last, email, password: pwd, plant: composite[0], canteenId: composite[1] };
+    }
+
+    DB.users.push(userObj); saveDB(DB);
+    session = { userId: userObj.id }; sessionStorage.setItem('leoniSession', JSON.stringify(session));
+    enterApp();
+  }
+}
+
+function enterApp() {
+  const user = DB.users.find(u => u.id === session.userId);
+  if (!user) return logout();
+  
+  document.getElementById('authPage').classList.add('hidden');
+  if (user.role === 'employee') {
+    document.getElementById('employeeApp').classList.remove('hidden');
+    document.getElementById('cantineApp').classList.add('hidden');
+    initEmployeeApp(user);
+  } else {
+    document.getElementById('cantineApp').classList.remove('hidden');
+    document.getElementById('employeeApp').classList.add('hidden');
+    initCantineApp(user);
+  }
+}
+
+function logout() {
+  session = null; sessionStorage.removeItem('leoniSession');
+  document.getElementById('employeeApp').classList.add('hidden');
+  document.getElementById('cantineApp').classList.add('hidden');
+  document.getElementById('authPage').classList.remove('hidden');
+}
+
+/* ---------------- Employee Hub Implementation ---------------- */
+function initEmployeeApp(user) {
+  empPlant = user.plant || 'LTN3';
+  empCanteenId = user.canteenId || 'LTN3-A';
+  cart = []; deliverToOffice = false;
+  document.getElementById('deliveryToggle').checked = false;
+  document.getElementById('officeFieldWrap').classList.add('hidden');
+  document.getElementById('officeOverride').value = user.office || '';
+
+  document.getElementById('empWho').textContent = `${user.firstName} ${user.lastName} [${user.position}]`;
+  document.getElementById('empGreeting').textContent = `Greetings, ${user.firstName}`;
+
+  // Populate structural dynamic workspace canteens mapping selector
+  const switcher = document.getElementById('empCanteenSwitcher');
+  switcher.innerHTML = '';
+  PLANTS.forEach(p => {
+    p.canteens.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = `${p.id}|${c.id}`;
+      opt.textContent = `${p.id} · ${c.name}`;
+      if (p.id === empPlant && c.id === empCanteenId) opt.selected = true;
+      switcher.appendChild(opt);
+    });
+  });
+
+  updateCanteenContextLayout();
+  buildTunisianPlateArchitectOptions();
+  switchEmpView('menu');
+}
+
+function onEmpCanteenSwitch() {
+  const [pId, cId] = document.getElementById('empCanteenSwitcher').value.split('|');
+  empPlant = pId; empCanteenId = cId;
+  cart = [];
+  updateCanteenContextLayout();
+  renderEmpCategories();
+  renderCart();
+}
+
+function updateCanteenContextLayout() {
+  const plantObj = PLANTS.find(p => p.id === empPlant);
+  const canteen = plantObj?.canteens.find(c => c.id === empCanteenId);
+  
+  document.getElementById('empCanteenContextLabel').textContent = `Active Canteen: ${empPlant} · Shifts: ${canteen?.workingHours || 'N/A'}`;
+  document.getElementById('ticketCanteenName').textContent = canteen ? canteen.name : 'Processing Hub';
+  
+  // Enforce structural restriction lines on office delivery permissions
+  const deliveryWrapper = document.getElementById('officeDeliveryWrapper');
+  if (canteen && canteen.officeDelivery === false) {
+    deliveryWrapper.classList.add('hidden');
+    deliverToOffice = false;
+    document.getElementById('deliveryToggle').checked = false;
+    document.getElementById('officeFieldWrap').classList.add('hidden');
+  } else {
+    deliveryWrapper.classList.remove('hidden');
+  }
+
+  // Hydrate calendar timelines dropdown nodes
+  const daySelect = document.getElementById('pickupDaySelect');
+  daySelect.innerHTML = '';
+  DAYS.slice(0,5).forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d; opt.textContent = d;
+    if (d === empSelectedDay) opt.selected = true;
+    daySelect.appendChild(opt);
+  });
+
+  renderEmpDayTabs();
+  populatePickupTimes();
+}
+
+function renderEmpDayTabs() {
+  const wrap = document.getElementById('empDayTabs'); wrap.innerHTML = '';
+  const currentToday = currentDayName();
+  const currentIdx = DAYS.indexOf(currentToday);
+
+  DAYS.slice(0,5).forEach((day, idx) => {
+    const tab = document.createElement('button');
+    const isPast = idx < currentIdx && currentIdx < 5;
+    tab.className = 'day-tab' + (day === empSelectedDay ? ' active' : '') + (isPast ? ' past' : '');
+    tab.innerHTML = `<span class="d">${day === currentToday ? 'Shift Today' : 'Scheduled'}</span>${day}`;
+    
+    if (!isPast) {
+      tab.onclick = () => {
+        empSelectedDay = day; document.getElementById('pickupDaySelect').value = day;
+        renderEmpDayTabs(); populatePickupTimes(); renderEmpCategories(); renderCart();
+      };
+    } else {
+      tab.disabled = true;
+    }
+    wrap.appendChild(tab);
+  });
+}
+
+/* ---------------- Custom Tunisian Plate Component Logic ---------------- */
+function buildTunisianPlateArchitectOptions() {
+  const baseWrap = document.getElementById('builderBases');
+  const addonWrap = document.getElementById('builderAddons');
+  baseWrap.innerHTML = ''; addonWrap.innerHTML = '';
+
+  activeBuilderBase = null; activeBuilderAddons = [];
+  document.getElementById('addBuiltPlateBtn').disabled = true;
+  document.getElementById('builderPlateName').textContent = "Construct Custom Mix Matrix";
+  document.getElementById('builderPlatePrice').textContent = "0.00 DT";
+
+  if (!ALL_MENUS.food?.daily_plate_bases) return;
+
+  // Render Bases
+  ALL_MENUS.food.daily_plate_bases.forEach(b => {
+    const pill = document.createElement('div');
+    pill.className = 'opt-pill';
+    pill.innerHTML = `${b.name} <span class="p-add">${b.price.toFixed(2)} DT</span>`;
+    pill.onclick = () => {
+      document.querySelectorAll('#builderBases .opt-pill').forEach(x => x.classList.remove('selected'));
+      pill.classList.add('selected');
+      activeBuilderBase = b;
+      recalculateCustomPlateBlueprint();
+    };
+    baseWrap.appendChild(pill);
+  });
+
+  // Render Addons
+  ALL_MENUS.food.daily_plate_addons.forEach(a => {
+    const pill = document.createElement('div');
+    pill.className = 'opt-pill';
+    pill.innerHTML = `${a.name} <span class="p-add">+${a.price.toFixed(2)} DT</span>`;
+    pill.onclick = () => {
+      pill.classList.toggle('selected');
+      const idx = activeBuilderAddons.findIndex(x => x.id === a.id);
+      if (idx > -1) activeBuilderAddons.splice(idx, 1);
+      else activeBuilderAddons.push(a);
+      recalculateCustomPlateBlueprint();
+    };
+    addonWrap.appendChild(pill);
+  });
+}
+
+function recalculateCustomPlateBlueprint() {
+  if (!activeBuilderBase) return;
+  let name = `Custom ${activeBuilderBase.name}`;
+  let cost = activeBuilderBase.price;
+
+  if (activeBuilderAddons.length > 0) {
+    const addonsText = activeBuilderAddons.map(x => x.name.split(' ')[0]).join(' & ');
+    name += ` with ${addonsText}`;
+    cost += activeBuilderAddons.reduce((acc, curr) => acc + curr.price, 0);
+  }
+
+  document.getElementById('builderPlateName').textContent = name;
+  document.getElementById('builderPlatePrice').textContent = cost.toFixed(2) + " DT";
+  document.getElementById('addBuiltPlateBtn').disabled = false;
+}
+
+function addCustomPlateToCart() {
+  if (!activeBuilderBase) return;
+  let finalName = `Custom ${activeBuilderBase.name}`;
+  let finalPrice = activeBuilderBase.price;
+  
+  if (activeBuilderAddons.length > 0) {
+    finalName += ` (${activeBuilderAddons.map(x => x.name).join(', ')})`;
+    finalPrice += activeBuilderAddons.reduce((acc, curr) => acc + curr.price, 0);
+  }
+
+  const customId = `custom-plate-${Date.now()}`;
+  cart.push({ refId: customId, name: finalName, price: finalPrice, qty: 1 });
+  
+  showToast("Custom Plate structural combination injected.");
+  buildTunisianPlateArchitectOptions(); // reset widget
+  renderCart();
+}
+
+/* ---------------- Render Food Catalog Grid ---------------- */
+function renderEmpCategories() {
+  const wrap = document.getElementById('empCategories'); wrap.innerHTML = '';
+  const items = (DB.menus[empPlant] && DB.menus[empPlant][empCanteenId] && DB.menus[empPlant][empCanteenId][empSelectedDay]) || [];
+
+  if (items.length === 0) {
+    wrap.innerHTML = `<div class="empty-state"><h3>Kitchen Inventory Unloaded</h3><p>No inventory registers mapped to ${empSelectedDay} for this counter.</p></div>`;
+    return;
+  }
+
+  const activeCatalog = items.filter(i => i.available);
+  CATEGORIES.forEach(cat => {
+    const group = activeCatalog.filter(i => i.category === cat.id);
+    if (group.length === 0) return;
+
+    const block = document.createElement('div');
+    block.className = 'category-block';
+    block.innerHTML = `
+      <div class="category-title">${cat.label} <span class="count">${group.length} Product Ledger Nodes</span><div class="category-line"></div></div>
+      <div class="item-grid"></div>
+    `;
+    const grid = block.querySelector('.item-grid');
+    group.forEach(item => grid.appendChild(buildItemCard(item)));
+    wrap.appendChild(block);
+  });
+}
+
+function buildItemCard(item) {
+  const card = document.createElement('div'); card.className = 'item-card';
+  const match = cart.find(c => c.refId === item.id);
+  const count = match ? match.qty : 0;
+
+  card.innerHTML = `
+    <div class="top-row">
+      <div>${item.offer ? '<span class="badge offer">Chef Special Shift Offer</span>' : ''}<h4>${item.name}</h4></div>
+      <span class="price">${item.price.toFixed(2)} DT</span>
+    </div>
+    <p class="desc">${item.desc || 'No descriptive compound attributes loaded.'}</p>
+    <div class="bottom-row" style="margin-top:12px;">
+      ${count > 0 ? `
+        <div class="qty-control">
+          <button onclick="alterCartQuantity('${item.id}', -1)">-</button>
+          <span class="qty">${count}</span>
+          <button onclick="alterCartQuantity('${item.id}', 1)">+</button>
+        </div>
+      ` : `
+        <button class="btn btn-outline btn-small" style="width:100%;" onclick="pushToCart('${item.id}')">Inject To Ticket</button>
+      `}
+    </div>
+  `;
+  return card;
+}
+
+/* ---------------- Cart Transaction Calculations ---------------- */
+function pushToCart(id) {
+  const items = DB.menus[empPlant][empCanteenId][empSelectedDay] || [];
+  const target = items.find(i => i.id === id);
+  if (!target) return;
+
+  cart.push({ refId: target.id, name: target.name, price: target.price, qty: 1 });
+  renderEmpCategories(); renderCart();
+}
+
+function alterCartQuantity(id, delta) {
+  const match = cart.find(c => c.refId === id);
+  if (!match) return;
+  match.qty += delta;
+  if (match.qty <= 0) cart = cart.filter(c => c.refId !== id);
+  renderEmpCategories(); renderCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(c => c.refId !== id);
+  renderEmpCategories(); renderCart();
+}
+
+function onDeliveryToggle() {
+  deliverToOffice = document.getElementById('deliveryToggle').checked;
+  document.getElementById('officeFieldWrap').classList.toggle('hidden', !deliverToOffice);
+  renderCart();
+}
+
+function populatePickupTimes() {
+  const dVal = document.getElementById('pickupDaySelect').value;
+  const tSelect = document.getElementById('pickupTimeSelect');
+  tSelect.innerHTML = '';
+
+  const plantObj = PLANTS.find(p => p.id === empPlant);
+  const canteen = plantObj?.canteens.find(c => c.id === empCanteenId);
+  
+  let startHour = 7; let endHour = 20;
+  if (canteen && canteen.workingHours) {
+    // Basic structural parsing for hours
+    try {
+      const parts = canteen.workingHours.split('-');
+      if(parts.length === 2) {
+        startHour = parseInt(parts[0].split(':')[0]);
+        endHour = parseInt(parts[1].split(':')[0]);
+      }
+    } catch(e) { console.error("Hours extraction anomaly:", e); }
+  }
+
+  // Standard engineering operational interval loops
+  for (let h = startHour; h < endHour; h++) {
+    ['00', '30'].forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = `${String(h).padStart(2,'0')}:${m}`;
+      opt.textContent = `${String(h).padStart(2,'0')}:${m} Slot`;
+      tSelect.appendChild(opt);
+    });
+  }
+}
+
+function onPickupDateChange() {
+  empSelectedDay = document.getElementById('pickupDaySelect').value;
+  renderEmpDayTabs(); renderEmpCategories(); renderCart();
+}
+
+function renderCart() {
+  const lineWrap = document.getElementById('cartLines'); lineWrap.innerHTML = '';
+  if (cart.length === 0) {
+    lineWrap.innerHTML = '<div class="cart-empty">Ticket empty. Queue payload structural allocations.</div>';
+  } else {
+    cart.forEach(c => {
+      const line = document.createElement('div'); line.className = 'cart-line';
+      line.innerHTML = `
+        <div class="name">${c.name} <small>${c.qty} unit payload matrices</small></div>
+        <div class="amt">${(c.price * c.qty).toFixed(2)} DT <button class="remove-x" onclick="removeFromCart('${c.refId}')">✖</button></div>
+      `;
+      lineWrap.appendChild(line);
+    });
+  }
+
+  const sub = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+  const finalTotal = sub + (deliverToOffice ? DELIVERY_FEE : 0);
+
+  document.getElementById('cartSubtotalRow').querySelector('.mono').textContent = sub.toFixed(2) + ' DT';
+  document.getElementById('cartDeliveryRow').classList.toggle('hidden', !deliverToOffice);
+  document.getElementById('cartTotal').textContent = finalTotal.toFixed(2) + ' DT';
+
+  // Smart validation checks on shift cut-off execution states
+  const tVal = document.getElementById('pickupTimeSelect').value;
+  const deadlineNote = document.getElementById('deadlineNote');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+
+  const plantObj = PLANTS.find(p => p.id === empPlant);
+  const canteen = plantObj?.canteens.find(c => c.id === empCanteenId);
+
+  if (cart.length === 0) {
+    checkoutBtn.disabled = true;
+    deadlineNote.textContent = "Pipeline empty.";
+    return;
+  }
+
+  if (canteen && canteen.deadlines && tVal) {
+    const hour = parseInt(tVal.split(':')[0]);
+    if (hour >= 12 && canteen.deadlines.lunch) {
+      deadlineNote.innerHTML = `⚠️ Lunch Cut-Off Constraint Check: Required before ${canteen.deadlines.lunch}`;
+    } else if (hour >= 18 && canteen.deadlines.dinner) {
+      deadlineNote.innerHTML = `⚠️ Dinner Cut-Off Constraint Check: Required before ${canteen.deadlines.dinner}`;
+    } else {
+      deadlineNote.innerHTML = `✅ Structure validated for dispatch matrix.`;
+    }
+  } else {
+    deadlineNote.innerHTML = `✅ Pipeline clearance authorized.`;
+  }
+
+  checkoutBtn.disabled = false;
+}
+
+/* ---------------- Transaction Modal Authorization ---------------- */
+function openCheckout() {
+  const sub = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+  const finalTotal = sub + (deliverToOffice ? DELIVERY_FEE : 0);
+  const targetDay = document.getElementById('pickupDaySelect').value;
+  const targetTime = document.getElementById('pickupTimeSelect').value;
+
+  const plantObj = PLANTS.find(p => p.id === empPlant);
+  const canteenObj = plantObj?.canteens.find(c => c.id === empCanteenId);
+
+  const summary = document.getElementById('checkoutSummary');
+  summary.innerHTML = `
+    <b>Fulfillment Center Node:</b> ${empPlant} · ${canteenObj ? canteenObj.name : 'Main Kitchen'}<br>
+    <b>Temporal Interval Schedule:</b> ${targetDay} @ ${targetTime}<br>
+    <b>Logistics Parameter:</b> ${deliverToOffice ? 'Direct Office Pipeline' : 'Counter Collection Protocol'}<br>
+    <div style="margin-top:8px; border-top:1px solid var(--line); padding-top:8px;">
+      ${cart.map(c => `• ${c.qty} × ${c.name} — ${(c.price * c.qty).toFixed(2)} DT`).join('<br>')}
+    </div>
+    <div style="margin-top:6px; font-weight:800; font-family:'Space Mono'; color:var(--blue);">Aggregate Liability: ${finalTotal.toFixed(2)} DT</div>
+  `;
+  document.getElementById('checkoutModal').classList.remove('hidden');
+}
+
+function setPaymentMethod(method) {
+  selectedPaymentMethod = method;
+  document.getElementById('payCardBadge').classList.toggle('selected', method === 'badge');
+  document.getElementById('payCardCash').classList.toggle('selected', method === 'cash');
+}
+
+function confirmOrderPlacement() {
+  const user = DB.users.find(u => u.id === session.userId);
+  const targetDay = document.getElementById('pickupDaySelect').value;
+  const targetTime = document.getElementById('pickupTimeSelect').value;
+  const sub = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+  const finalTotal = sub + (deliverToOffice ? DELIVERY_FEE : 0);
+
+  const newOrderNum = Math.floor(1000 + Math.random() * 9000);
+  const plantObj = PLANTS.find(p => p.id === empPlant);
+  const canteenObj = plantObj?.canteens.find(c => c.id === empCanteenId);
+
+  const orderPayload = {
+    id: 'ord_' + Date.now(),
+    orderNumber: newOrderNum,
+    employeeId: user.id,
+    employeeName: `${user.firstName} ${user.lastName}`,
+    plant: empPlant,
+    canteenId: empCanteenId,
+    canteenName: canteenObj ? canteenObj.name : 'Facility Kitchen',
+    day: targetDay,
+    pickupAt: targetTime,
+    items: [...cart],
+    delivery: deliverToOffice,
+    deliveryOffice: deliverToOffice ? document.getElementById('officeOverride').value : '',
+    total: finalTotal,
+    status: 'pending',
+    paymentToken: selectedPaymentMethod,
+    placedAt: new Date().toISOString()
+  };
+
+  DB.orders.push(orderPayload); saveDB(DB);
+  closeModal('checkoutModal');
+
+  // Trigger modal display receipt
+  document.getElementById('confirmOrderNumber').textContent = `#${newOrderNum}`;
+  document.getElementById('confirmOrderDetails').innerHTML = `
+    <b>Recipient Terminal:</b> ${orderPayload.employeeName}<br>
+    <b>Items Liquidated:</b> ${orderPayload.items.map(i => `${i.qty}× ${i.name}`).join(', ')}<br>
+    <b>Financial Footprint:</b> ${orderPayload.total.toFixed(2)} DT via ${selectedPaymentMethod.toUpperCase()}
+  `;
+  document.getElementById('confirmModal').classList.remove('hidden');
+  
+  cart = []; renderEmpCategories(); renderCart();
+}
+
+function renderEmpOrders() {
+  const user = DB.users.find(u => u.id === session.userId);
+  const list = document.getElementById('empOrdersList');
+  const trackingArr = DB.orders.filter(o => o.employeeId === user.id).sort((a,b) => new Date(b.placedAt) - new Date(a.placedAt));
+
+  if (trackingArr.length === 0) {
+    list.innerHTML = '<div class="empty-state"><h3>Audit Trail Empty</h3><p>No logged historical transactions found under this security signature.</p></div>';
+    return;
+  }
+
+  list.innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Order Token ID</th><th>Kitchen Center</th><th>Temporal Target</th><th>Items Compiled</th><th>Logistics Status</th><th>Total Valuation</th><th>Fulfillment State</th></tr>
+        </thead>
+        <tbody>
+          ${trackingArr.map(o => `
+            <tr>
+              <td><span class="order-num-pill">#${o.orderNumber}</span></td>
+              <td>${o.canteenName}</td>
+              <td>${o.day} @ ${o.pickupAt}</td>
+              <td>${o.items.map(i => `${i.qty}× ${i.name}`).join(', ')}</td>
+              <td>${o.delivery ? 'Office Logistics Vector' : 'Counter Pickup'}</td>
+              <td class="mono" style="font-weight:700;">${o.total.toFixed(2)} DT</td>
+              <td><span class="status-pill status-${o.status}">${o.status}</span></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function switchEmpView(target) {
+  document.getElementById('empMenuView').classList.toggle('hidden', target !== 'menu');
+  document.getElementById('empOrdersView').classList.toggle('hidden', target !== 'orders');
+  document.getElementById('navEmpMenu').classList.toggle('active', target === 'menu');
+  document.getElementById('navEmpOrders').classList.toggle('active', target === 'orders');
+  if (target === 'orders') renderEmpOrders();
+}
+
+/* ---------------- Kitchen Control Dashboard Implementation ---------------- */
+let canSelectedDay = 'Monday';
+let canCanteenId = null;
+
+function initCantineApp(user) {
+  canCanteenId = user.canteenId;
+  const plantObj = PLANTS.find(p => p.id === user.plant);
+  const canteenObj = plantObj?.canteens.find(c => c.id === canCanteenId);
+  
+  document.getElementById('canPlantLabel').textContent = `${user.plant} Assets Configured Node · ${canteenObj ? canteenObj.name : 'Main Terminal'}`;
+  document.getElementById('canWho').textContent = `Staff Operator Account: ${user.firstName}`;
+  
+  const shiftedToday = currentDayName();
+  canSelectedDay = DAYS.slice(0,5).includes(shiftedToday) ? shiftedToday : 'Monday';
+
+  renderCanDayTabs(); renderCanMenuList(); renderCantineOrdersQueue();
+  switchCantineView('menu');
+}
+
+function renderCanDayTabs() {
+  const wrap = document.getElementById('canDayTabs'); wrap.innerHTML = '';
+  DAYS.slice(0,5).forEach(day => {
+    const tab = document.createElement('button');
+    tab.className = 'day-tab' + (day === canSelectedDay ? ' active' : '');
+    tab.innerHTML = `<span class="d">Operational Matrix</span>${day}`;
+    tab.onclick = () => {
+      canSelectedDay = day; renderCanDayTabs(); renderCanMenuList();
+    };
+    wrap.appendChild(tab);
+  });
+}
+
+function renderCanMenuList() {
+  const user = DB.users.find(u => u.id === session.userId);
+  const wrap = document.getElementById('canMenuList'); wrap.innerHTML = '';
+  const lines = DB.menus[user.plant][canCanteenId][canSelectedDay] || [];
+
+  if (lines.length === 0) {
+    wrap.innerHTML = '<div class="empty-state"><h3>No Catalog Logs Registered</h3><p>Inject fresh functional nodes using the control panel action.</p></div>';
+    return;
+  }
+
+  lines.forEach(item => {
+    const row = document.createElement('div'); row.className = 'menu-item-row';
+    row.innerHTML = `
+      <div class="mi-info">
+        <h4>${item.name} ${item.offer ? '<span class="badge offer" style="margin-left:6px;">Special</span>' : ''}</h4>
+        <p>${item.desc || 'No nutritional attributes specified.'} · <span class="mono" style="color:var(--blue); font-weight:600;">${item.category.toUpperCase()}</span></p>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div class="mi-price">${item.price.toFixed(2)} DT</div>
+        <button class="btn btn-outline btn-small" onclick="editMenuItem('${item.id}')">Modify</button>
+        <button class="btn ${item.available ? 'btn-ghost' : 'btn-danger'} btn-small" onclick="toggleItemAvailability('${item.id}')">
+          ${item.available ? 'Active Status' : 'Deactivated'}
+        </button>
+      </div>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+function toggleItemAvailability(id) {
+  const user = DB.users.find(u => u.id === session.userId);
+  const list = DB.menus[user.plant][canCanteenId][canSelectedDay] || [];
+  const target = list.find(i => i.id === id);
+  if (!target) return;
+
+  target.available = !target.available; saveDB(DB);
+  renderCanMenuList(); showToast("Visibility constraint status switched successfully.");
+}
+
+function openItemModal() {
+  document.getElementById('itemModalTitle').textContent = 'Inject Fresh Product Node';
+  document.getElementById('itemEditId').value = '';
+  document.getElementById('itemDay').value = canSelectedDay;
+  document.getElementById('itemName').value = '';
+  document.getElementById('itemDesc').value = '';
+  document.getElementById('itemPrice').value = '';
+  document.getElementById('itemCategory').value = 'main';
+  document.getElementById('itemOffer').checked = false;
+  document.getElementById('itemAvailable').checked = true;
+  document.getElementById('itemModal').classList.remove('hidden');
+}
+
+function editMenuItem(id) {
+  const user = DB.users.find(u => u.id === session.userId);
+  const target = DB.menus[user.plant][canCanteenId][canSelectedDay].find(i => i.id === id);
+  if (!target) return;
+
+  document.getElementById('itemModalTitle').textContent = 'Modify Product Matrix Attribute';
+  document.getElementById('itemEditId').value = target.id;
+  document.getElementById('itemDay').value = target.day;
+  document.getElementById('itemName').value = target.name;
+  document.getElementById('itemDesc').value = target.desc || '';
+  document.getElementById('itemPrice').value = target.price;
+  document.getElementById('itemCategory').value = target.category;
+  document.getElementById('itemOffer').checked = target.offer || false;
+  document.getElementById('itemAvailable').checked = target.available;
+  document.getElementById('itemModal').classList.remove('hidden');
+}
+
+function saveMenuItem() {
+  const user = DB.users.find(u => u.id === session.userId);
+  const id = document.getElementById('itemEditId').value;
+  const targetDay = document.getElementById('itemDay').value;
+  const name = document.getElementById('itemName').value.trim();
+  const desc = document.getElementById('itemDesc').value.trim();
+  const price = parseFloat(document.getElementById('itemPrice').value);
+  const cat = document.getElementById('itemCategory').value;
+  const offer = document.getElementById('itemOffer').checked;
+  const available = document.getElementById('itemAvailable').checked;
+
+  if (!name || isNaN(price)) return showToast("Complete tracking configurations with valid scalar data.");
+
+  if (id) {
+    // Modify track
+    const match = DB.menus[user.plant][canCanteenId][targetDay].find(i => i.id === id);
+    if (match) Object.assign(match, { name, desc, price, category: cat, offer, available });
+  } else {
+    // Append track
+    const freshNode = { id: 'item_' + Date.now(), day: targetDay, name, desc, price, category: cat, offer, available };
+    DB.menus[user.plant][canCanteenId][targetDay].push(freshNode);
+  }
+
+  saveDB(DB); closeModal('itemModal'); renderCanMenuList();
+  showToast("Inventory state successfully written to storage.");
+}
+
+/* ---------------- Pipeline Control Status Machine Routing ---------------- */
+function renderCantineOrdersQueue() {
+  const user = DB.users.find(u => u.id === session.userId);
+  const tbody = document.getElementById('canOrdersTableBody'); tbody.innerHTML = '';
+  
+  const filterQueue = DB.orders.filter(o => o.plant === user.plant && o.canteenId === canCanteenId)
+                                .sort((a,b) => new Date(b.placedAt) - new Date(a.placedAt));
+
+  if (filterQueue.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" class="empty-state">Fulfillment pipeline clear. No queued actions detected.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filterQueue.map(o => `
+    <tr>
+      <td><span class="order-num-pill">#${o.orderNumber}</span></td>
+      <td style="font-weight:600;">${o.employeeName}</td>
+      <td>${o.day}</td>
+      <td class="mono" style="font-weight:600; color:var(--blue);">${o.pickupAt}</td>
+      <td>${o.items.map(i => `${i.qty}× ${i.name}`).join(', ')}</td>
+      <td>${o.delivery ? `<span style="color:var(--orange); font-weight:600;">Station:</span> ${o.deliveryOffice}` : 'Counter Pickup'}</td>
+      <td class="mono" style="font-weight:700; color:var(--blue);">${o.total.toFixed(2)} DT</td>
+      <td><span class="status-pill status-${o.status}">${o.status.toUpperCase()}</span></td>
+      <td>
+        ${o.status !== 'completed' && o.status !== 'cancelled' ? `
+          <button class="btn btn-outline btn-small" onclick="advanceOrderStatusPipeline('${o.id}')">Advance State ➔ ${NEXT_STATUS[o.status].toUpperCase()}</button>
+        ` : '—'}
+        ${o.status === 'pending' ? `
+          <button class="btn btn-danger btn-small" onclick="cancelOrderFromPipeline('${o.id}')">Void</button>
+        ` : ''}
+      </td>
+    </tr>
+  `).join('');
+}
+
+function advanceOrderStatusPipeline(id) {
+  const targetOrder = DB.orders.find(o => o.id === id);
+  if (!targetOrder) return;
+  
+  targetOrder.status = NEXT_STATUS[targetOrder.status] || targetOrder.status;
+  saveDB(DB); renderCantineOrdersQueue();
+  showToast(`Order payload state moved forward.`);
+}
+
+function cancelOrderFromPipeline(id) {
+  const targetOrder = DB.orders.find(o => o.id === id);
+  if (!targetOrder) return;
+
+  targetOrder.status = 'cancelled'; saveDB(DB); renderCantineOrdersQueue();
+  showToast("Order entry void signature recorded.");
+}
+
+function switchCantineView(target) {
+  document.getElementById('canMenuView').classList.toggle('hidden', target !== 'menu');
+  document.getElementById('canOrdersView').classList.toggle('hidden', target !== 'orders');
+  document.getElementById('navCanMenu').classList.toggle('active', target === 'menu');
+  document.getElementById('navCanOrders').classList.toggle('active', target === 'orders');
+  if (target === 'orders') renderCantineOrdersQueue();
+}
+
+/* ---------------- Helper Window Methods ---------------- */
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+function showToast(msg) {
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ---------------- Failover Resilient Catalog Core Fallbacks ---------------- */
+function loadCatalogFallbacks() {
+  ALL_MENUS.food = {
+    sandwiches: [
+      { id: "snd_01", name: "Chapatie El Mahdia", price: 4.50 },
+      { id: "snd_02", name: "Makloub Escalope", price: 5.50 },
+      { id: "snd_03", name: "Kafteji Sandwich", price: 3.50 }
+    ],
+    daily_plate_bases: [
+      { id: "base_01", name: "Couscous Base", price: 4.50 },
+      { id: "base_02", name: "Pasta Base (Macarouna)", price: 4.00 },
+      { id: "base_03", name: "Riz Djerbien Base", price: 4.50 }
+    ],
+    daily_plate_addons: [
+      { id: "add_poisson", name: "Poisson (Fish)", price: 5.50 },
+      { id: "add_escalope", name: "Escalope de Poulet", price: 4.00 },
+      { id: "add_merguez", name: "Merguez Toppings", price: 3.50 },
+      { id: "add_oeuf", name: "Oeuf (Boiled Egg)", price: 1.00 }
+    ]
+  };
+  ALL_MENUS.drinks = [
+    { id: "drk_01", brand: "Coca-Cola", name: "Can 330ml", price: 2.20, available: true },
+    { id: "drk_02", brand: "Boga", name: "Cidre Can 330ml", price: 2.00, available: true },
+    { id: "drk_03", brand: "Safia", name: "Eau Minérale 500ml", price: 0.80, available: true }
+  ];
+  ALL_MENUS.coffees = [
+    { id: "cof_01", name: "Express / Capucin", price: 1.80, available: true },
+    { id: "cof_02", name: "Café au Lait", price: 2.00, available: true }
+  ];
+}
+
+function loadCompleteFailoverState() {
+  PLANTS = [
+    { id: 'LTN1', name: 'LTN1 — Mateur Plant 1', canteens: [{ id: 'LTN1-Main', name: 'Building A Main Canteen', type: 'Standard Hot Plates', workingHours: '07:00-19:00', officeDelivery: true }] },
+    { id: 'LTN3', name: 'LTN3 — Mateur Plant 3', canteens: [{ id: 'LTN3-A', name: 'Cantine A (Boutique & Ice Creams)', type: 'Snack Bar', workingHours: '06:00-22:00', officeDelivery: true }, { id: 'LTN3-B', name: 'Cantine B (Standard Hot Plates)', type: 'Main Hall', workingHours: '11:30-21:00', officeDelivery: false }] }
+  ];
+  loadCatalogFallbacks();
+  loadApplicationDatabase([
+    { id: "u_default_1", role: "employee", firstName: "Ameur", lastName: "Ben Salah", email: "ameur.worker@leoni.com", password: "password123", leoniId: "104521", position: "Automation Engineer", plant: "LTN3", canteenId: "LTN3-A", office: "Building A, Office 214" },
+    { id: "u_staff_1", role: "cantine", firstName: "Kitchen", lastName: "Manager", email: "cantine.ltn3@leoni.com", password: "canteenstaff1", plant: "LTN3", canteenId: "LTN3-A" }
+  ]);
+  populatePlantSelects(); setupCurrentDateContexts();
+  if (session) enterApp(); else showAuth();
+}
+
+// Attach Event Hook to Runtime Window Thread Loop
+window.onload = init;
+</script>
+</body>
+</html>
