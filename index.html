@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leoni Cantine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAF8;
+    --paper:#FFFFFF;
+    --ink:#22272E;
+    --muted:#8A9099;
+    --line:#EAEBE8;
+    --orange:#FF6A13;
+    --orange-soft:#FFEDE0;
+    --blue:#1E4E8C;
+    --blue-soft:#E7EFF8;
+    --green-soft:#E6F2E6;
+    --green:#3F7D44;
+    --radius:12px;
+    --shadow: 0 2px 14px rgba(34,39,46,0.05);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.45;
+  }
+  h1,h2,h3,h4{font-weight:700; letter-spacing:-0.01em; color:var(--ink);}
+  .mono{font-family:'Space Mono', monospace;}
+  .hidden{display:none !important;}
+  button{font-family:inherit; cursor:pointer;}
+  a{color:inherit;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:50;
+  }
+  .brand{
+    display:flex; align-items:center; gap:8px;
+    font-weight:800; font-size:1.15rem; letter-spacing:-0.01em;
+  }
+  .brand .dot{
+    width:10px; height:10px; border-radius:50%;
+    background: var(--orange);
+    display:inline-block;
+  }
+  .brand .tag{
+    font-family:'Space Mono', monospace; font-size:0.6rem; font-weight:700;
+    color:var(--blue); border:1px solid var(--blue-soft); background:var(--blue-soft);
+    padding:3px 7px; border-radius:6px; letter-spacing:0.06em; margin-left:4px;
+  }
+  .topbar-right{display:flex; align-items:center; gap:14px; font-size:0.88rem;}
+  .topbar-right .who{color:var(--muted); font-size:0.82rem;}
+  .btn{
+    border:none; border-radius:9px; padding:10px 18px;
+    font-weight:600; font-size:0.9rem;
+    transition: transform .12s ease, box-shadow .12s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--orange); color:#fff;}
+  .btn-primary:hover{background:#E65E0E;}
+  .btn-ghost{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--muted);}
+  .btn-outline{background:var(--paper); color:var(--ink); border:1.5px solid var(--line);}
+  .btn-outline:hover{border-color:var(--blue);}
+  .btn-small{padding:6px 12px; font-size:0.8rem; border-radius:8px;}
+  .btn-danger{background:#fff; color:#B23A2E; border:1.5px solid #F1D8D2;}
+  .btn-danger:hover{background:#FBEAE6;}
+  .btn:disabled{opacity:0.4; cursor:not-allowed;}
+
+  /* ---------- Layout ---------- */
+  .page{max-width:1180px; margin:0 auto; padding:28px 24px 80px;}
+  .auth-page{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    background: var(--bg);
+    padding:24px;
+  }
+
+  /* ---------- Auth card ---------- */
+  .auth-card{
+    background:var(--paper); border-radius:16px; padding:36px;
+    width:100%; max-width:460px;
+    border:1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+  .auth-header{margin-bottom:22px;}
+  .auth-header .eyebrow{
+    font-family:'Space Mono', monospace; font-size:0.66rem; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--orange); font-weight:700; margin-bottom:8px;
+  }
+  .auth-header h1{font-size:1.7rem; margin-bottom:4px;}
+  .auth-header p{color:var(--muted); font-size:0.9rem;}
+
+  .role-toggle{
+    display:flex; background:var(--bg); border-radius:10px; padding:4px;
+    margin-bottom:20px; border:1px solid var(--line);
+  }
+  .role-toggle button{
+    flex:1; border:none; background:transparent; padding:9px 8px;
+    border-radius:8px; font-weight:700; font-size:0.83rem; color:var(--muted);
+    transition: all .15s ease;
+  }
+  .role-toggle button.active{background:var(--blue); color:#fff;}
+
+  .field{margin-bottom:13px;}
+  .field label{
+    display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px;
+    color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;
+  }
+  .field input, .field select{
+    width:100%; padding:11px 13px; border-radius:9px;
+    border:1.5px solid var(--line); font-size:0.92rem;
+    font-family:inherit; background:var(--bg); color:var(--ink);
+    transition: border-color .15s ease;
+  }
+  .field input:focus, .field select:focus{outline:none; border-color:var(--blue); background:var(--paper);}
+  .field-grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+
+  .auth-actions{margin-top:18px; display:flex; flex-direction:column; gap:10px;}
+  .auth-switch{margin-top:16px; text-align:center; font-size:0.84rem; color:var(--muted);}
+  .auth-switch button{background:none; border:none; color:var(--orange); font-weight:700; padding:0;}
+  .auth-error{
+    background:#FBEAE6; color:#B23A2E; padding:10px 14px; border-radius:8px;
+    font-size:0.84rem; margin-bottom:12px;
+  }
+  .auth-hint{
+    margin-top:16px; padding:12px 14px; background:var(--bg); border-radius:9px;
+    font-size:0.76rem; color:var(--muted); line-height:1.5; border:1px solid var(--line);
+  }
+  .auth-hint b{color:var(--ink);}
+
+  /* ---------- Section headers ---------- */
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:18px; gap:16px; flex-wrap:wrap;
+  }
+  .section-head h2{font-size:1.35rem;}
+  .eyebrow-label{
+    font-family:'Space Mono', monospace; font-size:0.66rem; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--orange); font-weight:700; margin-bottom:4px;
+  }
+
+  /* ---------- Day tabs ---------- */
+  .day-tabs{
+    display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; margin-bottom:20px;
+    -ms-overflow-style:none; scrollbar-width:none;
+  }
+  .day-tabs::-webkit-scrollbar{display:none;}
+  .day-tab{
+    flex:0 0 auto; background:var(--paper); border:1.5px solid var(--line);
+    border-radius:24px; padding:9px 16px; font-weight:600; font-size:0.83rem;
+    color:var(--muted); transition:all .15s ease; white-space:nowrap;
+  }
+  .day-tab .d{display:block; font-size:0.64rem; font-family:'Space Mono',monospace; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; opacity:0.7;}
+  .day-tab.active{background:var(--blue); color:#fff; border-color:var(--blue);}
+  .day-tab.past{opacity:0.35; cursor:not-allowed;}
+
+  /* ---------- Boutique categories ---------- */
+  .menu-layout{display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;}
+  @media (max-width:920px){ .menu-layout{grid-template-columns:1fr;} }
+
+  .category-block{margin-bottom:28px;}
+  .category-title{
+    display:flex; align-items:center; gap:10px; margin-bottom:12px;
+    font-size:0.95rem; font-weight:700; color:var(--ink);
+  }
+  .category-title .count{
+    font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); font-weight:400;
+  }
+  .category-line{flex:1; height:1px; background:var(--line);}
+
+  .item-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:12px;}
+  .item-card{
+    background:var(--paper); border:1.5px solid var(--line); border-radius:var(--radius);
+    padding:14px; display:flex; flex-direction:column; gap:6px;
+    transition: border-color .15s ease;
+  }
+  .item-card:hover{border-color:#D9DCD6;}
+  .item-card .top-row{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+  .item-card h4{font-size:0.95rem; line-height:1.25; font-weight:600;}
+  .item-card .desc{font-size:0.8rem; color:var(--muted); line-height:1.4; flex:1;}
+  .item-card .price{font-family:'Space Mono', monospace; font-weight:700; color:var(--blue); font-size:0.9rem;}
+  .badge{
+    font-family:'Space Mono', monospace; font-size:0.6rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.07em; padding:3px 7px; border-radius:6px;
+    white-space:nowrap;
+  }
+  .badge.offer{background:var(--orange-soft); color:var(--orange);}
+  .badge.pack{background:var(--blue-soft); color:var(--blue);}
+  .badge.out{background:var(--line); color:var(--muted);}
+  .item-card .bottom-row{display:flex; justify-content:space-between; align-items:center; margin-top:auto;}
+  .qty-control{display:flex; align-items:center; gap:8px;}
+  .qty-control button{
+    width:28px; height:28px; border-radius:7px; border:1.5px solid var(--line);
+    background:var(--bg); font-size:1rem; font-weight:700; line-height:1; color:var(--ink);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .qty-control button:hover{border-color:var(--blue);}
+  .qty-control .qty{min-width:16px; text-align:center; font-weight:700; font-family:'Space Mono',monospace; font-size:0.85rem;}
+  .add-btn{
+    background:var(--blue); color:#fff; border:none; border-radius:7px;
+    padding:7px 13px; font-weight:600; font-size:0.78rem;
+  }
+  .add-btn:hover{background:#173e6e;}
+
+  /* ---------- Cart / ticket ---------- */
+  .ticket{
+    background:var(--paper); border-radius:var(--radius);
+    border:1.5px solid var(--line);
+    padding:20px;
+    position:sticky; top:90px;
+  }
+  .ticket h3{font-size:1rem; margin-bottom:2px;}
+  .ticket .ticket-sub{font-size:0.78rem; color:var(--muted); margin-bottom:14px;}
+  .cart-line{
+    display:flex; justify-content:space-between; gap:10px; font-size:0.86rem; margin-bottom:10px;
+    align-items:flex-start;
+  }
+  .cart-line .name{flex:1;}
+  .cart-line .name small{display:block; color:var(--muted); font-size:0.72rem;}
+  .cart-line .amt{font-family:'Space Mono',monospace; font-weight:700; white-space:nowrap; text-align:right;}
+  .cart-empty{font-size:0.84rem; color:var(--muted); padding:8px 0;}
+  .cart-divider{border-top:1px solid var(--line); margin:14px 0;}
+  .cart-row{display:flex; justify-content:space-between; font-size:0.86rem; margin-bottom:6px; color:var(--muted);}
+  .cart-total{
+    display:flex; justify-content:space-between; font-weight:800; font-size:1.05rem;
+    padding-top:10px; font-family:'Space Mono',monospace;
+  }
+
+  .remove-x{background:none; border:none; color:var(--orange); font-size:0.72rem; font-weight:700; padding:0 0 0 8px;}
+
+  .pickup-box{margin-top:16px;}
+  .pickup-box label{display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;}
+  .pickup-row{display:flex; flex-direction:column; gap:8px;}
+  .pickup-row select{width:100%; padding:10px; border-radius:9px; border:1.5px solid var(--line); background:var(--bg); font-family:inherit; color:var(--ink);}
+  .deadline-note{
+    font-size:0.76rem; color:var(--muted); margin-top:8px; font-weight:500;
+    display:flex; gap:6px; align-items:flex-start;
+  }
+  .deadline-note.warn{color:var(--orange);}
+
+  .delivery-toggle{
+    margin-top:14px; display:flex; align-items:center; justify-content:space-between;
+    padding:10px 12px; border:1.5px solid var(--line); border-radius:9px; background:var(--bg);
+  }
+  .delivery-toggle label{font-size:0.85rem; font-weight:600; cursor:pointer;}
+  .delivery-toggle .fee{font-size:0.76rem; color:var(--muted); font-family:'Space Mono',monospace;}
+  .switch{position:relative; width:38px; height:22px; flex-shrink:0;}
+  .switch input{opacity:0; width:0; height:0;}
+  .switch .slider{
+    position:absolute; cursor:pointer; inset:0; background:var(--line); border-radius:22px; transition:.2s;
+  }
+  .switch .slider::before{
+    content:""; position:absolute; height:16px; width:16px; left:3px; bottom:3px;
+    background:#fff; border-radius:50%; transition:.2s;
+  }
+  .switch input:checked + .slider{background:var(--blue);}
+  .switch input:checked + .slider::before{transform:translateX(16px);}
+
+  .office-field{margin-top:10px;}
+  .office-field input{
+    width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line);
+    background:var(--bg); font-family:inherit; font-size:0.86rem; color:var(--ink);
+  }
+  .office-field input:focus{outline:none; border-color:var(--blue); background:var(--paper);}
+
+  /* ---------- Tables ---------- */
+  .table-wrap{background:var(--paper); border-radius:var(--radius); border:1.5px solid var(--line); overflow:hidden;}
+  table{width:100%; border-collapse:collapse; font-size:0.86rem;}
+  th, td{padding:11px 16px; text-align:left; border-bottom:1px solid var(--line);}
+  th{font-family:'Space Mono',monospace; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:700; background:var(--bg);}
+  tr:last-child td{border-bottom:none;}
+  .status-pill{
+    font-family:'Space Mono',monospace; font-size:0.64rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.06em; padding:4px 9px; border-radius:20px; display:inline-block;
+  }
+  .status-pending{background:var(--orange-soft); color:var(--orange);}
+  .status-confirmed{background:var(--blue-soft); color:var(--blue);}
+  .status-ready{background:var(--green-soft); color:var(--green);}
+  .status-completed{background:var(--line); color:var(--muted);}
+  .status-cancelled{background:#F6D8D2; color:#a33;}
+
+  /* ---------- Panels ---------- */
+  .panel{
+    background:var(--paper); border-radius:var(--radius); border:1.5px solid var(--line);
+    padding:22px; margin-bottom:22px;
+  }
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:600px){ .grid-2{grid-template-columns:1fr;} }
+  .form-row{margin-bottom:12px;}
+  .form-row label{display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;}
+  .form-row input, .form-row select, .form-row textarea{
+    width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line);
+    font-family:inherit; font-size:0.88rem; background:var(--bg); color:var(--ink);
+  }
+  .form-row textarea{resize:vertical; min-height:56px;}
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus{outline:none; border-color:var(--blue); background:var(--paper);}
+  .checkbox-row{display:flex; align-items:center; gap:8px; margin-bottom:12px;}
+  .checkbox-row input{width:auto;}
+
+  .tab-bar{display:flex; gap:6px; margin-bottom:22px; border-bottom:1.5px solid var(--line);}
+  .tab-bar button{
+    background:none; border:none; padding:10px 4px; font-weight:700; font-size:0.9rem;
+    color:var(--muted); border-bottom:3px solid transparent; margin-right:18px;
+  }
+  .tab-bar button.active{color:var(--ink); border-bottom-color:var(--orange);}
+
+  .menu-item-row{
+    display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);
+  }
+  .menu-item-row:last-child{border-bottom:none;}
+  .menu-item-row .mi-info{flex:1;}
+  .menu-item-row .mi-info h4{font-size:0.92rem; margin-bottom:2px; font-weight:600;}
+  .menu-item-row .mi-info p{font-size:0.78rem; color:var(--muted);}
+  .menu-item-row .mi-price{font-family:'Space Mono',monospace; font-weight:700; min-width:60px; text-align:right; font-size:0.88rem;}
+
+  .empty-state{text-align:center; padding:46px 20px; color:var(--muted);}
+  .empty-state h3{color:var(--ink); margin-bottom:8px; font-size:1.05rem;}
+  .empty-state p{font-size:0.86rem;}
+
+  .toast{
+    position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff;
+    padding:14px 22px; border-radius:10px; font-size:0.88rem; font-weight:600;
+    box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:200;
+    opacity:0; transform:translateY(12px); transition:all .25s ease; pointer-events:none;
+    max-width:340px;
+  }
+  .toast.show{opacity:1; transform:translateY(0);}
+
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(34,39,46,0.4); display:flex; align-items:center; justify-content:center;
+    z-index:300; padding:20px;
+  }
+  .modal{
+    background:var(--paper); border-radius:14px; padding:26px; max-width:480px; width:100%;
+    max-height:88vh; overflow-y:auto; border:1px solid var(--line);
+  }
+  .modal h3{margin-bottom:16px;}
+  .modal-actions{display:flex; gap:10px; justify-content:flex-end; margin-top:18px;}
+
+  .pay-card{
+    border:1.5px solid var(--line); border-radius:10px; padding:14px; margin-bottom:10px;
+    display:flex; align-items:center; gap:12px; cursor:pointer; transition:all .15s ease;
+  }
+  .pay-card.selected{border-color:var(--blue); background:var(--blue-soft);}
+  .pay-card .pay-icon{
+    width:36px; height:36px; border-radius:8px; background:var(--bg); display:flex; align-items:center; justify-content:center;
+    font-size:1.05rem; flex-shrink:0;
+  }
+  .pay-card.selected .pay-icon{background:var(--blue); color:#fff;}
+
+  .small-muted{font-size:0.8rem; color:var(--muted);}
+  .stack-gap{display:flex; flex-direction:column; gap:10px;}
+
+  .top-link{
+    background:none; border:none; color:var(--muted); font-weight:600; font-size:0.88rem;
+    border-bottom:2px solid transparent; padding:4px 0;
+  }
+  .top-link.active{color:var(--ink); border-bottom-color:var(--orange);}
+
+  /* ---------- Order confirmation ---------- */
+  .order-number-box{
+    text-align:center; padding:28px 20px; background:var(--blue-soft); border-radius:12px; margin-bottom:18px;
+  }
+  .order-number-box .lbl{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--blue); font-weight:700; margin-bottom:8px;}
+  .order-number-box .num{font-family:'Space Mono',monospace; font-size:2.1rem; font-weight:700; color:var(--blue); letter-spacing:0.05em;}
+  .order-number-box .hint{font-size:0.78rem; color:var(--muted); margin-top:8px;}
+
+  .order-num-pill{
+    font-family:'Space Mono',monospace; font-weight:700; font-size:0.8rem; color:var(--blue);
+    background:var(--blue-soft); padding:2px 8px; border-radius:6px;
+  }
+</style>
+</head>
+<body>
+
+<div id="authPage" class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="eyebrow">Leoni Cantine · Online Ordering</div>
+      <h1 id="authTitle">Sign in</h1>
+      <p id="authSubtitle">Order tonight's dinner before the kitchen closes.</p>
+    </div>
+
+    <div class="role-toggle">
+      <button id="roleEmployeeBtn" class="active" onclick="setAuthRole('employee')">Employee</button>
+      <button id="roleCantineBtn" onclick="setAuthRole('cantine')">Cantine staff</button>
+    </div>
+
+    <div id="authError" class="auth-error hidden"></div>
+
+    <div id="loginFields">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="you@leoni.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••">
+      </div>
+    </div>
+
+    <div id="signupFields" class="hidden">
+      <div class="field-grid2">
+        <div class="field">
+          <label>First name</label>
+          <input type="text" id="signupFirstName" placeholder="Mohamed">
+        </div>
+        <div class="field">
+          <label>Last name</label>
+          <input type="text" id="signupLastName" placeholder="Ben Salah">
+        </div>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="signupEmail" placeholder="you@leoni.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="signupPassword" placeholder="Choose a password">
+      </div>
+
+      <div id="employeeSignupFields">
+        <div class="field-grid2">
+          <div class="field">
+            <label>Leoni ID</label>
+            <input type="text" id="signupLeoniId" placeholder="e.g. 104523">
+          </div>
+          <div class="field">
+            <label>Position</label>
+            <input type="text" id="signupPosition" placeholder="e.g. Line Operator">
+          </div>
+        </div>
+        <div class="field">
+          <label>Plant</label>
+          <select id="signupPlant" onchange="onSignupPlantChange()"></select>
+        </div>
+        <div class="field">
+          <label>Assigned Default Canteen</label>
+          <select id="signupEmployeeCanteen"></select>
+        </div>
+        <div class="field">
+          <label>Office / workshop location</label>
+          <input type="text" id="signupOffice" placeholder="e.g. Building A, 2nd floor, Office 214">
+        </div>
+      </div>
+
+      <div class="field hidden" id="signupCantineField">
+        <label>Cantine you manage</label>
+        <select id="signupCantine"></select>
+      </div>
+    </div>
+
+    <div class="auth-actions">
+      <button class="btn btn-primary" id="authSubmitBtn" onclick="handleAuthSubmit()">Sign in</button>
+    </div>
+
+    <div class="auth-switch">
+      <span id="authSwitchText">New here?</span>
+      <button id="authSwitchBtn" onclick="toggleAuthMode()">Create an account</button>
+    </div>
+
+    <div class="auth-hint">
+      <b>Demo accounts</b> — Employee: alice@leoni.com / pass123 (LTN3 - Cantine A) · Cantine staff: cantine.ltn1@leoni.com / pass123 (LTN1 Cantine)
+    </div>
+  </div>
+</div>
+
+<div id="employeeApp" class="hidden">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">EMPLOYEE</span></div>
+    <div class="topbar-right">
+      <button class="top-link active" data-emp-view="menu" onclick="switchEmployeeView('menu')">Menu &amp; Order</button>
+      <button class="top-link" data-emp-view="orders" onclick="switchEmployeeView('orders')">My Orders</button>
+      <span class="who" id="empWho"></span>
+      <button class="btn btn-ghost btn-small" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <div id="empMenuView">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow-label" id="empPlantLabel"></div>
+          <h2>Today's counter</h2>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase;">Switch Counter:</label>
+          <select id="empCanteenSelect" onchange="onEmpCanteenChange()" style="padding: 6px 12px; border-radius: 8px; border: 1.5px solid var(--line); font-size: 0.85rem; font-weight: 600; background: var(--paper); color: var(--ink);"></select>
+        </div>
+      </div>
+
+      <div class="day-tabs" id="empDayTabs"></div>
+
+      <div class="menu-layout">
+        <div id="empCategories"></div>
+        <div>
+          <div class="ticket">
+            <h3>Your order</h3>
+            <div class="ticket-sub" id="ticketDayLabel"></div>
+            <div id="cartLines"><div class="cart-empty">Your tray is empty — pick something from the counter.</div></div>
+
+            <div class="cart-divider"></div>
+            <div class="cart-row" id="cartSubtotalRow"><span>Subtotal</span><span class="mono">0.00 DT</span></div>
+            <div class="cart-row hidden" id="cartDeliveryRow"><span>Delivery to office</span><span class="mono">+2.00 DT</span></div>
+            <div class="cart-total"><span>Total</span><span id="cartTotal">0.00 DT</span></div>
+
+            <div class="pickup-box">
+              <label>Ready by</label>
+              <div class="pickup-row">
+                <select id="pickupDaySelect" onchange="onPickupDateChange()"></select>
+                <select id="pickupTimeSelect" onchange="renderCart()"></select>
+              </div>
+              <div class="deadline-note" id="deadlineNote"></div>
+            </div>
+
+            <div class="delivery-toggle">
+              <div>
+                <label for="deliveryToggle">Deliver to my office</label>
+                <div class="fee">+2.00 DT delivery fee</div>
+              </div>
+              <div class="switch">
+                <input type="checkbox" id="deliveryToggle" onchange="onDeliveryToggle()">
+                <span class="slider"></span>
+              </div>
+            </div>
+            <div class="office-field hidden" id="officeFieldWrap">
+              <input type="text" id="officeOverride" placeholder="Confirm office / workshop location">
+            </div>
+
+            <div style="margin-top:16px;">
+              <button class="btn btn-primary" style="width:100%;" id="checkoutBtn" onclick="openCheckout()">Pay &amp; place order</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="empOrdersView" class="hidden">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow-label">Order history</div>
+          <h2>My orders</h2>
+        </div>
+      </div>
+      <div id="empOrdersList"></div>
+    </div>
+
+  </div>
+</div>
+
+<div id="cantineApp" class="hidden">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">STAFF</span></div>
+    <div class="topbar-right">
+      <button class="top-link active" data-can-view="menu" onclick="switchCantineView('menu')">Counter</button>
+      <button class="top-link" data-can-view="orders" onclick="switchCantineView('orders')">Orders</button>
+      <span class="who" id="canWho"></span>
+      <button class="btn btn-ghost btn-small" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <div id="canMenuView">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow-label" id="canPlantLabel"></div>
+          <h2>Manage the counter</h2>
+        </div>
+        <button class="btn btn-primary btn-small" onclick="openItemModal()">+ Add item</button>
+      </div>
+
+      <div class="day-tabs" id="canDayTabs"></div>
+
+      <div class="panel">
+        <div id="canMenuList"></div>
+      </div>
+    </div>
+
+    <div id="canOrdersView" class="hidden">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow-label">Live queue</div>
+          <h2>Incoming orders</h2>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Order #</th><th>Employee</th><th>Day</th><th>Ready by</th><th>Items</th><th>Delivery</th><th>Total</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody id="canOrdersBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="checkoutModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Confirm &amp; pay</h3>
+    <div class="stack-gap" style="margin-bottom:14px;">
+      <div id="checkoutSummary" class="small-muted"></div>
+    </div>
+    <label style="font-size:0.74rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;">Payment method</label>
+    <div class="pay-card selected" data-pay="card" onclick="selectPayMethod(this)">
+      <div class="pay-icon">💳</div>
+      <div><strong>Credit / debit card</strong><div class="small-muted">Visa, Mastercard, e-Dinar</div></div>
+    </div>
+    <div class="pay-card" data-pay="wallet" onclick="selectPayMethod(this)">
+      <div class="pay-icon">📱</div>
+      <div><strong>Mobile wallet</strong><div class="small-muted">D17, Flouci</div></div>
+    </div>
+    <div id="cardFields" style="margin-top:14px;">
+      <div class="form-row"><label>Card number</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19"></div>
+      <div class="grid-2">
+        <div class="form-row"><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5"></div>
+        <div class="form-row"><label>CVC</label><input type="text" placeholder="123" maxlength="3"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('checkoutModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmPayment()" id="payButton">Pay &amp; confirm order</button>
+    </div>
+  </div>
+</div>
+
+<div id="confirmModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Order placed</h3>
+    <div class="order-number-box">
+      <div class="lbl">Your order number</div>
+      <div class="num" id="confirmOrderNumber"></div>
+      <div class="hint">Show this number at the counter when you pick up — the cantine sees the same number on their queue.</div>
+    </div>
+    <div id="confirmSummary" class="small-muted"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="closeModal('confirmModal')">Done</button>
+    </div>
+  </div>
+</div>
+
+<div id="itemModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3 id="itemModalTitle">Add item</h3>
+    <input type="hidden" id="itemEditId">
+    <div class="form-row">
+      <label>Available on day</label>
+      <select id="itemDay"></select>
+    </div>
+    <div class="form-row">
+      <label>Item name</label>
+      <input type="text" id="itemName" placeholder="e.g. Couscous with lamb">
+    </div>
+    <div class="form-row">
+      <label>Description</label>
+      <textarea id="itemDesc" placeholder="Short description for employees"></textarea>
+    </div>
+    <div class="grid-2">
+      <div class="form-row">
+        <label>Price (DT)</label>
+        <input type="number" id="itemPrice" min="0" step="0.5" placeholder="8.5">
+      </div>
+      <div class="form-row">
+        <label>Category</label>
+        <select id="itemCategory">
+          <option value="main">Main plates</option>
+          <option value="salad">Salads &amp; soups</option>
+          <option value="drink">Drinks &amp; water</option>
+          <option value="snack">Snacks &amp; biscuits</option>
+          <option value="coffee">Coffee &amp; hot drinks</option>
+          <option value="dessert">Desserts</option>
+        </select>
+      </div>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="itemOffer">
+      <label style="margin:0; text-transform:none; font-weight:600; font-size:0.86rem;">Mark as today's special offer</label>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="itemAvailable" checked>
+      <label style="margin:0; text-transform:none; font-weight:600; font-size:0.86rem;">Available (visible to employees)</label>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('itemModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMenuItem()">Save item</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ======================================================================
+   LEONI CANTINE — DEMO APP (front-end only, localStorage as backend)
+   ====================================================================== */
+
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+const PLANTS = [
+  { id:'LTN1', name:'LTN1 — Mateur Plant', canteens: [{id:'LTN1-A', name:'Building A Canteen'}] },
+  { id:'LTN2', name:'LTN2 — Mateur 2 Plant', canteens: [{id:'LTN2-C', name:'Building C Canteen'}] },
+  { id:'BIZ1', name:'BIZ1 — Bizerte Plant', canteens: [{id:'BIZ1-G', name:'Ground-floor Canteen'}] },
+  { id:'MGD1', name:'MGD1 — Megrine Plant', canteens: [{id:'MGD1-L', name:'Logistics Hub Canteen'}] },
+  { id:'LTN3', name:'LTN3 — Mateur 3 Plant', canteens: [
+      {id:'LTN3-A', name:'Cantine A (Boutique & Ice Creams)'},
+      {id:'LTN3-B', name:'Cantine B (Standard Hot Plates)'}
+    ]
+  }
+];
+
+const CATEGORIES = [
+  { id:'main',    label:'Main plates' },
+  { id:'salad',   label:'Salads & soups' },
+  { id:'drink',   label:'Drinks & water' },
+  { id:'snack',   label:'Snacks & biscuits' },
+  { id:'coffee',  label:'Coffee & hot drinks' },
+  { id:'dessert', label:'Desserts' },
+];
+
+const ORDER_WINDOW_HOURS_MIN = 1;   
+const ORDER_WINDOW_HOURS_MAX = 24;  
+const DELIVERY_FEE = 2.0;
+
+/* ---------------- Storage helpers ---------------- */
+function loadDB(){
+  let db = JSON.parse(localStorage.getItem('leoniCantineDB_v3') || 'null');
+  if(!db){ db = seedDB(); saveDB(db); }
+  return db;
+}
+function saveDB(db){ localStorage.setItem('leoniCantineDB_v3', JSON.stringify(db)); }
+
+function seedDB(){
+  const db = { users:[], menus:{}, orders:[], orderCounter: 1000 };
+
+  // Setup demo users matching requests
+  db.users.push({
+    id:'u1', role:'employee', firstName:'Ameur', lastName:'Ben Salah', email:'alice@leoni.com', password:'pass123',
+    leoniId:'104521', position:'Automation Engineer', plant:'LTN3', canteenId:'LTN3-A', office:'Building A, 2nd floor, Office 214'
+  });
+  db.users.push({
+    id:'u2', role:'cantine', firstName:'LTN3 Cantine A', lastName:'Staff', email:'cantine.ltn1@leoni.com', password:'pass123',
+    plant:'LTN3', canteenId:'LTN3-A'
+  });
+
+  // Base setup across the plants
+  const commonDishes = [
+    ['Couscous with lamb','Slow-cooked lamb couscous with seasonal vegetables', 9.0,'main', false],
+    ['Tunisian salad','Tomato, cucumber, pepper, olive oil', 2.5,'salad', false],
+    ['Mineral water 0.5L','Bottled still water', 1.0,'drink', false],
+    ['Espresso','Single shot', 1.0,'coffee', false],
+  ];
+
+  PLANTS.forEach(p => {
+    db.menus[p.id] = {};
+    p.canteens.forEach(c => {
+      db.menus[p.id][c.id] = {};
+      DAYS.slice(0,5).forEach(day => {
+        db.menus[p.id][c.id][day] = commonDishes.map((d,i)=>({
+          id: `${c.id}-${day}-${i}`,
+          day, name:d[0], desc:d[1], price:d[2], category:d[3], offer: d[4], available:true
+        }));
+
+        // Dynamic addition: Add custom Ice cream products *only* to LTN3 Cantine A
+        if(c.id === 'LTN3-A') {
+          db.menus[p.id][c.id][day].push({
+            id: `${c.id}-${day}-ice1`,
+            day, name:'Artisanal Italian Gelato Cup', desc:'Vanilla, chocolate and strawberry blend', price: 4.5, category:'dessert', offer:true, available:true
+          });
+          db.menus[p.id][c.id][day].push({
+            id: `${c.id}-${day}-ice2`,
+            day, name:'Boutique Ice Cream Pack', desc:'Premium selection gourmet pack of 4 mini sticks', price: 12.0, category:'dessert', offer:false, available:true
+          });
+        }
+      });
+    });
+  });
+
+  return db;
+}
+
+let DB = loadDB();
+
+/* ---------------- Session ---------------- */
+let session = JSON.parse(sessionStorage.getItem('leoniSession') || 'null');
+let authMode = 'login'; 
+let authRole = 'employee'; 
+
+/* ---------------- Init ---------------- */
+function init(){
+  populatePlantSelects();
+  if(session){
+    enterApp();
+  } else {
+    showAuth();
+  }
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2400);
+}
+
+/* ===================== AUTH ===================== */
+function setAuthRole(role){
+  authRole = role;
+  document.getElementById('roleEmployeeBtn').classList.toggle('active', role==='employee');
+  document.getElementById('roleCantineBtn').classList.toggle('active', role==='cantine');
+  document.getElementById('employeeSignupFields').classList.toggle('hidden', role!=='employee');
+  document.getElementById('signupCantineField').classList.toggle('hidden', role!=='cantine');
+  document.getElementById('authError').classList.add('hidden');
+}
+
+function toggleAuthMode(){
+  authMode = authMode==='login' ? 'signup' : 'login';
+  const isSignup = authMode==='signup';
+  document.getElementById('loginFields').classList.toggle('hidden', isSignup);
+  document.getElementById('signupFields').classList.toggle('hidden', !isSignup);
+  document.getElementById('authTitle').textContent = isSignup ? 'Create an account' : 'Sign in';
+  document.getElementById('authSubmitBtn').textContent = isSignup ? 'Create account' : 'Sign in';
+  document.getElementById('authSwitchText').textContent = isSignup ? 'Already have an account?' : 'New here?';
+  document.getElementById('authSwitchBtn').textContent = isSignup ? 'Sign in' : 'Create an account';
+  document.getElementById('authError').classList.add('hidden');
+  if(isSignup) {
+    setAuthRole(authRole);
+    onSignupPlantChange();
+  }
+}
+
+function populatePlantSelects(){
+  const plantSel = document.getElementById('signupPlant');
+  plantSel.innerHTML = '';
+  PLANTS.forEach(p=>{
+    const opt = document.createElement('option');
+    opt.value = p.id; opt.textContent = p.name;
+    plantSel.appendChild(opt);
+  });
+
+  const cantineSel = document.getElementById('signupCantine');
+  cantineSel.innerHTML = '';
+  PLANTS.forEach(p=>{
+    p.canteens.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = `${p.id}|${c.id}`;
+      opt.textContent = `${p.id} — ${c.name}`;
+      cantineSel.appendChild(opt);
+    });
+  });
+}
+
+function onSignupPlantChange() {
+  const plantId = document.getElementById('signupPlant').value;
+  const empCanteenSel = document.getElementById('signupEmployeeCanteen');
+  empCanteenSel.innerHTML = '';
+  const plant = PLANTS.find(p => p.id === plantId);
+  if(plant) {
+    plant.canteens.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id; opt.textContent = c.name;
+      empCanteenSel.appendChild(opt);
+    });
+  }
+}
+
+function showAuthError(msg){
+  const el = document.getElementById('authError');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+function handleAuthSubmit(){
+  document.getElementById('authError').classList.add('hidden');
+  if(authMode==='login'){
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const pwd = document.getElementById('loginPassword').value;
+    const user = DB.users.find(u=>u.email.toLowerCase()===email && u.password===pwd && u.role===authRole);
+    if(!user){ showAuthError('No matching account found. Check your role, email and password.'); return; }
+    session = { userId:user.id };
+    sessionStorage.setItem('leoniSession', JSON.stringify(session));
+    enterApp();
+  } else {
+    const firstName = document.getElementById('signupFirstName').value.trim();
+    const lastName = document.getElementById('signupLastName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+    const pwd = document.getElementById('signupPassword').value;
+    if(!firstName || !lastName || !email || !pwd){ showAuthError('Please fill in all required fields.'); return; }
+    if(DB.users.find(u=>u.email.toLowerCase()===email)){ showAuthError('An account with this email already exists.'); return; }
+
+    let newUser;
+    if(authRole==='employee'){
+      const leoniId = document.getElementById('signupLeoniId').value.trim();
+      const position = document.getElementById('signupPosition').value.trim();
+      const office = document.getElementById('signupOffice').value.trim();
+      const plant = document.getElementById('signupPlant').value;
+      const canteenId = document.getElementById('signupEmployeeCanteen').value;
+      if(!leoniId || !position || !office){ showAuthError('Please fill in your Leoni ID, position and office location.'); return; }
+      newUser = { id:'u'+Date.now(), role:'employee', firstName, lastName, email, password:pwd, leoniId, position, plant, canteenId, office };
+    } else {
+      const composite = document.getElementById('signupCantine').value.split('|');
+      newUser = { id:'u'+Date.now(), role:'cantine', firstName, lastName, email, password:pwd, plant: composite[0], canteenId: composite[1] };
+    }
+    DB.users.push(newUser);
+    saveDB(DB);
+    session = { userId:newUser.id };
+    sessionStorage.setItem('leoniSession', JSON.stringify(session));
+    enterApp();
+  }
+}
+
+function logout(){
+  session = null;
+  sessionStorage.removeItem('leoniSession');
+  showAuth();
+}
+
+function showAuth(){
+  document.getElementById('authPage').classList.remove('hidden');
+  document.getElementById('employeeApp').classList.add('hidden');
+  document.getElementById('cantineApp').classList.add('hidden');
+}
+
+function currentUser(){
+  return DB.users.find(u=>u.id===session.userId);
+}
+
+function userFullName(u){
+  return `${u.firstName} ${u.lastName}`;
+}
+
+function enterApp(){
+  const user = currentUser();
+  document.getElementById('authPage').classList.add('hidden');
+  if(user.role==='employee'){
+    document.getElementById('cantineApp').classList.add('hidden');
+    document.getElementById('employeeApp').classList.remove('hidden');
+    
+    // Check if configuration lacks an assigned canteen reference and map standard default
+    if(!user.canteenId && PLANTS.find(p=>p.id===user.plant)?.canteens.length) {
+      user.canteenId = PLANTS.find(p=>p.id===user.plant).canteens[0].id;
+      saveDB(DB);
+    }
+    
+    document.getElementById('empWho').textContent = `${userFullName(user)} · ${user.position || ''} · ${user.plant}`;
+    initEmployeeApp(user);
+  } else {
+    document.getElementById('employeeApp').classList.add('hidden');
+    document.getElementById('cantineApp').classList.remove('hidden');
+    const plantObj = PLANTS.find(p=>p.id===user.plant);
+    const cantineObj = plantObj?.canteens.find(c=>c.id===user.canteenId);
+    document.getElementById('canWho').textContent = `${userFullName(user)} [Staff: ${cantineObj ? cantineObj.name : user.plant}]`;
+    initCantineApp(user);
+  }
+}
+
+/* ===================== EMPLOYEE APP ===================== */
+let cart = []; 
+let empSelectedDay = currentDayName();
+let empPlant = null;
+let empCanteenId = null;
+let deliverToOffice = false;
+
+function currentDayName(){
+  const d = new Date();
+  const idx = (d.getDay()+6)%7; 
+  return DAYS[idx];
+}
+
+// Generate Day Dropdown choices matching requests
+function buildPickupDays() {
+  const dropdown = document.getElementById('pickupDaySelect');
+  dropdown.innerHTML = '';
+  const now = new Date();
+  
+  for (let i = 0; i < 5; i++) {
+    const futureDate = new Date(now.getTime() + i * 24 * 3600 * 1000);
+    const dayName = DAYS[(futureDate.getDay() + 6) % 7];
+    
+    // Skip weekends for active canteen schedules
+    if (dayName === 'Saturday' || dayName === 'Sunday') continue;
+    
+    const opt = document.createElement('option');
+    opt.value = dayName;
+    
+    if (i === 0) opt.textContent = "Today";
+    else if (i === 1) opt.textContent = "Tomorrow";
+    else opt.textContent = dayName;
+    
+    dropdown.appendChild(opt);
+  }
+}
+
+// Populate responsive dynamic time intervals inside targeted active dropdown selection 
+function populatePickupTimes(){
+  const daySel = document.getElementById('pickupDaySelect').value;
+  const timeSel = document.getElementById('pickupTimeSelect');
+  timeSel.innerHTML = '';
+
+  const now = new Date();
+  let startHour = 8;
+  let startMin = 0;
+
+  // If planning for immediate execution today, restrict choice ranges to 1h threshold ahead
+  if (daySel === currentDayName()) {
+    const minTimeBound = new Date(now.getTime() + ORDER_WINDOW_HOURS_MIN * 3600 * 1000);
+    if (minTimeBound.getHours() >= 20) {
+      const opt = document.createElement('option');
+      opt.textContent = "Kitchen Closed for Today";
+      opt.value = "";
+      timeSel.appendChild(opt);
+      return;
+    }
+    if(minTimeBound.getHours() > startHour) {
+      startHour = minTimeBound.getHours();
+      startMin = minTimeBound.getMinutes() > 30 ? 30 : 0;
+      if (minTimeBound.getMinutes() > 0 && minTimeBound.getMinutes() <= 30) startMin = 30;
+      if (minTimeBound.getMinutes() > 30) { startHour += 1; startMin = 0; }
+    }
+  }
+
+  // Generate functional 30-minute intervals through typical dining shifts (08:00 to 20:00)
+  for (let h = startHour; h <= 20; h++) {
+    for (let m = (h === startHour ? startMin : 0); m < 60; m += 30) {
+      if (h === 20 && m > 0) break;
+      const opt = document.createElement('option');
+      const timeString = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      opt.value = timeString;
+      opt.textContent = timeString;
+      timeSel.appendChild(opt);
+    }
+  }
+}
+
+function onPickupDateChange() {
+  populatePickupTimes();
+  renderCart();
+}
+
+function initEmployeeApp(user){
+  empPlant = user.plant || 'LTN3';
+  empCanteenId = user.canteenId;
+  cart = [];
+  deliverToOffice = false;
+  
+  // Populate native header selector dropdown targeting internal plant facilities
+  const canteenSelector = document.getElementById('empCanteenSelect');
+  canteenSelector.innerHTML = '';
+  const plantObj = PLANTS.find(p=>p.id===empPlant);
+  if(plantObj) {
+    plantObj.canteens.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id; opt.textContent = c.name;
+      if(c.id === empCanteenId) opt.selected = true;
+      canteenSelector.appendChild(opt);
+    });
+  }
+
+  buildPickupDays();
+  populatePickupTimes();
+  document.getElementById('officeOverride').value = user.office || '';
+  showEmpMenuView();
+}
+
+function onEmpCanteenChange() {
+  const selectedCanteen = document.getElementById('empCanteenSelect').value;
+  empCanteenId = selectedCanteen;
+  
+  // Save preference directly inside user session profile structure records
+  const user = currentUser();
+  user.canteenId = selectedCanteen;
+  saveDB(DB);
+
+  cart = []; // Reset active trays during transitions across facility blocks
+  showEmpMenuView();
+}
+
+function showEmpMenuView(){
+  document.getElementById('empMenuView').classList.remove('hidden');
+  document.getElementById('empOrdersView').classList.add('hidden');
+  
+  const plantObj = PLANTS.find(p=>p.id===empPlant);
+  const cantineObj = plantObj?.canteens.find(c=>c.id===empCanteenId);
+  document.getElementById('empPlantLabel').textContent = `${empPlant} · ${cantineObj ? cantineObj.name : ''}`;
+  
+  empSelectedDay = currentDayName();
+  renderEmpDayTabs();
+  renderEmpCategories();
+  renderCart();
+}
+
+function switchEmployeeView(view){
+  document.querySelectorAll('[data-emp-view]').forEach(b=>b.classList.toggle('active', b.dataset.empView===view));
+  document.getElementById('empMenuView').classList.add('hidden');
+  document.getElementById('empOrdersView').classList.add('hidden');
+  if(view==='menu'){
+    showEmpMenuView();
+  } else {
+    document.getElementById('empOrdersView').classList.remove('hidden');
+    renderEmpOrders();
+  }
+}
+
+function renderEmpDayTabs(){
+  const wrap = document.getElementById('empDayTabs');
+  wrap.innerHTML = '';
+  const todayIdx = DAYS.indexOf(currentDayName());
+  DAYS.slice(0,5).forEach((day, idx)=>{ 
+    const tab = document.createElement('button');
+    const isPast = idx < todayIdx;
+    tab.className = 'day-tab' + (day===empSelectedDay?' active':'') + (isPast?' past':'');
+    tab.innerHTML = `<span class="d">${idx===todayIdx?'Today':''}</span>${day}`;
+    if(!isPast){
+      tab.onclick = () => { empSelectedDay = day; renderEmpDayTabs(); renderEmpCategories(); renderCart(); };
+    } else {
+      tab.disabled = true;
+    }
+    wrap.appendChild(tab);
+  });
+}
+
+function renderEmpCategories(){
+  const wrap = document.getElementById('empCategories');
+  wrap.innerHTML = '';
+  
+  const items = (DB.menus[empPlant] && DB.menus[empPlant][empCanteenId] && DB.menus[empPlant][empCanteenId][empSelectedDay]) || [];
+
+  if(items.length===0){
+    wrap.innerHTML = `<div class="empty-state"><h3>The counter is empty</h3><p>This canteen hasn't stocked items for ${empSelectedDay} yet.</p></div>`;
+    return;
+  }
+
+  const available = items.filter(i=>i.available);
+  if(available.length===0){
+    wrap.innerHTML = `<div class="empty-state"><h3>Nothing available right now</h3><p>All items for ${empSelectedDay} are currently marked unavailable.</p></div>`;
+    return;
+  }
+
+  CATEGORIES.forEach(cat=>{
+    const catItems = available.filter(i=>i.category===cat.id);
+    if(catItems.length===0) return;
+    const block = document.createElement('div');
+    block.className = 'category-block';
+    block.innerHTML = `<div class="category-title">${cat.label} <span class="count">${catItems.length} item${catItems.length>1?'s':''}</span><div class="category-line"></div></div>
+      <div class="item-grid"></div>`;
+    const grid = block.querySelector('.item-grid');
+    catItems.forEach(i=> grid.appendChild(buildItemCard(i)));
+    wrap.appendChild(block);
+  });
+}
+
+function buildItemCard(item){
+  const card = document.createElement('div');
+  card.className = 'item-card';
+  const inCart = cart.find(c=>c.refId===item.id);
+  const qty = inCart ? inCart.qty : 0;
+
+  let badge = '';
+  if(item.offer) badge = '<span class="badge offer">Special offer</span>';
+
+  card.innerHTML = `
+    <div class="top-row">
+      <h4>${item.name}</h4>
+      ${badge}
+    </div>
+    <div class="desc">${item.desc || ''}</div>
+    <div class="bottom-row">
+      <div class="price">${item.price.toFixed(2)} DT</div>
+      <div id="ctl-${item.id}"></div>
+    </div>
+  `;
+  const ctl = card.querySelector(`#ctl-${item.id}`);
+  if(qty===0){
+    const btn = document.createElement('button');
+    btn.className = 'add-btn';
+    btn.textContent = 'Add';
+    btn.onclick = ()=>{ addToCart(item); };
+    ctl.appendChild(btn);
+  } else {
+    ctl.innerHTML = `
+      <div class="qty-control">
+        <button onclick="changeQty('${item.id}',-1)">−</button>
+        <span class="qty">${qty}</span>
+        <button onclick="changeQty('${item.id}',1)">+</button>
+      </div>`;
+  }
+  return card;
+}
+
+function addToCart(item){
+  const existing = cart.find(c=>c.refId===item.id);
+  if(existing){ existing.qty++; }
+  else { cart.push({ refId:item.id, name:item.name, price:item.price, qty:1 }); }
+  renderEmpCategories();
+  renderCart();
+}
+
+function changeQty(refId, delta){
+  const idx = cart.findIndex(c=>c.refId===refId);
+  if(idx===-1) return;
+  cart[idx].qty += delta;
+  if(cart[idx].qty<=0) cart.splice(idx,1);
+  renderEmpCategories();
+  renderCart();
+}
+
+function removeFromCart(refId){
+  cart = cart.filter(c=>c.refId!==refId);
+  renderEmpCategories();
+  renderCart();
+}
+
+function onDeliveryToggle(){
+  deliverToOffice = document.getElementById('deliveryToggle').checked;
+  document.getElementById('officeFieldWrap').classList.toggle('hidden', !deliverToOffice);
+  renderCart();
+}
+
+function renderCart(){
+  const plantObj = PLANTS.find(p=>p.id===empPlant);
+  const cantineObj = plantObj?.canteens.find(c=>c.id===empCanteenId);
+  
+  document.getElementById('ticketDayLabel').textContent = `For ${empSelectedDay} · ${cantineObj ? cantineObj.name : ''}`;
+  const linesEl = document.getElementById('cartLines');
+  if(cart.length===0){
+    linesEl.innerHTML = '<div class="cart-empty">Your tray is empty — pick something from the counter.</div>';
+  } else {
+    linesEl.innerHTML = '';
+    cart.forEach(c=>{
+      const line = document.createElement('div');
+      line.className = 'cart-line';
+      line.innerHTML = `
+        <div class="name">${c.name} <small>x${c.qty} \u00b7 ${c.price.toFixed(2)} DT each</small></div>
+        <div class="amt">${(c.price*c.qty).toFixed(2)} DT<button class="remove-x" onclick="removeFromCart('${c.refId}')">remove</button></div>
+      `;
+      linesEl.appendChild(line);
+    });
+  }
+  const subtotal = cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const total = subtotal + (deliverToOffice ? DELIVERY_FEE : 0);
+  document.getElementById('cartSubtotalRow').querySelector('.mono').textContent = subtotal.toFixed(2) + ' DT';
+  document.getElementById('cartDeliveryRow').classList.toggle('hidden', !deliverToOffice);
+  document.getElementById('cartTotal').textContent = total.toFixed(2) + ' DT';
+
+  const dayVal = document.getElementById('pickupDaySelect').value;
+  const timeVal = document.getElementById('pickupTimeSelect').value;
+  const note = document.getElementById('deadlineNote');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+
+  if(!timeVal){
+    note.className = "deadline-note warn";
+    note.textContent = 'No delivery/pickup slots available right now.';
+    checkoutBtn.disabled = true;
+    return;
+  }
+
+  note.className = "deadline-note";
+  note.innerHTML = `\u2705 Target fulfillment: ${dayVal} at ${timeVal}`;
+  checkoutBtn.disabled = cart.length === 0;
+}
+
+/* ----- checkout / payment ----- */
+function openCheckout(){
+  const subtotal = cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const total = subtotal + (deliverToOffice ? DELIVERY_FEE : 0);
+  
+  const dayVal = document.getElementById('pickupDaySelect').value;
+  const timeVal = document.getElementById('pickupTimeSelect').value;
+  
+  const plantObj = PLANTS.find(p=>p.id===empPlant);
+  const cantineObj = plantObj?.canteens.find(c=>c.id===empCanteenId);
+  
+  const summary = document.getElementById('checkoutSummary');
+  summary.innerHTML = `
+    <div style="font-weight:700; color:var(--ink); margin-bottom:6px;">Pickup Schedule: ${dayVal} @ ${timeVal} \u00b7 ${cantineObj ? cantineObj.name : ''}</div>
+    ${cart.map(c=>`${c.qty} \u00d7 ${c.name} \u2014 ${(c.price*c.qty).toFixed(2)} DT`).join('<br>')}
+    ${deliverToOffice ? `<br>Delivery to office \u2014 ${DELIVERY_FEE.toFixed(2)} DT` : ''}
+    <div style="margin-top:8px; font-weight:800; font-size:1.02rem; font-family:'Space Mono',monospace;">Total: ${total.toFixed(2)} DT</div>
+  `;
+  document.getElementById('checkoutModal').classList.remove('hidden');
+}
+
+function selectPayMethod(el){
+  document.querySelectorAll('.pay-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('cardFields').classList.toggle('hidden', el.dataset.pay!=='card');
+}
+
+function confirmPayment(){
+  const payBtn = document.getElementById('payButton');
+  payBtn.disabled = true;
+  payBtn.textContent = 'Processing payment\u2026';
+  setTimeout(()=>{
+    const order = placeOrder();
+    payBtn.disabled = false;
+    payBtn.textContent = 'Pay & confirm order';
+    closeModal('checkoutModal');
+    showOrderConfirmation(order);
+  }, 900);
+}
+
+function placeOrder(){
+  const user = currentUser();
+  const dayVal = document.getElementById('pickupDaySelect').value;
+  const timeVal = document.getElementById('pickupTimeSelect').value;
+  
+  const subtotal = cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const total = subtotal + (deliverToOffice ? DELIVERY_FEE : 0);
+
+  DB.orderCounter = (DB.orderCounter || 1000) + 1;
+  const orderNumber = String(DB.orderCounter);
+
+  const plantObj = PLANTS.find(p=>p.id===empPlant);
+  const cantineObj = plantObj?.canteens.find(c=>c.id===empCanteenId);
+
+  const order = {
+    id: 'ORD'+Date.now(),
+    orderNumber,
+    employeeId: user.id,
+    employeeName: userFullName(user),
+    leoniId: user.leoniId,
+    plant: empPlant,
+    canteenId: empCanteenId,
+    canteenName: cantineObj ? cantineObj.name : empCanteenId,
+    day: empSelectedDay,
+    pickupAt: `${dayVal} at ${timeVal}`,
+    items: cart.map(c=>({...c})),
+    subtotal,
+    delivery: deliverToOffice,
+    deliveryFee: deliverToOffice ? DELIVERY_FEE : 0,
+    deliveryOffice: deliverToOffice ? document.getElementById('officeOverride').value.trim() : '',
+    total,
+    status: 'pending',
+    placedAt: new Date().toISOString(),
+    paid: true
+  };
+  DB.orders.push(order);
+  saveDB(DB);
+  cart = [];
+  deliverToOffice = false;
+  document.getElementById('deliveryToggle').checked = false;
+  document.getElementById('officeFieldWrap').classList.add('hidden');
+  
+  buildPickupDays();
+  populatePickupTimes();
+  renderEmpCategories();
+  renderCart();
+  return order;
+}
+
+function showOrderConfirmation(order){
+  document.getElementById('confirmOrderNumber').textContent = '#' + order.orderNumber;
+  document.getElementById('confirmSummary').innerHTML = `
+    Fulfillment Target: ${order.pickupAt} \u00b7 ${order.canteenName}<br>
+    ${order.items.map(i=>`${i.qty} \u00d7 ${i.name}`).join(', ')}
+    ${order.delivery ? `<br>Office Delivery Location: ${order.deliveryOffice || '\u2014'}` : ''}
+    <div style="margin-top:8px; font-weight:800; font-family:'Space Mono',monospace;">Total paid: ${order.total.toFixed(2)} DT</div>
+  `;
+  document.getElementById('confirmModal').classList.remove('hidden');
+  showToast('Order placed successfully! #' + order.orderNumber);
+}
+
+function renderEmpOrders(){
+  const user = currentUser();
+  const list = document.getElementById('empOrdersList');
+  const orders = DB.orders.filter(o=>o.employeeId===user.id).sort((a,b)=> new Date(b.placedAt)-new Date(a.placedAt));
+  if(orders.length===0){
+    list.innerHTML = `<div class="empty-state"><h3>No orders yet</h3><p>Orders you place will show up here with their status updates.</p></div>`;
+    return;
+  }
+  list.innerHTML = `<div class="table-wrap"><table>
+    <thead><tr><th>Order #</th><th>Kitchen Counter</th><th>Target Time</th><th>Items</th><th>Delivery</th><th>Total</th><th>Status</th></tr></thead>
+    <tbody>
+      ${orders.map(o=>`
+        <tr>
+          <td><span class="order-num-pill">#${o.orderNumber}</span></td>
+          <td>${o.canteenName || 'Main Kitchen'}</td>
+          <td>${o.pickupAt}</td>
+          <td>${o.items.map(i=>`${i.qty}\u00d7 ${i.name}`).join(', ')}</td>
+          <td>${o.delivery ? 'To office (+2.00 DT)' : '\u2014'}</td>
+          <td class="mono">${o.total.toFixed(2)} DT</td>
+          <td><span class="status-pill status-${o.status}">${o.status}</span></td>
+        </tr>
+      `).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+/* ===================== CANTINE APP ===================== */
+let canSelectedDay = currentDayName();
+let canCanteenId = null;
+
+function initCantineApp(user){
+  canCanteenId = user.canteenId;
+  const plantObj = PLANTS.find(p=>p.id===user.plant);
+  const cantineObj = plantObj?.canteens.find(c=>c.id===canCanteenId);
+  
+  document.getElementById('canPlantLabel').textContent = `${user.plant} \u00b7 ${cantineObj ? cantineObj.name : ''}`;
+  canSelectedDay = DAYS.slice(0,5).includes(currentDayName()) ? currentDayName() : 'Monday';
+  
+  if(!DB.menus[user.plant]) DB.menus[user.plant] = {};
+  if(!DB.menus[user.plant][canCanteenId]) DB.menus[user.plant][canCanteenId] = {};
+  
+  renderCanDayTabs();
+  renderCanMenuList();
+  renderCanOrders();
+  populateDaySelect();
+}
+
+function populateDaySelect(){
+  const sel = document.getElementById('itemDay');
+  sel.innerHTML = '';
+  DAYS.slice(0,5).forEach(d=>{
+    const opt = document.createElement('option');
+    opt.value=d; opt.textContent=d;
+    sel.appendChild(opt);
+  });
+}
+
+function switchCantineView(view){
+  document.querySelectorAll('[data-can-view]').forEach(b=>b.classList.toggle('active', b.dataset.canView===view));
+  document.getElementById('canMenuView').classList.toggle('hidden', view!=='menu');
+  document.getElementById('canOrdersView').classList.toggle('hidden', view!=='orders');
+  if(view==='orders') renderCanOrders();
+}
+
+function renderCanDayTabs(){
+  const wrap = document.getElementById('canDayTabs');
+  wrap.innerHTML = '';
+  const todayIdx = DAYS.indexOf(currentDayName());
+  DAYS.slice(0,5).forEach((day, idx)=>{
+    const tab = document.createElement('button');
+    tab.className = 'day-tab' + (day===canSelectedDay?' active':'');
+    tab.innerHTML = `<span class="d">${idx===todayIdx?'Today':''}</span>${day}`;
+    tab.onclick = ()=>{ canSelectedDay = day; renderCanDayTabs(); renderCanMenuList(); };
+    wrap.appendChild(tab);
+  });
+}
+
+function renderCanMenuList(){
+  const user = currentUser();
+  const wrap = document.getElementById('canMenuList');
+  const items = (DB.menus[user.plant] && DB.menus[user.plant][canCanteenId] && DB.menus[user.plant][canCanteenId][canSelectedDay]) || [];
+  if(items.length===0){
+    wrap.innerHTML = `<div class="empty-state"><h3>Nothing stocked for ${canSelectedDay}</h3><p>Add plates, salads, desserts or specialty boutique lines.</p></div>`;
+    return;
+  }
+  
+  let html = '';
+  CATEGORIES.forEach(cat=>{
+    const catItems = items.filter(i=>i.category===cat.id);
+    if(catItems.length===0) return;
+    html += `<div class="category-title" style="margin-top:18px;">${cat.label} <span class="count">${catItems.length}</span><div class="category-line"></div></div>`;
+    catItems.forEach(i=>{
+      html += `
+        <div class="menu-item-row">
+          <div class="mi-info">
+            <h4>${i.name} ${i.offer?'<span class="badge offer">Offer</span>':''} ${!i.available?'<span class="badge out">Unavailable</span>':''}</h4>
+            <p>${i.desc || ''}</p>
+          </div>
+          <div class="mi-price">${i.price.toFixed(2)} DT</div>
+          <button class="btn btn-outline btn-small" onclick="toggleAvailability('${i.id}')">${i.available ? 'Set unavailable' : 'Set available'}</button>
+          <button class="btn btn-outline btn-small" onclick="editMenuItem('${i.id}')">Edit</button>
+          <button class="btn btn-danger btn-small" onclick="deleteMenuItem('${i.id}')">Delete</button>
+        </div>`;
+    });
+  });
+  wrap.innerHTML = html || `<div class="empty-state"><h3>Nothing stocked for ${canSelectedDay}</h3><p>Add items to get started.</p></div>`;
+}
+
+function toggleAvailability(id){
+  const user = currentUser();
+  const item = DB.menus[user.plant][canCanteenId][canSelectedDay].find(i=>i.id===id);
+  if(!item) return;
+  item.available = !item.available;
+  saveDB(DB);
+  renderCanMenuList();
+  showToast(item.available ? 'Marked available' : 'Marked unavailable');
+}
+
+function openItemModal(){
+  document.getElementById('itemModalTitle').textContent = 'Add item';
+  document.getElementById('itemEditId').value = '';
+  document.getElementById('itemDay').value = canSelectedDay;
+  document.getElementById('itemName').value = '';
+  document.getElementById('itemDesc').value = '';
+  document.getElementById('itemPrice').value = '';
+  document.getElementById('itemCategory').value = 'main';
+  document.getElementById('itemOffer').checked = false;
+  document.getElementById('itemAvailable').checked = true;
+  document.getElementById('itemModal').classList.remove('hidden');
+}
+
+function editMenuItem(id){
+  const user = currentUser();
+  const item = DB.menus[user.plant][canCanteenId][canSelectedDay].find(i=>i.id===id);
+  if(!item) return;
+  document.getElementById('itemModalTitle').textContent = 'Edit item';
+  document.getElementById('itemEditId').value = id;
+  document.getElementById('itemDay').value = item.day;
+  document.getElementById('itemName').value = item.name;
+  document.getElementById('itemDesc').value = item.desc;
+  document.getElementById('itemPrice').value = item.price;
+  document.getElementById('itemCategory').value = item.category;
+  document.getElementById('itemOffer').checked = item.offer;
+  document.getElementById('itemAvailable').checked = item.available;
+  document.getElementById('itemModal').classList.remove('hidden');
+}
+
+function saveMenuItem(){
+  const user = currentUser();
+  const day = document.getElementById('itemDay').value;
+  const name = document.getElementById('itemName').value.trim();
+  const price = parseFloat(document.getElementById('itemPrice').value);
+  if(!name || isNaN(price)){ showToast('Please enter an item name and price.'); return; }
+
+  const editId = document.getElementById('itemEditId').value;
+  if(!DB.menus[user.plant]) DB.menus[user.plant] = {};
+  if(!DB.menus[user.plant][canCanteenId]) DB.menus[user.plant][canCanteenId] = {};
+  if(!DB.menus[user.plant][canCanteenId][day]) DB.menus[user.plant][canCanteenId][day] = [];
+
+  if(editId){
+    for(const d of DAYS){
+      if(DB.menus[user.plant][canCanteenId][d]){
+        const idx = DB.menus[user.plant][canCanteenId][d].findIndex(i=>i.id===editId);
+        if(idx!==-1){
+          const [item] = DB.menus[user.plant][canCanteenId][d].splice(idx,1);
+          item.day = day; item.name = name; item.desc = document.getElementById('itemDesc').value.trim();
+          item.price = price; item.category = document.getElementById('itemCategory').value;
+          item.offer = document.getElementById('itemOffer').checked;
+          item.available = document.getElementById('itemAvailable').checked;
+          DB.menus[user.plant][canCanteenId][day].push(item);
+          break;
+        }
+      }
+    }
+  } else {
+    DB.menus[user.plant][canCanteenId][day].push({
+      id: canCanteenId+'-'+day+'-'+Date.now(),
+      day, name, desc: document.getElementById('itemDesc').value.trim(),
+      price, category: document.getElementById('itemCategory').value,
+      offer: document.getElementById('itemOffer').checked,
+      available: document.getElementById('itemAvailable').checked
+    });
+  }
+  saveDB(DB);
+  canSelectedDay = day;
+  renderCanDayTabs();
+  renderCanMenuList();
+  closeModal('itemModal');
+  showToast('Item successfully saved.');
+}
+
+function deleteMenuItem(id){
+  const user = currentUser();
+  for(const d of DAYS){
+    if(DB.menus[user.plant][canCanteenId][d]){
+      DB.menus[user.plant][canCanteenId][d] = DB.menus[user.plant][canCanteenId][d].filter(i=>i.id!==id);
+    }
+  }
+  saveDB(DB);
+  renderCanMenuList();
+  showToast('Item removed.');
+}
+
+/* ----- Orders (cantine side) ----- */
+const NEXT_STATUS = { pending:'confirmed', confirmed:'ready', ready:'completed' };
+
+function renderCanOrders(){
+  const user = currentUser();
+  const tbody = document.getElementById('canOrdersBody');
+  const orders = DB.orders.filter(o=>o.plant===user.plant && o.canteenId===canCanteenId).sort((a,b)=> new Date(b.placedAt)-new Date(a.placedAt));
+  if(orders.length===0){
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:var(--muted); padding:30px;">No queue orders matching this counter.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = orders.map(o=>`
+    <tr>
+      <td><span class="order-num-pill">#${o.orderNumber}</span></td>
+      <td>${o.employeeName}</td>
+      <td>${o.day}</td>
+      <td>${o.pickupAt}</td>
+      <td>${o.items.map(i=>`${i.qty}\u00d7 ${i.name}`).join(', ')}</td>
+      <td>${o.delivery ? `To office: ${o.deliveryOffice || '\u2014'}` : '\u2014'}</td>
+      <td class="mono">${o.total.toFixed(2)} DT</td>
+      <td><span class="status-pill status-${o.status}">${o.status}</span></td>
+      <td>
+        ${o.status!=='completed' && o.status!=='cancelled' ? `<button class="btn btn-outline btn-small" onclick="advanceOrder('${o.id}')">Mark ${NEXT_STATUS[o.status]}</button>` : ''}
+        ${o.status==='pending' ? `<button class="btn btn-danger btn-small" onclick="cancelOrder('${o.id}')">Cancel</button>` : ''}
+      </td>
+    </tr>
+  `).join('');
+}
+
+function advanceOrder(id){
+  const order = DB.orders.find(o=>o.id===id);
+  if(!order) return;
+  order.status = NEXT_STATUS[order.status] || order.status;
+  saveDB(DB);
+  renderCanOrders();
+}
+
+function cancelOrder(id){
+  const order = DB.orders.find(o=>o.id===id);
+  if(!order) return;
+  order.status = 'cancelled';
+  saveDB(DB);
+  renderCanOrders();
+}
+
+/* ===================== UTIL ===================== */
+function closeModal(id){
+  document.getElementById(id).classList.add('hidden');
+}
+
+init();
+</script>
+</body>
+</html>
