@@ -57,14 +57,17 @@ const CantineAPI = {
   async registerUser(userData) {
     const response = await this._request({
       action: "registerUser",
-      name: userData.name,
-      badgeId: userData.badgeId.trim(),
+      // These keys MUST match the 'postData.xyz' keys in your Apps Script
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email || "",
       password: userData.password,
+      leoniId: userData.badgeId ? userData.badgeId.trim() : "",
       role: userData.role || "employee",
       plant: userData.plant || "",
       position: userData.position || "",
       office: userData.office || "",
-      email: userData.email || ""
+      createdAt: userData.createdAt || new Date().toISOString()
     }, { method: "POST" });
 
     return !!(response && response.success);
