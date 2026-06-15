@@ -1,0 +1,18 @@
+{
+  "sandwiches": [
+    { "id": "snd_01", "name": "Chapatie El Mahdia", "price": 4.50, "available": true },
+    { "id": "snd_02", "name": "Makloub Escalope", "price": 5.50, "available": true },
+    { "id": "snd_03", "name": "Kafteji Sandwich", "price": 3.50, "available": true }
+  ],
+  "daily_plate_bases": [
+    { "id": "base_01", "name": "Couscous Base", "price": 4.50, "description": "Traditional Tunisian steamed semolina", "available": true },
+    { "id": "base_02", "name": "Pasta Base (Macarouna)", "price": 4.00, "description": "Spicy tomato sauce pasta with chickpea accents", "available": true },
+    { "id": "base_03", "name": "Riz Djerbien Base", "price": 4.50, "description": "Steamed seasoned rice mixed with greens", "available": true }
+  ],
+  "daily_plate_addons": [
+    { "id": "add_poisson", "name": "Poisson (Fish)", "price": 5.50, "available": true },
+    { "id": "add_escalope", "name": "Escalope de Poulet", "price": 4.00, "available": true },
+    { "id": "add_viande", "name": "Viande d'Agneau (Lamb)", "price": 6.50, "available": true },
+    { "id": "add_oeuf", "name": "Œuf Dur (Boiled Egg)", "price": 1.00, "available": true }
+  ]
+}

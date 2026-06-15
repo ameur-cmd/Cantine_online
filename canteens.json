@@ -1,0 +1,52 @@
+[
+  {
+    "plantId": "LTN1",
+    "plantName": "LTN1 — Mateur Plant 1",
+    "canteens": [
+      {
+        "id": "LTN1-Main",
+        "name": "Building A Main Canteen",
+        "type": "Standard Hot Plates",
+        "workingHours": "07:00 - 19:00",
+        "orderDeadlines": { "lunch": "10:30", "dinner": "16:30" },
+        "officeDelivery": true
+      }
+    ]
+  },
+  {
+    "plantId": "LTN3",
+    "plantName": "LTN3 — Mateur Plant 3",
+    "canteens": [
+      {
+        "id": "LTN3-A",
+        "name": "Cantine A (Boutique & Ice Creams)",
+        "type": "Snack & Coffee Bar",
+        "workingHours": "06:00 - 22:00",
+        "orderDeadlines": { "allDay": "21:00" },
+        "officeDelivery": true
+      },
+      {
+        "id": "LTN3-B",
+        "name": "Cantine B (Standard Hot Plates)",
+        "type": "Main Lunch Hall",
+        "workingHours": "11:30 - 14:30, 18:00 - 21:00",
+        "orderDeadlines": { "lunch": "11:00", "dinner": "17:30" },
+        "officeDelivery": false
+      }
+    ]
+  },
+  {
+    "plantId": "BIZ1",
+    "plantName": "BIZ1 — Bizerte Plant",
+    "canteens": [
+      {
+        "id": "BIZ1-Main",
+        "name": "Ground Floor Canteen",
+        "type": "Standard Hot Plates",
+        "workingHours": "07:30 - 16:00",
+        "orderDeadlines": { "lunch": "10:00" },
+        "officeDelivery": true
+      }
+    ]
+  }
+]

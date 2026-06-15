@@ -1,0 +1,38 @@
+[
+  {
+    "id": "u_default_1",
+    "role": "employee",
+    "firstName": "Ameur",
+    "lastName": "Ben Salah",
+    "email": "ameur.worker@leoni.com",
+    "password": "password123",
+    "leoniId": "104521",
+    "position": "Automation Engineer",
+    "plant": "LTN3",
+    "canteenId": "LTN3-A",
+    "office": "Building A, 2nd floor, Office 214"
+  },
+  {
+    "id": "u_default_2",
+    "role": "employee",
+    "firstName": "Sonia",
+    "lastName": "Cherif",
+    "email": "sonia.dev@leoni.com",
+    "password": "mysecurepass",
+    "leoniId": "108744",
+    "position": "Harness Designer",
+    "plant": "LTN1",
+    "canteenId": "LTN1-Main",
+    "office": "Design Center, Desk 12"
+  },
+  {
+    "id": "u_staff_1",
+    "role": "cantine",
+    "firstName": "Canteen Manager",
+    "lastName": "LTN3",
+    "email": "cantine.ltn3@leoni.com",
+    "password": "canteenstaff1",
+    "plant": "LTN3",
+    "canteenId": "LTN3-A"
+  }
+]

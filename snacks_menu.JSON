@@ -1,0 +1,12 @@
+{
+  "biscuits": [
+    { "id": "snk_b1", "brand": "Saida", "name": "Prince Chocolat", "price": 1.20, "available": true },
+    { "id": "snk_b2", "brand": "Tom", "name": "Major Chocolat", "price": 0.90, "available": true },
+    { "id": "snk_b3", "brand": "Saber", "name": "Gaufrette Break", "price": 1.50, "available": true }
+  ],
+  "icecreams": [
+    { "id": "snk_i1", "brand": "Selja", "name": "Gourmandise Vanille", "price": 2.50, "available": true },
+    { "id": "snk_i2", "brand": "Ola", "name": "Cornetto Chocolat", "price": 3.50, "available": true },
+    { "id": "snk_i3", "brand": "Selja", "name": "Esquimau Chocolat", "price": 1.80, "available": true }
+  ]
+}
