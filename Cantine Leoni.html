@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leoni Cantine — Market Testing Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAF8;
+    --paper:#FFFFFF;
+    --ink:#22272E;
+    --muted:#8A9099;
+    --line:#EAEBE8;
+    --orange:#FF6A13;
+    --orange-soft:#FFEDE0;
+    --blue:#1E4E8C;
+    --blue-soft:#E7EFF8;
+    --green-soft:#E6F2E6;
+    --green:#3F7D44;
+    --radius:12px;
+    --shadow: 0 2px 14px rgba(34,39,46,0.05);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.45;
+  }
+  h1,h2,h3,h4{font-weight:700; letter-spacing:-0.01em; color:var(--ink);}
+  .mono{font-family:'Space Mono', monospace;}
+  .hidden{display:none !important;}
+  button{font-family:inherit; cursor:pointer;}
+  a{color:inherit;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:50;
+  }
+  .brand{
+    display:flex; align-items:center; gap:8px;
+    font-weight:800; font-size:1.15rem; letter-spacing:-0.01em;
+  }
+  .brand .dot{
+    width:10px; height:10px; border-radius:50%;
+    background: var(--orange);
+    display:inline-block;
+  }
+  .brand .tag{
+    font-family:'Space Mono', monospace; font-size:0.6rem; font-weight:700;
+    color:var(--blue); border:1px solid var(--blue-soft); background:var(--blue-soft);
+    padding:3px 7px; border-radius:6px; letter-spacing:0.06em; margin-left:4px;
+  }
+  .topbar-right{display:flex; align-items:center; gap:14px; font-size:0.88rem;}
+  .topbar-right .who{color:var(--muted); font-size:0.82rem;}
+  .btn{
+    border:none; border-radius:9px; padding:10px 18px;
+    font-weight:600; font-size:0.9rem;
+    transition: transform .12s ease, box-shadow .12s ease, background .15s ease, border-color .15s ease;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--orange); color:#fff;}
+  .btn-primary:hover{background:#E65E0E;}
+  .btn-ghost{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--muted);}
+  .btn-outline{background:var(--paper); color:var(--ink); border:1.5px solid var(--line);}
+  .btn-outline:hover{border-color:var(--blue);}
+  .btn-small{padding:6px 12px; font-size:0.8rem; border-radius:8px;}
+  .btn-danger{background:#fff; color:#B23A2E; border:1.5px solid #F1D8D2;}
+  .btn-danger:hover{background:#FBEAE6;}
+  .btn:disabled{opacity:0.4; cursor:not-allowed;}
+
+  /* ---------- Layout ---------- */
+  .page{max-width:1180px; margin:0 auto; padding:28px 24px 80px;}
+  .auth-page{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    background: var(--bg);
+    padding:24px;
+  }
+
+  /* ---------- Loader Overlay ---------- */
+  .app-loader{
+    position: fixed; inset: 0; background: rgba(250,250,248,0.85);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 2000; gap: 12px; font-size: 0.9rem; font-weight: 600; color: var(--blue);
+  }
+  .spinner {
+    width: 32px; height: 32px; border: 3px solid var(--line);
+    border-top-color: var(--blue); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------- Auth card ---------- */
+  .auth-card{
+    background:var(--paper); border-radius:16px; padding:36px;
+    width:100%; max-width:460px;
+    border:1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+  .auth-header{margin-bottom:22px;}
+  .auth-header .eyebrow{
+    font-family:'Space Mono', monospace; font-size:0.66rem; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--orange); font-weight:700; margin-bottom:8px;
+  }
+  .auth-header h1{font-size:1.7rem; margin-bottom:4px;}
+  .auth-header p{color:var(--muted); font-size:0.9rem;}
+
+  .role-toggle{
+    display:flex; background:var(--bg); border-radius:10px; padding:4px;
+    margin-bottom:20px; border:1px solid var(--line);
+  }
+  .role-toggle button{
+    flex:1; border:none; background:transparent; padding:9px 8px;
+    border-radius:8px; font-weight:700; font-size:0.83rem; color:var(--muted);
+    transition: all .15s ease;
+  }
+  .role-toggle button.active{background:var(--blue); color:#fff;}
+
+  .field{margin-bottom:13px;}
+  .field label{
+    display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px;
+    color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;
+  }
+  .field input, .field select{
+    width:100%; padding:11px 13px; border-radius:9px;
+    border:1.5px solid var(--line); font-size:0.92rem;
+    font-family:inherit; background:var(--bg); color:var(--ink);
+    transition: border-color .15s ease;
+  }
+  .field input:focus, .field select:focus{outline:none; border-color:var(--blue); background:var(--paper);}
+  .field-grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+
+  .auth-actions{margin-top:18px; display:flex; flex-direction:column; gap:10px;}
+  .auth-switch{margin-top:16px; text-align:center; font-size:0.84rem; color:var(--muted);}
+  .auth-switch button{background:none; border:none; color:var(--orange); font-weight:700; padding:0;}
+  .auth-error{
+    background:#FBEAE6; color:#B23A2E; padding:10px 14px; border-radius:8px;
+    font-size:0.84rem; margin-bottom:12px;
+  }
+
+  /* ---------- Section headers ---------- */
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:18px; gap:16px; flex-wrap:wrap;
+  }
+  .section-head h2{font-size:1.35rem;}
+  .eyebrow-label{
+    font-family:'Space Mono', monospace; font-size:0.66rem; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--orange); font-weight:700; margin-bottom:4px;
+  }
+
+  /* ---------- Day tabs ---------- */
+  .day-tabs{
+    display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; margin-bottom:20px;
+    -ms-overflow-style:none; scrollbar-width:none;
+  }
+  .day-tabs::-webkit-scrollbar{display:none;}
+  .day-tab{
+    flex:0 0 auto; background:var(--paper); border:1.5px solid var(--line);
+    border-radius:24px; padding:9px 16px; font-weight:600; font-size:0.83rem;
+    color:var(--muted); transition:all .15s ease; white-space:nowrap;
+  }
+  .day-tab .d{display:block; font-size:0.64rem; font-family:'Space Mono',monospace; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; opacity:0.7;}
+  .day-tab.active{background:var(--blue); color:#fff; border-color:var(--blue);}
+  .day-tab.past{opacity:0.35; cursor:not-allowed;}
+
+  /* ---------- Layout Elements ---------- */
+  .menu-layout{display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;}
+  @media (max-width:920px){ .menu-layout{grid-template-columns:1fr;} }
+
+  .category-block{margin-bottom:28px;}
+  .category-title{
+    display:flex; align-items:center; gap:10px; margin-bottom:12px;
+    font-size:0.95rem; font-weight:700; color:var(--ink);
+  }
+  .category-title .count{
+    font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); font-weight:400;
+  }
+  .category-line{flex:1; height:1px; background:var(--line);}
+
+  .item-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:12px;}
+  .item-card{
+    background:var(--paper); border:1.5px solid var(--line); border-radius:var(--radius);
+    padding:14px; display:flex; flex-direction:column; gap:6px;
+    transition: border-color .15s ease;
+  }
+  .item-card:hover{border-color:#D9DCD6;}
+  .item-card .top-row{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+  .item-card h4{font-size:0.95rem; line-height:1.25; font-weight:600;}
+  .item-card .desc{font-size:0.8rem; color:var(--muted); line-height:1.4; flex:1;}
+  .item-card .price{font-family:'Space Mono', monospace; font-weight:700; color:var(--blue); font-size:0.9rem;}
+  .badge{
+    font-family:'Space Mono', monospace; font-size:0.6rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.07em; padding:3px 7px; border-radius:6px;
+    white-space:nowrap;
+  }
+  .badge.offer{background:var(--orange-soft); color:var(--orange);}
+  .badge.out{background:var(--line); color:var(--muted);}
+  .item-card .bottom-row{display:flex; justify-content:space-between; align-items:center; margin-top:auto;}
+  .qty-control{display:flex; align-items:center; gap:8px;}
+  .qty-control button{
+    width:28px; height:28px; border-radius:7px; border:1.5px solid var(--line);
+    background:var(--bg); font-size:1rem; font-weight:700; line-height:1; color:var(--ink);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .qty-control button:hover{border-color:var(--blue);}
+  .qty-control .qty{min-width:16px; text-align:center; font-weight:700; font-family:'Space Mono',monospace; font-size:0.85rem;}
+  .add-btn{
+    background:var(--blue); color:#fff; border:none; border-radius:7px;
+    padding:7px 13px; font-weight:600; font-size:0.78rem;
+  }
+  .add-btn:hover{background:#173e6e;}
+
+  /* ---------- Cart / ticket ---------- */
+  .ticket{
+    background:var(--paper); border-radius:var(--radius); border:1.5px solid var(--line);
+    padding:20px; position:sticky; top:90px;
+  }
+  .ticket h3{font-size:1rem; margin-bottom:2px;}
+  .ticket .ticket-sub{font-size:0.78rem; color:var(--muted); margin-bottom:14px;}
+  .cart-line{
+    display:flex; justify-content:space-between; gap:10px; font-size:0.86rem; margin-bottom:10px;
+    align-items:flex-start;
+  }
+  .cart-line .name{flex:1;}
+  .cart-line .name small{display:block; color:var(--muted); font-size:0.72rem;}
+  .cart-line .amt{font-family:'Space Mono',monospace; font-weight:700; white-space:nowrap; text-align:right;}
+  .cart-empty{font-size:0.84rem; color:var(--muted); padding:8px 0;}
+  .cart-divider{border-top:1px solid var(--line); margin:14px 0;}
+  .cart-row{display:flex; justify-content:space-between; font-size:0.86rem; margin-bottom:6px; color:var(--muted);}
+  .cart-total{
+    display:flex; justify-content:space-between; font-weight:800; font-size:1.05rem;
+    padding-top:10px; font-family:'Space Mono',monospace;
+  }
+  .remove-x{background:none; border:none; color:var(--orange); font-size:0.72rem; font-weight:700; padding:0 0 0 8px;}
+
+  .pickup-box{margin-top:16px;}
+  .pickup-box label{display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;}
+  .pickup-row{display:flex; flex-direction:column; gap:8px;}
+  .pickup-row select{width:100%; padding:10px; border-radius:9px; border:1.5px solid var(--line); background:var(--bg); font-family:inherit; color:var(--ink);}
+  .deadline-note{font-size:0.76rem; color:var(--muted); margin-top:8px; font-weight:500;}
+  .deadline-note.warn{color:var(--orange);}
+
+  .delivery-toggle{
+    margin-top:14px; display:flex; align-items:center; justify-content:space-between;
+    padding:10px 12px; border:1.5px solid var(--line); border-radius:9px; background:var(--bg);
+  }
+  .delivery-toggle label{font-size:0.85rem; font-weight:600; cursor:pointer;}
+  .delivery-toggle .fee{font-size:0.76rem; color:var(--muted); font-family:'Space Mono',monospace;}
+  .switch{position:relative; width:38px; height:22px; flex-shrink:0;}
+  .switch input{opacity:0; width:0; height:0;}
+  .switch .slider{position:absolute; cursor:pointer; inset:0; background:var(--line); border-radius:22px; transition:.2s;}
+  .switch .slider::before{content:""; position:absolute; height:16px; width:16px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.2s;}
+  .switch input:checked + .slider{background:var(--blue);}
+  .switch input:checked + .slider::before{transform:translateX(16px);}
+  .office-field{margin-top:10px;}
+  .office-field input{width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line); background:var(--bg); font-family:inherit; font-size:0.86rem; color:var(--ink);}
+
+  /* ---------- Tables ---------- */
+  .table-wrap{background:var(--paper); border-radius:var(--radius); border:1.5px solid var(--line); overflow:hidden;}
+  table{width:100%; border-collapse:collapse; font-size:0.86rem;}
+  th, td{padding:11px 16px; text-align:left; border-bottom:1px solid var(--line);}
+  th{font-family:'Space Mono',monospace; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:700; background:var(--bg);}
+  tr:last-child td{border-bottom:none;}
+  .status-pill{
+    font-family:'Space Mono',monospace; font-size:0.64rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.06em; padding:4px 9px; border-radius:20px; display:inline-block;
+  }
+  .status-pending{background:var(--orange-soft); color:var(--orange);}
+  .status-confirmed{background:var(--blue-soft); color:var(--blue);}
+  .status-ready{background:var(--green-soft); color:var(--green);}
+  .status-completed{background:var(--line); color:var(--muted);}
+  .status-cancelled{background:#F6D8D2; color:#a33;}
+
+  /* ---------- Panels ---------- */
+  .panel{background:var(--paper); border-radius:var(--radius); border:1.5px solid var(--line); padding:22px; margin-bottom:22px;}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:600px){ .grid-2{grid-template-columns:1fr;} }
+  .form-row{margin-bottom:12px;}
+  .form-row label{display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;}
+  .form-row input, .form-row select, .form-row textarea{width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line); font-family:inherit; font-size:0.88rem; background:var(--bg); color:var(--ink);}
+  .form-row textarea{resize:vertical; min-height:56px;}
+  .checkbox-row{display:flex; align-items:center; gap:8px; margin-bottom:12px;}
+
+  .menu-item-row{display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);}
+  .menu-item-row:last-child{border-bottom:none;}
+  .menu-item-row .mi-info{flex:1;}
+  .menu-item-row .mi-info h4{font-size:0.92rem; margin-bottom:2px; font-weight:600;}
+  .menu-item-row .mi-info p{font-size:0.78rem; color:var(--muted);}
+  .menu-item-row .mi-price{font-family:'Space Mono',monospace; font-weight:700; min-width:60px; text-align:right; font-size:0.88rem;}
+  .empty-state{text-align:center; padding:46px 20px; color:var(--muted);}
+  .empty-state h3{color:var(--ink); margin-bottom:8px; font-size:1.05rem;}
+
+  .toast{
+    position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff;
+    padding:14px 22px; border-radius:10px; font-size:0.88rem; font-weight:600;
+    box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:200;
+    opacity:0; transform:translateY(12px); transition:all .25s ease; pointer-events:none;
+  }
+  .toast.show{opacity:1; transform:translateY(0);}
+
+  .modal-overlay{position:fixed; inset:0; background:rgba(34,39,46,0.4); display:flex; align-items:center; justify-content:center; z-index:300; padding:20px;}
+  .modal{background:var(--paper); border-radius:14px; padding:26px; max-width:480px; width:100%; max-height:88vh; overflow-y:auto; border:1px solid var(--line);}
+  .modal h3{margin-bottom:16px;}
+  .modal-actions{display:flex; gap:10px; justify-content:flex-end; margin-top:18px;}
+
+  .pay-card{border:1.5px solid var(--line); border-radius:10px; padding:14px; margin-bottom:10px; display:flex; align-items:center; gap:12px; cursor:pointer;}
+  .pay-card.selected{border-color:var(--blue); background:var(--blue-soft);}
+  .pay-card .pay-icon{width:36px; height:36px; border-radius:8px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:1.05rem;}
+  .pay-card.selected .pay-icon{background:var(--blue); color:#fff;}
+  .small-muted{font-size:0.8rem; color:var(--muted); line-height:1.5;}
+
+  .top-link{background:none; border:none; color:var(--muted); font-weight:600; font-size:0.88rem; border-bottom:2px solid transparent; padding:4px 0; margin-right:12px;}
+  .top-link.active{color:var(--ink); border-bottom-color:var(--orange);}
+
+  .order-number-box{text-align:center; padding:28px 20px; background:var(--blue-soft); border-radius:12px; margin-bottom:18px;}
+  .order-number-box .lbl{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--blue); font-weight:700; margin-bottom:8px;}
+  .order-number-box .num{font-family:'Space Mono',monospace; font-size:2.1rem; font-weight:700; color:var(--blue); letter-spacing:0.05em;}
+  .order-num-pill{font-family:'Space Mono',monospace; font-weight:700; font-size:0.8rem; color:var(--blue); background:var(--blue-soft); padding:2px 8px; border-radius:6px;}
+</style>
+</head>
+<body>
+
+<div id="appLoader" class="app-loader hidden">
+  <div class="spinner"></div>
+  <div id="loaderText">Synchronizing Database...</div>
+</div>
+
+<div id="authPage" class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="eyebrow">Leoni Cantine · Testing Sandbox</div>
+      <h1 id="authTitle">Sign in</h1>
+      <p id="authSubtitle">Access plant canteens across your work shifts.</p>
+    </div>
+
+    <div class="role-toggle">
+      <button id="roleEmployeeBtn" class="active" onclick="setAuthRole('employee')">Employee</button>
+      <button id="roleCantineBtn" onclick="setAuthRole('cantine')">Cantine staff</button>
+    </div>
+
+    <div id="authError" class="auth-error hidden"></div>
+
+    <div id="loginFields">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="you@leoni.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••">
+      </div>
+    </div>
+
+    <div id="signupFields" class="hidden">
+      <div class="field-grid2">
+        <div class="field">
+          <label>First name</label>
+          <input type="text" id="signupFirstName" placeholder="Ameur">
+        </div>
+        <div class="field">
+          <label>Last name</label>
+          <input type="text" id="signupLastName" placeholder="Ben Salah">
+        </div>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="signupEmail" placeholder="you@leoni.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="signupPassword" placeholder="Choose password">
+      </div>
+
+      <div id="employeeSignupFields">
+        <div class="field-grid2">
+          <div class="field">
+            <label>Leoni ID</label>
+            <input type="text" id="signupLeoniId" placeholder="104523">
+          </div>
+          <div class="field">
+            <label>Position</label>
+            <input type="text" id="signupPosition" placeholder="Automation Engineer">
+          </div>
+        </div>
+        <div class="field">
+          <label>Plant Workspace</label>
+          <select id="signupPlant" onchange="onSignupPlantChange()"></select>
+        </div>
+        <div class="field">
+          <label>Assigned Default Canteen</label>
+          <select id="signupEmployeeCanteen"></select>
+        </div>
+        <div class="field">
+          <label>Office / workshop location</label>
+          <input type="text" id="signupOffice" placeholder="Building A, Office 214">
+        </div>
+      </div>
+
+      <div class="field hidden" id="signupCantineField">
+        <label>Cantine you manage</label>
+        <select id="signupCantine"></select>
+      </div>
+    </div>
+
+    <div class="auth-actions">
+      <button class="btn btn-primary" id="authSubmitBtn" onclick="handleAuthSubmit()">Sign in</button>
+    </div>
+
+    <div class="auth-switch">
+      <span id="authSwitchText">New here?</span>
+      <button id="authSwitchBtn" onclick="toggleAuthMode()">Create an account</button>
+    </div>
+  </div>
+</div>
+
+<div id="employeeApp" class="hidden">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">EMPLOYEE</span></div>
+    <div class="topbar-right">
+      <button class="top-link active" data-emp-view="menu" onclick="switchEmployeeView('menu')">Counter</button>
+      <button class="top-link" data-emp-view="orders" onclick="switchEmployeeView('orders')">My Orders</button>
+      <span class="who" id="empWho"></span>
+      <button class="btn btn-ghost btn-small" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="page">
+    <div id="empMenuView">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow-label" id="empPlantLabel"></div>
+          <h2>Today's Counter Lines</h2>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase;">Dining Hall:</label>
+          <select id="empCanteenSelect" onchange="onEmpCanteenChange()" style="padding: 6px 12px; border-radius: 8px; border: 1.5px solid var(--line); font-size: 0.85rem; font-weight: 600; background: var(--paper); color: var(--ink);"></select>
+        </div>
+      </div>
+
+      <div class="day-tabs" id="empDayTabs"></div>
+
+      <div class="menu-layout">
+        <div id="empCategories"></div>
+        <div>
+          <div class="ticket">
+            <h3>Your Meal Tray</h3>
+            <div class="ticket-sub" id="ticketDayLabel"></div>
+            <div id="cartLines"></div>
+
+            <div class="cart-divider"></div>
+            <div class="cart-row" id="cartSubtotalRow"><span>Subtotal</span><span class="mono">0.00 DT</span></div>
+            <div class="cart-row hidden" id="cartDeliveryRow"><span>Office Delivery</span><span class="mono">+2.00 DT</span></div>
+            <div class="cart-total"><span>Total</span><span id="cartTotal">0.00 DT</span></div>
+
+            <div class="pickup-box">
+              <label>Scheduling Logistics</label>
+              <div class="pickup-row">
+                <select id="pickupDaySelect" onchange="onPickupDateChange()"></select>
+                <select id="pickupTimeSelect" onchange="renderCart()"></select>
+              </div>
+              <div class="deadline-note" id="deadlineNote"></div>
+            </div>
+
+            <div class="delivery-toggle">
+              <div>
+                <label for="deliveryToggle">Deliver directly to my office</label>
+                <div class="fee">+2.00 DT logistics fee</div>
+              </div>
+              <div class="switch">
+                <input type="checkbox" id="deliveryToggle" onchange="onDeliveryToggle()">
+                <span class="slider"></span>
+              </div>
+            </div>
+            <div class="office-field hidden" id="officeFieldWrap">
+              <input type="text" id="officeOverride" placeholder="Confirm floor/office location text">
+            </div>
+
+            <div style="margin-top:16px;">
+              <button class="btn btn-primary" style="width:100%;" id="checkoutBtn" onclick="openCheckout()">Checkout &amp; Pay</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="empOrdersView" class="hidden">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow-label">Order History Log</div>
+          <h2>My Real-time Orders</h2>
+        </div>
+      </div>
+      <div id="empOrdersList"></div>
+    </div>
+  </div>
+</div>
+
+<div id="cantineApp" class="hidden">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">KITCHEN</span></div>
+    <div class="topbar-right">
+      <button class="top-link active" data-can-view="menu" onclick="switchCantineView('menu')">Manage Stock</button>
+      <button class="top-link" data-can-view="orders" onclick="switchCantineView('orders')">Live Queue</button>
+      <span class="who" id="canWho"></span>
+      <button class="btn btn-ghost btn-small" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="page">
+    <div id="canMenuView">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow-label" id="canPlantLabel"></div>
+          <h2>Counter Control Dashboard</h2>
+        </div>
+        <button class="btn btn-primary btn-small" onclick="openItemModal()">+ Stock New Item</button>
+      </div>
+
+      <div class="day-tabs" id="canDayTabs"></div>
+
+      <div class="panel">
+        <div id="canMenuList"></div>
+      </div>
+    </div>
+
+    <div id="canOrdersView" class="hidden">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow-label">Live Spreadsheet Flow</div>
+          <h2>Production Queue Intake</h2>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Order #</th><th>Employee</th><th>Day</th><th>Fulfillment target</th><th>Items Lineup</th><th>Delivery</th><th>Total Billing</th><th>Status</th><th>Actions Engine</th></tr>
+          </thead>
+          <tbody id="canOrdersBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="checkoutModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Secure Portal Gateway</h3>
+    <div id="checkoutSummary" class="small-muted" style="margin-bottom:14px;"></div>
+    
+    <label style="font-size:0.74rem; font-weight:700; color:var(--muted); text-transform:uppercase; margin-bottom:8px; display:block;">Payment Gateway</label>
+    <div class="pay-card selected" data-pay="card" onclick="selectPayMethod(this)">
+      <div class="pay-icon">💳</div>
+      <div><strong>Corporate/Personal Cards</strong><div class="small-muted">Visa, Mastercard, e-Dinar corporate channels</div></div>
+    </div>
+    <div class="pay-card" data-pay="wallet" onclick="selectPayMethod(this)">
+      <div class="pay-icon">📱</div>
+      <div><strong>Mobile API Rails</strong><div class="small-muted">D17 Sandbox, Flouci Network</div></div>
+    </div>
+
+    <div id="cardFields" style="margin-top:14px;">
+      <div class="form-row"><label>Card Primary Account Number</label><input type="text" placeholder="4242 4242 4242 4242"></div>
+      <div class="grid-2">
+        <div class="form-row"><label>Expiry</label><input type="text" placeholder="MM/YY"></div>
+        <div class="form-row"><label>CVC Security</label><input type="text" placeholder="123"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('checkoutModal')">Abort</button>
+      <button class="btn btn-primary" onclick="confirmPayment()" id="payButton">Execute Billing &amp; Submit</button>
+    </div>
+  </div>
+</div>
+
+<div id="confirmModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Transaction Verified &amp; Saved</h3>
+    <div class="order-number-box">
+      <div class="lbl">Production Queue Token</div>
+      <div class="num" id="confirmOrderNumber"></div>
+      <div class="hint">This exact row is dropped straight into the kitchen monitoring spreadsheet line tracking sheets.</div>
+    </div>
+    <div id="confirmSummary" class="small-muted"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="closeModal('confirmModal')">Return to Workspace</button>
+    </div>
+  </div>
+</div>
+
+<div id="itemModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3 id="itemModalTitle">Stock Control Sheet Row</h3>
+    <input type="hidden" id="itemEditId">
+    <div class="form-row">
+      <label>Operational Weekday Index</label>
+      <select id="itemDay"></select>
+    </div>
+    <div class="form-row">
+      <label>Product Title Name</label>
+      <input type="text" id="itemName" placeholder="e.g., Artisanal Gelato Cup">
+    </div>
+    <div class="form-row">
+      <label>Menu Descriptor Text</label>
+      <textarea id="itemDesc" placeholder="e.g., Boutique line item details..."></textarea>
+    </div>
+    <div class="grid-2">
+      <div class="form-row">
+        <label>Unit Valuation Price (DT)</label>
+        <input type="number" id="itemPrice" min="0" step="0.1">
+      </div>
+      <div class="form-row">
+        <label>Category Sorting Group</label>
+        <select id="itemCategory">
+          <option value="main">Main plates</option>
+          <option value="salad">Salads &amp; soups</option>
+          <option value="drink">Drinks &amp; water</option>
+          <option value="snack">Snacks &amp; biscuits</option>
+          <option value="coffee">Coffee &amp; hot drinks</option>
+          <option value="dessert">Desserts / Boutique Lines</option>
+        </select>
+      </div>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="itemOffer">
+      <label for="itemOffer" style="font-weight:600; font-size:0.85rem;">Inject as Daily Boutique Special Offer</label>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="itemAvailable" checked>
+      <label for="itemAvailable" style="font-weight:600; font-size:0.85rem;">Visibility State (Active inside live arrays)</label>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('itemModal')">Dismiss</button>
+      <button class="btn btn-primary" onclick="saveMenuItem()">Commit to Storage Row</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/**
+ * LEONI CANTINE — GOOGLE SPREADSHEET BACKEND RELATIONAL ENGINE
+ * Configured explicitly to read/write columns asynchronously into Apps Script lines.
+ */
+
+// Paste your Google Apps Script Deployment URL here
+const API_URL = "https://script.google.com/macros/s/AKfycbw0pZ7-fDscq4Y8Kx8qO1T1rM82Rj0wT1H2A2X_ABC123/exec"; 
+
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const CATEGORIES = [
+  { id:'main',    label:'Main plates' },
+  { id:'salad',   label:'Salads & soups' },
+  { id:'drink',   label:'Drinks & water' },
+  { id:'snack',   label:'Snacks & biscuits' },
+  { id:'coffee',  label:'Coffee & hot drinks' },
+  { id:'dessert', label:'Desserts & Boutique Specials' }
+];
+const DELIVERY_FEE = 2.0;
+
+// Hardcoded relational definitions for operational scaling
+const PLANTS = [
+  { id:'LTN1', name:'LTN1 — Mateur Plant', canteens: [{id:'LTN1-A', name:'Building A Main Counter'}] },
+  { id:'LTN2', name:'LTN2 — Mateur 2 Plant', canteens: [{id:'LTN2-C', name:'Building C Main Counter'}] },
+  { id:'BIZ1', name:'BIZ1 — Bizerte Plant', canteens: [{id:'BIZ1-G', name:'Ground Floor Dining'}] },
+  { id:'MGD1', name:'MGD1 — Megrine Plant', canteens: [{id:'MGD1-L', name:'Logistics Dining Hub'}] },
+  { id:'LTN3', name:'LTN3 — Mateur 3 Plant', canteens: [
+      {id:'LTN3-A', name:'Cantine A (Boutique & Ice Creams)'},
+      {id:'LTN3-B', name:'Cantine B (Standard Hot Plates)'}
+    ]
+  }
+];
+
+// In-Memory Relational Database State Engine
+let STATE = {
+  users: [],
+  menus: [],
+  purchases: []
+};
+
+let session = JSON.parse(sessionStorage.getItem('leoniSession') || 'null');
+let authMode = 'login';
+let authRole = 'employee';
+
+let cart = [];
+let empSelectedDay = currentDayName();
+let empPlant = null;
+let empCanteenId = null;
+let deliverToOffice = false;
+
+let canSelectedDay = currentDayName();
+let canCanteenId = null;
+
+/* ------ NETWORK WRAPPER CONTROLLERS ------ */
+function showLoader(txt) {
+  document.getElementById('loaderText').textContent = txt || "Synchronizing data layers...";
+  document.getElementById('appLoader').classList.remove('hidden');
+}
+function hideLoader() {
+  document.getElementById('appLoader').classList.add('hidden');
+}
+
+/**
+ * Optimistic Engine Interface Module
+ * Pulls all synchronized data structures at once via custom Apps Script action grouping
+ */
+async function syncDatabaseState() {
+  if (!API_URL || API_URL.includes("ABC123")) {
+    console.warn("Spreadsheet Endpoint token missing. Activating emergency local database engine mock values.");
+    loadMockSandboxEngine();
+    return;
+  }
+  
+  try {
+    showLoader("Pulling database sheets rows...");
+    const resp = await fetch(`${API_URL}?action=getAllTables`, {
+      method: "GET",
+      redirect: "follow"
+    });
+    const result = await resp.json();
+    if(result && result.status === "success") {
+      STATE.users = result.tables.users || [];
+      STATE.menus = result.tables.menus || [];
+      STATE.purchases = result.tables.purchases || [];
+      console.log("Database synchronization complete:", STATE);
+    }
+  } catch (err) {
+    console.error("Network IO initialization failure. Reverting to sandbox.", err);
+    loadMockSandboxEngine();
+  } finally {
+    hideLoader();
+  }
+}
+
+async function writeToSpreadsheetRow(sheetName, actionType, dataPayload) {
+  if (!API_URL || API_URL.includes("ABC123")) {
+    executeOptimisticFallback(sheetName, actionType, dataPayload);
+    return { status: "success", mock: true };
+  }
+
+  try {
+    showLoader("Writing entry into remote cell row...");
+    const payload = {
+      action: actionType,
+      sheet: sheetName,
+      rowData: dataPayload
+    };
+
+    const resp = await fetch(API_URL, {
+      method: "POST",
+      redirect: "follow",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    return await resp.json();
+  } catch (err) {
+    console.warn("Pipeline redirection intercept active. Running local cache validation state optimization engine.", err);
+    executeOptimisticFallback(sheetName, actionType, dataPayload);
+    return { status: "success", mock: true };
+  } finally {
+    hideLoader();
+  }
+}
+
+/* ------ FALLBACK DEVELOPMENT CONFIGURATIONS ------ */
+function loadMockSandboxEngine() {
+  if(STATE.users.length > 0) return; 
+  STATE.users = [
+    { id:'u1', role:'employee', firstName:'Ameur', lastName:'Ben Salah', email:'alice@leoni.com', password:'pass123', leoniId:'104521', position:'Automation Engineer', plant:'LTN3', canteenId:'LTN3-A', office:'Building A, Office 214' },
+    { id:'u2', role:'cantine', firstName:'Kitchen Counter A', lastName:'Staff', email:'cantine.ltn1@leoni.com', password:'pass123', plant:'LTN3', canteenId:'LTN3-A' }
+  ];
+  
+  // Construct a base menu profile array
+  const mockDishes = [
+    ['Couscous with lamb','Slow-cooked lamb couscous with seasonal vegetables', 9.0, 'main', false],
+    ['Tunisian Salad Row','Fresh dicing configuration parameters', 2.5, 'salad', false],
+    ['Mineral Water 0.5L','Refrigerated packs', 1.0, 'drink', false],
+    ['Espresso Shot','Premium Italian alignment variables', 1.2, 'coffee', false]
+  ];
+
+  PLANTS.forEach(p => {
+    p.canteens.forEach(c => {
+      DAYS.slice(0,5).forEach(d => {
+        mockDishes.forEach((md, i) => {
+          STATE.menus.push({
+            id: `${c.id}-${d}-${i}`, plantId: p.id, canteenId: c.id, day: d, name: md[0], desc: md[1], price: md[2], category: md[3], offer: md[4], available: true
+          });
+        });
+        if(c.id === 'LTN3-A') {
+          STATE.menus.push({ id: `${c.id}-${d}-ice1`, plantId: p.id, canteenId: c.id, day: d, name: 'Artisanal Italian Gelato Cup', desc: 'Vanilla and chocolate formulation metrics', price: 4.5, category: 'dessert', offer: true, available: true });
+          STATE.menus.push({ id: `${c.id}-${d}-ice2`, plantId: p.id, canteenId: c.id, day: d, name: 'Boutique Ice Cream Multi-Pack', desc: 'Premium selection pack of 4 mini lines', price: 12.0, category: 'dessert', offer: false, available: true });
+        }
+      });
+    });
+  });
+}
+
+function executeOptimisticFallback(sheetName, actionType, dataPayload) {
+  if(actionType === "insertRow") {
+    STATE[sheetName === "purchases" ? "purchases" : sheetName].push(dataPayload);
+  } else if (actionType === "updateRow") {
+    const targetArr = STATE[sheetName === "purchases" ? "purchases" : sheetName];
+    const idx = targetArr.findIndex(x => x.id === dataPayload.id);
+    if(idx !== -1) targetArr[idx] = Object.assign(targetArr[idx], dataPayload);
+  } else if (actionType === "deleteRow") {
+    STATE[sheetName] = STATE[sheetName].filter(x => x.id !== dataPayload.id);
+  }
+}
+
+/* ------ CORE APPLICATION INITIALIZATION AND LIFECYCLE CONTROLS ------ */
+async function init(){
+  populatePlantSelects();
+  await syncDatabaseState();
+  if(session){
+    enterApp();
+  } else {
+    showAuth();
+  }
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2400);
+}
+
+function currentDayName(){
+  const d = new Date();
+  const idx = (d.getDay()+6)%7;
+  return DAYS[idx] === 'Saturday' || DAYS[idx] === 'Sunday' ? 'Monday' : DAYS[idx];
+}
+
+/* ------ SECURITY CONTROLLER AUTHENTICATION ENGINE ------ */
+function setAuthRole(role){
+  authRole = role;
+  document.getElementById('roleEmployeeBtn').classList.toggle('active', role==='employee');
+  document.getElementById('roleCantineBtn').classList.toggle('active', role==='cantine');
+  document.getElementById('employeeSignupFields').classList.toggle('hidden', role!=='employee');
+  document.getElementById('signupCantineField').classList.toggle('hidden', role!=='cantine');
+  document.getElementById('authError').classList.add('hidden');
+}
+
+function toggleAuthMode(){
+  authMode = authMode==='login' ? 'signup' : 'login';
+  const isSignup = authMode==='signup';
+  document.getElementById('loginFields').classList.toggle('hidden', isSignup);
+  document.getElementById('signupFields').classList.toggle('hidden', !isSignup);
+  document.getElementById('authTitle').textContent = isSignup ? 'Create account mapping' : 'Sign in';
+  document.getElementById('authSubmitBtn').textContent = isSignup ? 'Instantiate Data Row' : 'Sign in';
+  document.getElementById('authSwitchText').textContent = isSignup ? 'Registered cell already exists?' : 'New here?';
+  document.getElementById('authSwitchBtn').textContent = isSignup ? 'Sign in' : 'Create an account';
+  document.getElementById('authError').classList.add('hidden');
+  if(isSignup) { onSignupPlantChange(); }
+}
+
+function populatePlantSelects(){
+  const pSel = document.getElementById('signupPlant'); pSel.innerHTML = '';
+  PLANTS.forEach(p=>{
+    const opt = document.createElement('option'); opt.value = p.id; opt.textContent = p.name; pSel.appendChild(opt);
+  });
+  const cSel = document.getElementById('signupCantine'); cSel.innerHTML = '';
+  PLANTS.forEach(p=>{
+    p.canteens.forEach(c => {
+      const opt = document.createElement('option'); opt.value = `${p.id}|${c.id}`; opt.textContent = `${p.id} — ${c.name}`; cSel.appendChild(opt);
+    });
+  });
+}
+
+function onSignupPlantChange() {
+  const pId = document.getElementById('signupPlant').value;
+  const empCSel = document.getElementById('signupEmployeeCanteen'); empCSel.innerHTML = '';
+  const plant = PLANTS.find(p => p.id === pId);
+  if(plant) {
+    plant.canteens.forEach(c => {
+      const opt = document.createElement('option'); opt.value = c.id; opt.textContent = c.name; empCSel.appendChild(opt);
+    });
+  }
+}
+
+async function handleAuthSubmit(){
+  document.getElementById('authError').classList.add('hidden');
+  if(authMode==='login'){
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const pwd = document.getElementById
