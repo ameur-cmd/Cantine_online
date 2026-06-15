@@ -36,34 +36,53 @@
     <!-- Register -->
     <div id="registerWrapper" class="hidden">
       <form id="registerForm">
-        <div class="input-group">
-          <label for="regName">Full Name</label>
-          <input type="text" id="regName" class="input-control" placeholder="e.g. Ameur Ben Salah">
+        <div class="input-row" style="display: flex; gap: 10px;">
+          <div class="input-group" style="flex: 1;">
+            <label for="regFirstName">First Name</label>
+            <input type="text" id="regFirstName" class="input-control" required>
+          </div>
+          <div class="input-group" style="flex: 1;">
+            <label for="regLastName">Last Name</label>
+            <input type="text" id="regLastName" class="input-control" required>
+          </div>
         </div>
+
+        <div class="input-group">
+          <label for="regEmail">Email</label>
+          <input type="email" id="regEmail" class="input-control" placeholder="name@leoni.com">
+        </div>
+
         <div class="input-group">
           <label for="regBadgeId">Badge ID</label>
-          <input type="text" id="regBadgeId" class="input-control" placeholder="e.g. 73309">
+          <input type="text" id="regBadgeId" class="input-control" placeholder="e.g. 73309" required>
         </div>
+
         <div class="input-group">
           <label for="regPassword">Password</label>
-          <input type="password" id="regPassword" class="input-control" placeholder="Minimum 6 characters">
+          <input type="password" id="regPassword" class="input-control" placeholder="Minimum 6 characters" required>
         </div>
+
+        <div class="input-row" style="display: flex; gap: 10px;">
+          <div class="input-group" style="flex: 1;">
+            <label for="regPlant">Plant</label>
+            <select id="regPlant" class="input-control" required>
+              <option value="LTN1">LTN1</option>
+              <option value="LTN3">LTN3</option>
+              <option value="BIZ1">BIZ1</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex: 1;">
+            <label for="regPosition">Position</label>
+            <input type="text" id="regPosition" class="input-control" placeholder="e.g. Engineer">
+          </div>
+        </div>
+
         <div class="input-group">
-          <label for="regPlant">Plant</label>
-          <select id="regPlant" class="input-control">
-            <option value="LTN1">LTN1 — Mateur Plant 1</option>
-            <option value="LTN3" selected>LTN3 — Mateur Plant 3</option>
-            <option value="BIZ1">BIZ1 — Bizerte Plant</option>
-          </select>
+          <label for="regOffice">Office Location</label>
+          <input type="text" id="regOffice" class="input-control" placeholder="Desk/Room number">
         </div>
-        <div class="input-group">
-          <label for="regRole">Account Role</label>
-          <select id="regRole" class="input-control">
-            <option value="employee">Employee</option>
-            <option value="cantine">Cantine Manager</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;">Register</button>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">Register Account</button>
       </form>
     </div>
   </div>
