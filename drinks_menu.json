@@ -1,9 +1,0 @@
-{
-  "drinks": [
-    { "id": "drk_01", "brand": "Coca-Cola", "name": "Coca-Cola 330ml Can", "price": 2.20, "available": true },
-    { "id": "drk_02", "brand": "Boga", "name": "Boga Cidre 330ml Can", "price": 2.00, "available": true },
-    { "id": "drk_03", "brand": "Safia", "name": "Eau Minérale 500ml", "price": 0.80, "available": true },
-    { "id": "drk_04", "brand": "Sabrine", "name": "Eau Minérale 1.5L", "price": 1.50, "available": true },
-    { "id": "drk_05", "brand": "Viva", "name": "Jus d'Orange 1L", "price": 4.00, "available": true }
-  ]
-}
