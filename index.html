@@ -172,7 +172,7 @@
   .modal{ background:var(--paper); border-radius:14px; padding:26px; max-width:480px; width:100%; max-height:88vh; overflow-y:auto; border:1px solid var(--line); }
   .modal h3{margin-bottom:16px;}
   
-  .ticket-box { background: var(--blue-soft); border: 2px dashed var(--blue); color: var(--blue); font-family: 'Space Mono', monospace; font-size: 2.2rem; font-weight: 700; padding: 16px; border-radius: 10px; margin: 20px 0; text-align: center; letter-spacing: 0.05em;}
+  .ticket-box { background: var(--blue-soft); border: 2px dashed var(--blue); color: var(--blue); font-family: 'Space Mono', monospace; font-size: 1.8rem; font-weight: 700; padding: 16px; border-radius: 10px; margin: 20px 0; text-align: center; letter-spacing: 0.05em;}
   
   .toast{ position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff; padding:14px 22px; border-radius:10px; font-size:0.88rem; font-weight:600; opacity:0; transform:translateY(12px); transition:all .25s ease; pointer-events:none; z-index:200;}
   .toast.show{opacity:1; transform:translateY(0);}
@@ -188,8 +188,8 @@
         <h1>Sign in</h1>
         <p>Order tonight's dinner before the kitchen closes.</p>
       </div>
-      <div class="field"><label>Email</label><input type="email" id="loginEmail" value="worker@leoni.com"></div>
-      <div class="field"><label>Password</label><input type="password" id="loginPassword" value="password123"></div>
+      <div class="field"><label>Email</label><input type="email" id="loginEmail" value="ameur.essouayed@leoni.com"></div>
+      <div class="field"><label>Password</label><input type="password" id="loginPassword" value="123"></div>
       <div style="margin-top:20px;">
         <button class="btn btn-primary" style="width:100%;" onclick="processLogin()">Sign in</button>
       </div>
@@ -204,14 +204,15 @@
         <h1>Create Account</h1>
         <p>Register your details to start ordering.</p>
       </div>
-      <div class="field"><label>Full Name</label><input type="text" id="regName" placeholder="Ameur Ben Salah"></div>
+      <div class="field"><label>First Name</label><input type="text" id="regFirstName" placeholder="First Name"></div>
+      <div class="field"><label>Last Name</label><input type="text" id="regLastName" placeholder="Last Name"></div>
       <div class="field"><label>Email Address</label><input type="email" id="regEmail" placeholder="name@leoni.com"></div>
       <div class="field"><label>Password</label><input type="password" id="regPassword" placeholder="Minimum 6 characters"></div>
       
       <div class="field">
         <label>Account Role</label>
         <div class="role-select-box">
-          <div class="role-option selected" id="roleUser" onclick="setRegRole('user')">Normal User</div>
+          <div class="role-option selected" id="roleUser" onclick="setRegRole('employee')">Normal User</div>
           <div class="role-option" id="roleCantine" onclick="setRegRole('cantine')">Cantine Manager</div>
         </div>
       </div>
@@ -228,7 +229,7 @@
 
 <div id="employeeApp" class="hidden">
   <div class="topbar">
-    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">USER</span></div>
+    <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">EMPLOYEE</span></div>
     <div class="topbar-right">
       <span class="who" id="empWho">User Workspace</span>
       <button class="btn btn-ghost btn-small" onclick="logout()">Sign out</button>
@@ -240,7 +241,7 @@
       <div class="section-head">
         <div>
           <div class="eyebrow-label">Leoni Dinner Portal</div>
-          <h2>Tonight's Dinner Menu</h2>
+          <h2>Tonight's Menu Selection</h2>
         </div>
       </div>
 
@@ -264,7 +265,7 @@
             </div>
 
             <div style="margin-top:16px;">
-              <button class="btn btn-primary" style="width:100%;" id="checkoutBtn" onclick="openCheckout()" disabled>Place Dinner Order</button>
+              <button class="btn btn-primary" style="width:100%;" id="checkoutBtn" onclick="openCheckout()" disabled>Confirm Order</button>
             </div>
           </div>
         </div>
@@ -363,7 +364,7 @@
     <div style="font-size: 3rem; margin-bottom: 8px;">✅</div>
     <h3>Order Placed Successfully!</h3>
     <p style="color: var(--muted); font-size: 0.88rem; margin-top: 6px;">Show this ticket confirmation number at the counter to collect your tray.</p>
-    <div class="ticket-box" id="generatedOrderNum">#0000</div>
+    <div class="ticket-box" id="generatedOrderNum">ORD-00000000-000</div>
     <div style="margin-top: 24px;">
       <button class="btn btn-primary" style="width:100%;" onclick="closeModal('checkoutModal')">Got it, Clear Tray</button>
     </div>
@@ -373,66 +374,64 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// Base Setup Data
-const INITIAL_SANDWICHES = [
-  { id: "snd_01", name: "Chapatie El Mahdia", price: 4.50, desc: "Tunisian street food flatbread" },
-  { id: "snd_02", name: "Makloub Escalope", price: 5.50, desc: "Folded pizza sandwich with chicken" },
-  { id: "snd_03", name: "Kafteji Sandwich", price: 3.50, desc: "Traditional spicy fried vegetable sandwich" }
-];
-const INITIAL_DRINKS = [
-  { id: "drk_01", brand: "Coca-Cola", name: "Coca-Cola 330ml Can", price: 2.20 },
-  { id: "drk_02", brand: "Boga", name: "Boga Cidre 330ml Can", price: 2.00 },
-  { id: "drk_03", brand: "Safia", name: "Eau Minérale 500ml", price: 0.80 }
-];
-const INITIAL_COFFEES = [
-  { id: "cof_01", brand: "Lavazza", name: "Espresso", price: 1.50 },
-  { id: "cof_02", brand: "Lavazza", name: "Capucin", price: 1.80 },
-  { id: "cof_03", brand: "Lavazza", name: "Café Direct", price: 2.00 },
-  { id: "cof_04", brand: "Maison", name: "Thé à la Menthe", price: 1.00 }
-];
-const INITIAL_BISCUITS = [
-  { id: "snk_b1", brand: "Saida", name: "Prince Chocolat", price: 1.20 },
-  { id: "snk_b2", brand: "Tom", name: "Major Chocolat", price: 0.90 }
-];
-const INITIAL_ICECREAMS = [
-  { id: "snk_i1", brand: "Selja", name: "Gourmandise Vanille", price: 2.50 },
-  { id: "snk_i2", brand: "Ola", name: "Cornetto Chocolat", price: 3.50 }
-];
-
-const FOOD_BASES = [
-  { id: "base_01", name: "Couscous Dinner Base", price: 4.50, desc: "Traditional Tunisian steamed semolina" },
-  { id: "base_02", name: "Pasta Dinner Base", price: 4.00, desc: "Spicy tomato sauce pasta" },
-  { id: "base_03", name: "Riz Djerbien Base", price: 4.50, desc: "Steamed seasoned rice mixed with greens" }
-];
-const FOOD_ADDONS = [
-  { id: "add_poisson", name: "Poisson (Fish)", price: 5.50 },
-  { id: "add_escalope", name: "Escalope de Poulet", price: 4.00 },
-  { id: "add_lamb", name: "Viande d'Agneau", price: 6.50 },
-  { id: "add_oeuf", name: "Œuf Dur (Boiled Egg)", price: 1.00 }
-];
-
-// Hydrate Database
+// Database structure initialized with empty or local storage data
 let DB = JSON.parse(localStorage.getItem('cantine_db')) || {
-  users: [
-    { email: "worker@leoni.com", password: "password123", name: "Ameur Ben Salah", role: "user" },
-    { email: "manager@leoni.com", password: "password123", name: "Chef Kitchen", role: "cantine" }
-  ],
-  products: {
-    sandwiches: INITIAL_SANDWICHES,
-    drinks: INITIAL_DRINKS,
-    coffees: INITIAL_COFFEES,
-    biscuits: INITIAL_BISCUITS,
-    icecreams: INITIAL_ICECREAMS
-  },
-  sales: []
+  users: [],
+  products: { sandwiches: [], drinks: [], coffees: [], biscuits: [], icecreams: [] },
+  sales: [],
+  orders: []
 };
 
-function saveDatabase() { localStorage.setItem('cantine_db', JSON.stringify(DB)); }
-
+let FOOD_BASES = [];
+let FOOD_ADDONS = [];
 let currentUser = null;
-let currentRegRole = 'user';
+let currentRegRole = 'employee';
 let cart = [];
 let builderState = { type: null, itemId: null };
+
+// Fetch data from local JSON files
+async function initializeData() {
+  try {
+    const [usersRes, foodRes, drinksRes, coffeesRes, snacksRes, ordersRes] = await Promise.all([
+      fetch('user.json').then(r => r.json()),
+      fetch('food_menu.JSON').then(r => r.json()),
+      fetch('drinks_menu.json').then(r => r.json()),
+      fetch('coffees_menu.json').then(r => r.json()),
+      fetch('snacks_menu.JSON').then(r => r.json()),
+      fetch('orders.json').then(r => r.json()).catch(() => []) // Catch in case it's empty/missing
+    ]);
+
+    // Hydrate users if empty in local DB
+    if(DB.users.length === 0) {
+      DB.users = usersRes;
+    }
+    
+    // Always refresh menu items from JSON 
+    DB.products.sandwiches = foodRes.sandwiches;
+    FOOD_BASES = foodRes.daily_plate_bases;
+    FOOD_ADDONS = foodRes.daily_plate_addons;
+    
+    DB.products.drinks = drinksRes.drinks;
+    DB.products.coffees = coffeesRes.coffees;
+    DB.products.biscuits = snacksRes.biscuits;
+    DB.products.icecreams = snacksRes.icecreams;
+
+    if(DB.orders.length === 0 && ordersRes.length > 0) {
+      DB.orders = ordersRes;
+    }
+
+    saveDatabase();
+    console.log("JSON Data loaded successfully.");
+  } catch (error) {
+    console.error("Failed to fetch JSON files. Ensure you are running a local web server (e.g. Live Server).", error);
+    showToast("Error loading JSON menus. Check console.");
+  }
+}
+
+// Call on startup
+window.onload = initializeData;
+
+function saveDatabase() { localStorage.setItem('cantine_db', JSON.stringify(DB)); }
 
 // Auth View Toggling
 function toggleAuthView(showRegister) {
@@ -442,20 +441,22 @@ function toggleAuthView(showRegister) {
 
 function setRegRole(role) {
   currentRegRole = role;
-  document.getElementById('roleUser').classList.toggle('selected', role === 'user');
+  document.getElementById('roleUser').classList.toggle('selected', role === 'employee');
   document.getElementById('roleCantine').classList.toggle('selected', role === 'cantine');
 }
 
 // Auth Processing
 function processRegister() {
-  const name = document.getElementById('regName').value.trim();
+  const firstName = document.getElementById('regFirstName').value.trim();
+  const lastName = document.getElementById('regLastName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value.trim();
   
-  if(!name || !email || !password) { alert("Please fill out all registration fields."); return; }
+  if(!firstName || !lastName || !email || !password) { alert("Please fill out all registration fields."); return; }
   if(DB.users.some(u => u.email === email)) { alert("Email already registered."); return; }
   
-  DB.users.push({ name, email, password, role: currentRegRole });
+  const id = `u_new_${Date.now()}`;
+  DB.users.push({ id, firstName, lastName, email, password, role: currentRegRole });
   saveDatabase();
   showToast("Account successfully registered! Please log in.");
   toggleAuthView(false);
@@ -473,11 +474,11 @@ function processLogin() {
   
   if(account.role === 'cantine') {
     document.getElementById('cantineApp').classList.remove('hidden');
-    document.getElementById('managerWho').textContent = account.name;
+    document.getElementById('managerWho').textContent = `${account.firstName} ${account.lastName}`;
     loadManagerPanel();
   } else {
     document.getElementById('employeeApp').classList.remove('hidden');
-    document.getElementById('empWho').textContent = account.name;
+    document.getElementById('empWho').textContent = `${account.firstName} ${account.lastName} | ${account.position || 'Employee'}`;
     renderUserPortal();
   }
 }
@@ -493,7 +494,7 @@ function logout() {
 // User Portal Rendering
 function renderUserPortal() {
   const categories = [
-    { id:'main', label:'Dinner Plates (Customizable)' },
+    { id:'main', label:'Daily Plates (Customizable)' },
     { id:'sandwiches', label:'Sandwiches & Fast Food' },
     { id:'drinks', label:'Cold Drinks' },
     { id:'coffees', label:'Hot Drinks & Coffee' },
@@ -512,33 +513,37 @@ function renderUserPortal() {
     if(cat.id === 'main') {
       grid.innerHTML += `
         <div class="item-card builder-card">
-          <h4>Custom Leoni Dinner Plate</h4>
-          <div class="desc">Select primary local recipe bases (Couscous, Pasta, Rice) and combine premium proteins.</div>
+          <h4>Custom Daily Plate</h4>
+          <div class="desc">Select primary local recipe bases and combine premium proteins/addons.</div>
           <div class="bottom-row"><div class="price">From 4.00 DT</div><button class="btn btn-primary btn-small" onclick="openBuilderModal('plate', null)">Customize</button></div>
         </div>`;
     } else if(cat.id === 'sandwiches') {
-      DB.products.sandwiches.forEach(s => {
-        grid.innerHTML += `
-          <div class="item-card builder-card">
-            <h4>${s.name}</h4>
-            <div class="desc">${s.desc || ''}</div>
-            <div class="bottom-row">
-              <div class="price">${parseFloat(s.price).toFixed(2)} DT</div>
-              <button class="btn btn-primary btn-small" onclick="openBuilderModal('sandwich', '${s.id}')">Customize</button>
-            </div>
-          </div>`;
+      (DB.products.sandwiches || []).forEach(s => {
+        if(s.available) {
+          grid.innerHTML += `
+            <div class="item-card builder-card">
+              <h4>${s.name}</h4>
+              <div class="desc">${s.description || ''}</div>
+              <div class="bottom-row">
+                <div class="price">${parseFloat(s.price).toFixed(2)} DT</div>
+                <button class="btn btn-primary btn-small" onclick="openBuilderModal('sandwich', '${s.id}')">Customize</button>
+              </div>
+            </div>`;
+        }
       });
     } else {
       (DB.products[cat.id] || []).forEach(p => {
-        grid.innerHTML += `
-          <div class="item-card">
-            <h4>${p.name}</h4>
-            <div class="desc">${p.brand ? 'Brand: '+p.brand : ''}</div>
-            <div class="bottom-row">
-              <div class="price">${parseFloat(p.price).toFixed(2)} DT</div>
-              <button class="btn btn-primary btn-small" onclick="addDirectToTray('${p.id}', '${p.name}', ${p.price})">Add to Tray</button>
-            </div>
-          </div>`;
+        if(p.available) {
+          grid.innerHTML += `
+            <div class="item-card">
+              <h4>${p.name}</h4>
+              <div class="desc">${p.brand ? 'Brand: '+p.brand : ''}</div>
+              <div class="bottom-row">
+                <div class="price">${parseFloat(p.price).toFixed(2)} DT</div>
+                <button class="btn btn-primary btn-small" onclick="addDirectToTray('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${p.price})">Add to Tray</button>
+              </div>
+            </div>`;
+        }
       });
     }
     wrap.appendChild(block);
@@ -561,7 +566,7 @@ function openBuilderModal(type, itemId) {
   const basesList = document.getElementById('buildBasesList');
   const addonsList = document.getElementById('buildAddonsList');
   
-  addonsList.innerHTML = FOOD_ADDONS.map(a => `
+  addonsList.innerHTML = FOOD_ADDONS.filter(a => a.available).map(a => `
     <label class="option-label">
       <div style="display:flex; gap:10px; align-items:center;"><input type="checkbox" name="a_check" value="${a.id}" data-price="${a.price}" data-name="${a.name}" onchange="calcBuilderTotal()"><div><b>${a.name}</b></div></div>
       <div class="mono">+${a.price.toFixed(2)} DT</div>
@@ -570,9 +575,9 @@ function openBuilderModal(type, itemId) {
   if(type === 'plate') {
     document.getElementById('buildItemTitle').textContent = "Build Your Custom Plate";
     basesSection.classList.remove('hidden');
-    basesList.innerHTML = FOOD_BASES.map(b => `
+    basesList.innerHTML = FOOD_BASES.filter(b => b.available).map(b => `
       <label class="option-label">
-        <div style="display:flex; gap:10px; align-items:center;"><input type="radio" name="b_radio" value="${b.id}" data-price="${b.price}" data-name="${b.name}" onchange="calcBuilderTotal()"><div class="option-info"><span class="option-name">${b.name}</span><span class="option-desc">${b.desc}</span></div></div>
+        <div style="display:flex; gap:10px; align-items:center;"><input type="radio" name="b_radio" value="${b.id}" data-price="${b.price}" data-name="${b.name}" onchange="calcBuilderTotal()"><div class="option-info"><span class="option-name">${b.name}</span><span class="option-desc">${b.description}</span></div></div>
         <div class="mono">${b.price.toFixed(2)} DT</div>
       </label>`).join('');
   } else {
@@ -655,20 +660,38 @@ function renderCart() {
 
 function removeCartItem(id) { cart = cart.filter(i => i.cartId !== id); renderCart(); }
 
+function generateOrderNumber() {
+  const today = new Date();
+  const yyyymmdd = today.toISOString().slice(0,10).replace(/-/g, '');
+  const randomNum = Math.floor(100 + Math.random() * 900);
+  return `ORD-${yyyymmdd}-${randomNum}`;
+}
+
 function openCheckout() {
-  const num = Math.floor(1000 + Math.random() * 9000);
-  document.getElementById('generatedOrderNum').textContent = '#' + num;
+  const orderId = generateOrderNumber();
+  document.getElementById('generatedOrderNum').textContent = orderId;
   
-  // Save order to analytics
   const total = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
-  DB.sales.push({
-    orderNumber: num,
-    total: total,
-    itemsCount: cart.reduce((acc, i) => acc + i.qty, 0),
-    timestamp: new Date().toISOString()
-  });
-  saveDatabase();
+  const formattedItems = cart.map(item => ({
+    itemId: item.cartId,
+    quantity: item.qty,
+    price: item.price
+  }));
+
+  const newOrder = {
+    orderId: orderId,
+    userId: currentUser.id,
+    canteenId: currentUser.canteenId || "LTN-Main",
+    items: formattedItems,
+    orderTime: new Date().toISOString(),
+    status: "pending",
+    totalPrice: total
+  };
+
+  DB.orders.push(newOrder);
+  DB.sales.push({ orderNumber: orderId, total: total, itemsCount: cart.reduce((acc, i) => acc + i.qty, 0), timestamp: newOrder.orderTime });
   
+  saveDatabase();
   document.getElementById('checkoutModal').classList.remove('hidden');
 }
 
@@ -738,7 +761,7 @@ function addNewProduct() {
   
   const id = "item_" + Date.now();
   if(!DB.products[cat]) DB.products[cat] = [];
-  DB.products[cat].push({ id, name, price, brand: brand || undefined });
+  DB.products[cat].push({ id, name, price, brand: brand || undefined, available: true });
   saveDatabase();
   
   document.getElementById('newProdBrand').value = '';
