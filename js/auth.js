@@ -51,24 +51,34 @@ async function handleLogin(e) {
 // Handle Registration Submission
 async function handleRegister(e) {
   e.preventDefault();
-  const name = document.getElementById('regName').value.trim();
-  const badgeId = document.getElementById('regBadgeId').value.trim();
-  const password = document.getElementById('regPassword').value;
-  const role = document.getElementById('regRole').value;
-  const plant = document.getElementById('regPlant') ? document.getElementById('regPlant').value : "";
+  
+  const userData = {
+    firstName: document.getElementById('regFirstName').value.trim(),
+    lastName: document.getElementById('regLastName').value.trim(),
+    email: document.getElementById('regEmail').value.trim(),
+    badgeId: document.getElementById('regBadgeId').value.trim(),
+    password: document.getElementById('regPassword').value,
+    plant: document.getElementById('regPlant').value,
+    position: document.getElementById('regPosition').value,
+    office: document.getElementById('regOffice').value,
+    role: "employee", // Default role
+    createdAt: new Date().toISOString()
+  };
 
-  if (!name || !badgeId || !password) {
-    alert("Please fill in all fields.");
+  if (!userData.firstName || !userData.lastName || !userData.badgeId || !userData.password) {
+    alert("Please fill in all required fields.");
     return;
   }
 
   showLoader(true);
-  const success = await CantineAPI.registerUser({ name, badgeId, password, role, plant });
+  const success = await CantineAPI.registerUser(userData);
   showLoader(false);
 
   if (success) {
     alert("Registration successful! Please log in.");
     toggleAuthTab('login');
+    // Clear form fields
+    document.getElementById('registerForm').reset();
   } else {
     alert("Registration failed. Badge ID might already exist.");
   }
