@@ -7,18 +7,28 @@ let selectedDay = "";
 // Initialize Employee View UI elements
 async function initEmployeeDashboard() {
   if (currentUser) {
-    document.getElementById('employeeWelcomeName').innerText = currentUser.name;
+    document.getElementById('employeeWelcomeName').innerText = currentUser.name || currentUser.firstName || "";
   }
-  
+
+  // Default plant/day from the logged-in user's profile / today's date
+  selectedPlant = currentUser && currentUser.plant ? currentUser.plant : "";
+  selectedDay = new Date().toISOString().slice(0, 10);
+
+  const plantSelect = document.getElementById('plantSelect');
+  if (plantSelect && selectedPlant) plantSelect.value = selectedPlant;
+
+  const daySelect = document.getElementById('daySelect');
+  if (daySelect) daySelect.value = selectedDay;
+
   // Reset active configurations
   cart = [];
   updateCartUI();
-  
+
   showLoader(true);
   // Pull fresh food options directly from your Google Sheet
-  const items = await CantineAPI.getMenuCatalog(); 
+  const items = await CantineAPI.getMenuCatalog(selectedPlant, selectedDay);
   showLoader(false);
-  
+
   renderMenuCatalog(items);
 }
 
@@ -33,13 +43,13 @@ function renderMenuCatalog(items) {
   }
 
   container.innerHTML = items.map(item => `
-    <div class="menu-card">
-      <div class="menu-details">
+    <div class="menu-item-card ${item.available === false ? 'unavailable' : ''}">
+      <div>
         <h3>${item.name}</h3>
-        <p class="muted">${item.category}</p>
-        <span class="price-tag">${parseFloat(item.price).toFixed(2)} DT</span>
+        <p class="muted">${item.category}${item.desc ? ' · ' + item.desc : ''}</p>
+        <span class="price-badge">${parseFloat(item.price).toFixed(2)} DT</span>
       </div>
-      <button class="btn btn-outline btn-small" onclick="addItemToCart('${item.id}', '${item.name}', ${item.price})">
+      <button class="btn btn-outline btn-small" ${item.available === false ? 'disabled' : ''} onclick="addItemToCart('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price})">
         + Add to Order
       </button>
     </div>
@@ -60,7 +70,7 @@ function addItemToCart(id, name, price) {
 function updateCartQty(id, delta) {
   const itemIndex = cart.findIndex(cartItem => cartItem.id === id);
   if (itemIndex === -1) return;
-  
+
   cart[itemIndex].qty += delta;
   if (cart[itemIndex].qty <= 0) {
     cart.splice(itemIndex, 1);
@@ -108,33 +118,41 @@ async function submitEmployeeOrder() {
     return;
   }
 
-  selectedPlant = document.getElementById('plantSelect')?.value;
-  selectedDay = document.getElementById('daySelect')?.value;
-  const pickupTime = document.getElementById('pickupTimeSelect')?.value;
+  const plantSelect = document.getElementById('plantSelect');
+  const daySelect = document.getElementById('daySelect');
+  const pickupSelect = document.getElementById('pickupTimeSelect');
 
-  if (!selectedPlant || !selectedDay || !pickupTime) {
+  const plant = plantSelect ? plantSelect.value : selectedPlant;
+  const day = daySelect ? daySelect.value : selectedDay;
+  const pickupTime = pickupSelect ? pickupSelect.value : "";
+
+  if (!plant || !day || !pickupTime) {
     alert("Please select a plant location, day, and preferred pickup slot.");
     return;
   }
 
   const orderPayload = {
-    employeeId: currentUser.badgeId,
+    employeeId: currentUser.id,
     employeeName: currentUser.name,
-    plant: selectedPlant,
-    day: selectedDay,
-    pickupAt: `${selectedDay}T${pickupTime}`,
+    leoniId: currentUser.badgeId || currentUser.leoniId || "",
+    plant: plant,
+    day: day,
+    pickupAt: `${day}T${pickupTime}`,
     items: cart,
+    subtotal: cart.reduce((sum, item) => sum + (item.price * item.qty), 0),
+    delivery: false,
+    deliveryFee: 0,
+    deliveryOffice: currentUser.office || "",
     total: cart.reduce((sum, item) => sum + (item.price * item.qty), 0),
-    status: 'pending',
-    timestamp: new Date().toISOString()
+    placedAt: new Date().toISOString()
   };
 
   showLoader(true);
-  const success = await CantineAPI.createOrder(orderPayload);
+  const order = await CantineAPI.createOrder(orderPayload);
   showLoader(false);
 
-  if (success) {
-    alert("Order submitted successfully to the Cantine team!");
+  if (order) {
+    alert(`Order submitted successfully! Ticket: ${order.orderNumber}`);
     initEmployeeDashboard(); // Reset dashboard view
   } else {
     alert("Failed to post order. Please check connection parameters.");

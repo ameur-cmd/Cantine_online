@@ -14,7 +14,7 @@ function initAuth() {
   if (registerForm) {
     registerForm.addEventListener('submit', handleRegister);
   }
-  
+
   // Check if a user session already exists in localStorage
   const savedUser = localStorage.getItem('leoni_current_user');
   if (savedUser) {
@@ -55,6 +55,7 @@ async function handleRegister(e) {
   const badgeId = document.getElementById('regBadgeId').value.trim();
   const password = document.getElementById('regPassword').value;
   const role = document.getElementById('regRole').value;
+  const plant = document.getElementById('regPlant') ? document.getElementById('regPlant').value : "";
 
   if (!name || !badgeId || !password) {
     alert("Please fill in all fields.");
@@ -62,7 +63,7 @@ async function handleRegister(e) {
   }
 
   showLoader(true);
-  const success = await CantineAPI.registerUser({ name, badgeId, password, role });
+  const success = await CantineAPI.registerUser({ name, badgeId, password, role, plant });
   showLoader(false);
 
   if (success) {
@@ -77,7 +78,7 @@ async function handleRegister(e) {
 function handleLogout() {
   currentUser = null;
   localStorage.removeItem('leoni_current_user');
-  
+
   // Hide application views and show login screen
   document.getElementById('employeeApp').classList.add('hidden');
   document.getElementById('cantineApp').classList.add('hidden');
@@ -87,7 +88,7 @@ function handleLogout() {
 // Navigation Router based on Leoni Roles
 function routeToApp(role) {
   document.getElementById('authPage').classList.add('hidden');
-  
+
   if (role === 'cantine') {
     document.getElementById('cantineApp').classList.remove('hidden');
     initCantineDashboard();
@@ -101,7 +102,7 @@ function routeToApp(role) {
 function toggleAuthTab(tab) {
   const loginWrapper = document.getElementById('loginWrapper');
   const registerWrapper = document.getElementById('registerWrapper');
-  
+
   if (tab === 'login') {
     loginWrapper.classList.remove('hidden');
     registerWrapper.classList.add('hidden');

@@ -5,17 +5,17 @@
  */
 
 // Replace this with your deployed Google Apps Script URL exec deployment link
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmzn6n-9mSlHgaGH_xXYRPlGrVNSzDqqvi1Xr1n3ohKgUE3AqdEZ_SNjQ5QpR9jP3H/exec";
+const GOOGLE_SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
 
 const CantineAPI = {
-  
+
   /**
    * Helper utility to perform safe network HTTP requests
    */
   async _request(params = {}, options = {}) {
     try {
       let url = GOOGLE_SCRIPT_URL;
-      
+
       // If parameters exist and it's a GET request, attach them as query parameters
       if (options.method !== "POST" && Object.keys(params).length > 0) {
         const queryString = new URLSearchParams(params).toString();
@@ -24,11 +24,8 @@ const CantineAPI = {
 
       const response = await fetch(url, {
         method: options.method || "GET",
-        mode: "cors", // Use cors mode to securely handle response objects
-        headers: {
-          "Content-Type": "application/json",
-          ...options.headers
-        },
+        // Use text/plain to avoid a CORS preflight against Apps Script
+        headers: options.method === "POST" ? { "Content-Type": "text/plain;charset=utf-8" } : undefined,
         body: options.method === "POST" ? JSON.stringify(params) : null
       });
 
@@ -44,16 +41,15 @@ const CantineAPI = {
   },
 
   /**
-   * 1. AUTHENTICATION SERVICES
+   * 1. AUTHENTICATION SERVICES (Badge ID based)
    */
-  async loginUser(email, password, role) {
+  async loginUser(badgeId, password) {
     const response = await this._request({
       action: "loginUser",
-      email: email.trim().toLowerCase(),
-      password: password,
-      role: role
+      badgeId: badgeId.trim(),
+      password: password
     }, { method: "POST" });
-    
+
     // Returns user object if valid, or null if unauthorized
     return response && response.success ? response.user : null;
   },
@@ -61,18 +57,17 @@ const CantineAPI = {
   async registerUser(userData) {
     const response = await this._request({
       action: "registerUser",
-      role: userData.role,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email.trim().toLowerCase(),
+      name: userData.name,
+      badgeId: userData.badgeId.trim(),
       password: userData.password,
-      leoniId: userData.leoniId || "",
+      role: userData.role || "employee",
+      plant: userData.plant || "",
       position: userData.position || "",
-      plant: userData.plant,
-      office: userData.office || ""
+      office: userData.office || "",
+      email: userData.email || ""
     }, { method: "POST" });
 
-    return response && response.success;
+    return !!(response && response.success);
   },
 
   /**
@@ -81,8 +76,8 @@ const CantineAPI = {
   async getMenuCatalog(plantId, dayName) {
     const response = await this._request({
       action: "getMenu",
-      plant: plantId,
-      day: dayName
+      plant: plantId || "",
+      day: dayName || ""
     });
 
     // Returns array of items or empty fallback list if spreadsheet is unpopulated
@@ -135,7 +130,7 @@ const CantineAPI = {
   async getAllOrders(plantId) {
     const response = await this._request({
       action: "getOrders",
-      plant: plantId
+      plant: plantId || ""
     });
 
     return response && response.orders ? response.orders : [];
@@ -153,15 +148,14 @@ const CantineAPI = {
       items: orderPayload.items, // Array payload containing mapped quantities
       subtotal: parseFloat(orderPayload.subtotal),
       delivery: !!orderPayload.delivery,
-      deliveryFee: parseFloat(orderPayload.deliveryFee),
-      deliveryOffice: orderPayload.deliveryOffice,
+      deliveryFee: parseFloat(orderPayload.deliveryFee || 0),
+      deliveryOffice: orderPayload.deliveryOffice || "",
       total: parseFloat(orderPayload.total),
       status: "pending",
       placedAt: orderPayload.placedAt,
       paid: !!orderPayload.paid
     }, { method: "POST" });
 
-    // Returns structural server context detailing completed object fields (e.g. assigned ticket #)
     return response && response.success ? response.order : null;
   },
 
