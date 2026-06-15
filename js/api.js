@@ -5,7 +5,7 @@
  */
 
 // Replace this with your deployed Google Apps Script URL exec deployment link
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVAoShi9Kcb0YKBk4zN5TLs_VuArw_RN8UMysNwwTtUEeTIY7fRuN2kwWzJkdKqMsDYg/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmzn6n-9mSlHgaGH_xXYRPlGrVNSzDqqvi1Xr1n3ohKgUE3AqdEZ_SNjQ5QpR9jP3H/exec";
 
 const CantineAPI = {
   
