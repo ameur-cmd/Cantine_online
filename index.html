@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leoni Cantine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800&family=Space+Mono:wght=400;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#FAFAF8;
@@ -113,6 +113,11 @@
   th { background: var(--bg); padding: 12px 16px; font-weight: 700; color: var(--muted); border-bottom: 1px solid var(--line); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
   td { padding: 14px 16px; border-bottom: 1px solid var(--line); color: var(--ink); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
+
+  /* Status Badges */
+  .status-badge { display: inline-block; padding: 4px 8px; font-size: 0.72rem; font-weight: 700; border-radius: 6px; text-transform: uppercase; }
+  .status-badge.available { background: var(--green-soft); color: var(--green); }
+  .status-badge.unavailable { background: #FBEAE6; color: #B23A2E; }
 
   /* ---------- Categories & Cards ---------- */
   .section-head{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:18px; gap:16px; flex-wrap:wrap; }
@@ -303,21 +308,23 @@
 
     <div class="manager-layout">
       <div>
-        <div class="section-head"><div><h3>Product Catalog Management</h3></div></div>
+        <div class="section-head"><div><h3>Product Catalog & Stock Management</h3></div></div>
         <div class="table-wrapper">
           <table>
             <thead>
-              <tr><th>Item Structure</th><th>Category</th><th>Current Price</th><th>Action</th></tr>
+              <tr><th>Item Structure</th><th>Category</th><th>Current Price</th><th>Availability Status</th><th>Action</th></tr>
             </thead>
             <tbody id="managerProductTable"></tbody>
           </table>
         </div>
       </div>
 
-      <div style="background:var(--paper); border:1.5px solid var(--line); padding:24px; border-radius:var(--radius);">
-        <h3 style="margin-bottom:14px; font-size:1.1rem;">Add New Item</h3>
+      <div style="background:var(--paper); border:1.5px solid var(--line); padding:24px; border-radius:var(--radius); position: sticky; top: 90px;">
+        <h3 style="margin-bottom:14px; font-size:1.1rem;">Add New Item / Component</h3>
         <div class="field"><label>Category Slot</label>
           <select id="newProdCat">
+            <option value="daily_plate_bases">Dinner — Plate Base</option>
+            <option value="daily_plate_addons">Dinner — Plate Addon</option>
             <option value="sandwiches">Sandwich / Fast Food</option>
             <option value="drinks">Cold Drink</option>
             <option value="coffees">Hot Drink / Coffee</option>
@@ -325,8 +332,8 @@
             <option value="icecreams">Snack — Ice Cream</option>
           </select>
         </div>
-        <div class="field"><label>Brand Manufacturer</label><input type="text" id="newProdBrand" placeholder="e.g. Coca-Cola, Saida, Lavazza"></div>
-        <div class="field"><label>Item Name</label><input type="text" id="newProdName" placeholder="e.g. Boga Cidre 330ml"></div>
+        <div class="field"><label>Brand or Extra Info</label><input type="text" id="newProdBrand" placeholder="e.g. Coca-Cola, Saida, Spicy Sauce description"></div>
+        <div class="field"><label>Item Name</label><input type="text" id="newProdName" placeholder="e.g. Couscous Base, Escalope, Boga"></div>
         <div class="field"><label>Price (DT)</label><input type="number" step="0.01" id="newProdPrice" placeholder="0.00"></div>
         <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="addNewProduct()">Add Item to Menu</button>
       </div>
@@ -374,22 +381,28 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// Database structure initialized with empty or local storage data
+// Combined normalized database structures
 let DB = JSON.parse(localStorage.getItem('cantine_db')) || {
   users: [],
-  products: { sandwiches: [], drinks: [], coffees: [], biscuits: [], icecreams: [] },
+  products: { 
+    daily_plate_bases: [],
+    daily_plate_addons: [],
+    sandwiches: [], 
+    drinks: [], 
+    coffees: [], 
+    biscuits: [], 
+    icecreams: [] 
+  },
   sales: [],
   orders: []
 };
 
-let FOOD_BASES = [];
-let FOOD_ADDONS = [];
 let currentUser = null;
 let currentRegRole = 'employee';
 let cart = [];
 let builderState = { type: null, itemId: null };
 
-// Fetch data from local JSON files
+// Fetch structural data from JSON files on boot
 async function initializeData() {
   try {
     const [usersRes, foodRes, drinksRes, coffeesRes, snacksRes, ordersRes] = await Promise.all([
@@ -398,42 +411,36 @@ async function initializeData() {
       fetch('drinks_menu.json').then(r => r.json()),
       fetch('coffees_menu.json').then(r => r.json()),
       fetch('snacks_menu.JSON').then(r => r.json()),
-      fetch('orders.json').then(r => r.json()).catch(() => []) // Catch in case it's empty/missing
+      fetch('orders.json').then(r => r.json()).catch(() => [])
     ]);
 
-    // Hydrate users if empty in local DB
-    if(DB.users.length === 0) {
-      DB.users = usersRes;
+    if(DB.users.length === 0) DB.users = usersRes;
+    
+    // Fallback hydration if localStorage is empty
+    if(DB.products.sandwiches.length === 0) {
+      DB.products.sandwiches = foodRes.sandwiches;
+      DB.products.daily_plate_bases = foodRes.daily_plate_bases;
+      DB.products.daily_plate_addons = foodRes.daily_plate_addons;
+      DB.products.drinks = drinksRes.drinks;
+      DB.products.coffees = coffeesRes.coffees;
+      DB.products.biscuits = snacksRes.biscuits;
+      DB.products.icecreams = snacksRes.icecreams;
     }
-    
-    // Always refresh menu items from JSON 
-    DB.products.sandwiches = foodRes.sandwiches;
-    FOOD_BASES = foodRes.daily_plate_bases;
-    FOOD_ADDONS = foodRes.daily_plate_addons;
-    
-    DB.products.drinks = drinksRes.drinks;
-    DB.products.coffees = coffeesRes.coffees;
-    DB.products.biscuits = snacksRes.biscuits;
-    DB.products.icecreams = snacksRes.icecreams;
 
-    if(DB.orders.length === 0 && ordersRes.length > 0) {
-      DB.orders = ordersRes;
-    }
+    if(DB.orders.length === 0 && ordersRes.length > 0) DB.orders = ordersRes;
 
     saveDatabase();
-    console.log("JSON Data loaded successfully.");
+    console.log("Canteen data pipeline refreshed successfully.");
   } catch (error) {
-    console.error("Failed to fetch JSON files. Ensure you are running a local web server (e.g. Live Server).", error);
-    showToast("Error loading JSON menus. Check console.");
+    console.error("Pipeline failure fetching configurations.", error);
+    showToast("Error linking local JSON records.");
   }
 }
 
-// Call on startup
 window.onload = initializeData;
 
 function saveDatabase() { localStorage.setItem('cantine_db', JSON.stringify(DB)); }
 
-// Auth View Toggling
 function toggleAuthView(showRegister) {
   document.getElementById('loginView').classList.toggle('hidden', showRegister);
   document.getElementById('registerView').classList.toggle('hidden', !showRegister);
@@ -445,20 +452,18 @@ function setRegRole(role) {
   document.getElementById('roleCantine').classList.toggle('selected', role === 'cantine');
 }
 
-// Auth Processing
 function processRegister() {
   const firstName = document.getElementById('regFirstName').value.trim();
   const lastName = document.getElementById('regLastName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value.trim();
   
-  if(!firstName || !lastName || !email || !password) { alert("Please fill out all registration fields."); return; }
-  if(DB.users.some(u => u.email === email)) { alert("Email already registered."); return; }
+  if(!firstName || !lastName || !email || !password) { alert("Fields incomplete."); return; }
+  if(DB.users.some(u => u.email === email)) { alert("Email already exists."); return; }
   
-  const id = `u_new_${Date.now()}`;
-  DB.users.push({ id, firstName, lastName, email, password, role: currentRegRole });
+  DB.users.push({ id: `u_${Date.now()}`, firstName, lastName, email, password, role: currentRegRole });
   saveDatabase();
-  showToast("Account successfully registered! Please log in.");
+  showToast("Registration verified! Login below.");
   toggleAuthView(false);
 }
 
@@ -467,7 +472,7 @@ function processLogin() {
   const password = document.getElementById('loginPassword').value.trim();
   
   const account = DB.users.find(u => u.email === email && u.password === password);
-  if(!account) { alert("Invalid credentials entered."); return; }
+  if(!account) { alert("Invalid credentials."); return; }
   
   currentUser = account;
   document.getElementById('authPage').classList.add('hidden');
@@ -491,7 +496,7 @@ function logout() {
   document.getElementById('authPage').classList.remove('hidden');
 }
 
-// User Portal Rendering
+// User View Render Rules
 function renderUserPortal() {
   const categories = [
     { id:'main', label:'Daily Plates (Customizable)' },
@@ -511,33 +516,23 @@ function renderUserPortal() {
     const grid = block.querySelector('.item-grid');
     
     if(cat.id === 'main') {
-      grid.innerHTML += `
-        <div class="item-card builder-card">
-          <h4>Custom Daily Plate</h4>
-          <div class="desc">Select primary local recipe bases and combine premium proteins/addons.</div>
-          <div class="bottom-row"><div class="price">From 4.00 DT</div><button class="btn btn-primary btn-small" onclick="openBuilderModal('plate', null)">Customize</button></div>
-        </div>`;
-    } else if(cat.id === 'sandwiches') {
-      (DB.products.sandwiches || []).forEach(s => {
-        if(s.available) {
-          grid.innerHTML += `
-            <div class="item-card builder-card">
-              <h4>${s.name}</h4>
-              <div class="desc">${s.description || ''}</div>
-              <div class="bottom-row">
-                <div class="price">${parseFloat(s.price).toFixed(2)} DT</div>
-                <button class="btn btn-primary btn-small" onclick="openBuilderModal('sandwich', '${s.id}')">Customize</button>
-              </div>
-            </div>`;
-        }
-      });
+      // Show customizable plate if any bases are active
+      const activeBases = DB.products.daily_plate_bases.filter(b => b.available);
+      if(activeBases.length > 0) {
+        grid.innerHTML += `
+          <div class="item-card builder-card">
+            <h4>Custom Dinner Plate</h4>
+            <div class="desc">Select your warm base and add desired proteins or extras.</div>
+            <div class="bottom-row"><div class="price">Variable Price</div><button class="btn btn-primary btn-small" onclick="openBuilderModal('plate', null)">Customize</button></div>
+          </div>`;
+      }
     } else {
       (DB.products[cat.id] || []).forEach(p => {
         if(p.available) {
           grid.innerHTML += `
             <div class="item-card">
               <h4>${p.name}</h4>
-              <div class="desc">${p.brand ? 'Brand: '+p.brand : ''}</div>
+              <div class="desc">${p.brand || p.description || ''}</div>
               <div class="bottom-row">
                 <div class="price">${parseFloat(p.price).toFixed(2)} DT</div>
                 <button class="btn btn-primary btn-small" onclick="addDirectToTray('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${p.price})">Add to Tray</button>
@@ -546,7 +541,7 @@ function renderUserPortal() {
         }
       });
     }
-    wrap.appendChild(block);
+    if (grid.children.length > 0) wrap.appendChild(block);
   });
   renderCart();
 }
@@ -555,10 +550,10 @@ function addDirectToTray(id, name, price) {
   const match = cart.find(i => i.cartId === id);
   if(match) match.qty++; else cart.push({ cartId: id, name, price: parseFloat(price), qty: 1 });
   renderCart();
-  showToast(`Added ${name} to tray.`);
+  showToast(`Added ${name}`);
 }
 
-// Modal Builder Logic
+// Interactive Build Customization Window
 function openBuilderModal(type, itemId) {
   builderState = { type, itemId };
   
@@ -566,25 +561,27 @@ function openBuilderModal(type, itemId) {
   const basesList = document.getElementById('buildBasesList');
   const addonsList = document.getElementById('buildAddonsList');
   
-  addonsList.innerHTML = FOOD_ADDONS.filter(a => a.available).map(a => `
+  // Filter dynamically for elements marked as TRUE for availability
+  addonsList.innerHTML = DB.products.daily_plate_addons.filter(a => a.available).map(a => `
     <label class="option-label">
-      <div style="display:flex; gap:10px; align-items:center;"><input type="checkbox" name="a_check" value="${a.id}" data-price="${a.price}" data-name="${a.name}" onchange="calcBuilderTotal()"><div><b>${a.name}</b></div></div>
-      <div class="mono">+${a.price.toFixed(2)} DT</div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <input type="checkbox" name="a_check" value="${a.id}" data-price="${a.price}" data-name="${a.name}" onchange="calcBuilderTotal()">
+        <div><b>${a.name}</b></div>
+      </div>
+      <div class="mono">+${parseFloat(a.price).toFixed(2)} DT</div>
     </label>`).join('');
 
   if(type === 'plate') {
-    document.getElementById('buildItemTitle').textContent = "Build Your Custom Plate";
+    document.getElementById('buildItemTitle').textContent = "Assemble Dinner Plate";
     basesSection.classList.remove('hidden');
-    basesList.innerHTML = FOOD_BASES.filter(b => b.available).map(b => `
+    basesList.innerHTML = DB.products.daily_plate_bases.filter(b => b.available).map(b => `
       <label class="option-label">
-        <div style="display:flex; gap:10px; align-items:center;"><input type="radio" name="b_radio" value="${b.id}" data-price="${b.price}" data-name="${b.name}" onchange="calcBuilderTotal()"><div class="option-info"><span class="option-name">${b.name}</span><span class="option-desc">${b.description}</span></div></div>
-        <div class="mono">${b.price.toFixed(2)} DT</div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <input type="radio" name="b_radio" value="${b.id}" data-price="${b.price}" data-name="${b.name}" onchange="calcBuilderTotal()">
+          <div class="option-info"><span class="option-name">${b.name}</span><span class="option-desc">${b.brand || ''}</span></div>
+        </div>
+        <div class="mono">${parseFloat(b.price).toFixed(2)} DT</div>
       </label>`).join('');
-  } else {
-    const sandwich = DB.products.sandwiches.find(s => s.id === itemId);
-    document.getElementById('buildItemTitle').textContent = "Customize: " + sandwich.name;
-    basesSection.classList.add('hidden');
-    builderState.basePrice = sandwich.price;
   }
     
   calcBuilderTotal();
@@ -596,10 +593,7 @@ function calcBuilderTotal() {
   if (builderState.type === 'plate') {
     const base = document.querySelector('input[name="b_radio"]:checked');
     if(base) sum += parseFloat(base.getAttribute('data-price'));
-  } else {
-    sum += builderState.basePrice;
   }
-  
   document.querySelectorAll('input[name="a_check"]:checked').forEach(el => sum += parseFloat(el.getAttribute('data-price')));
   document.getElementById('buildTotal').textContent = sum.toFixed(2) + " DT";
 }
@@ -609,18 +603,11 @@ function confirmBuildItem() {
   let price = 0;
   let parts = [];
 
-  if (builderState.type === 'plate') {
-    const baseEl = document.querySelector('input[name="b_radio"]:checked');
-    if(!baseEl) { alert("Please select a base plate first!"); return; }
-    name = baseEl.getAttribute('data-name');
-    price += parseFloat(baseEl.getAttribute('data-price'));
-    parts.push(baseEl.value);
-  } else {
-    const sandwich = DB.products.sandwiches.find(s => s.id === builderState.itemId);
-    name = sandwich.name;
-    price += parseFloat(sandwich.price);
-    parts.push(sandwich.id);
-  }
+  const baseEl = document.querySelector('input[name="b_radio"]:checked');
+  if(!baseEl) { alert("A structural base recipe must be checked."); return; }
+  name = baseEl.getAttribute('data-name');
+  price += parseFloat(baseEl.getAttribute('data-price'));
+  parts.push(baseEl.value);
   
   const addons = document.querySelectorAll('input[name="a_check"]:checked');
   let addonNames = [];
@@ -630,7 +617,7 @@ function confirmBuildItem() {
     parts.push(a.value);
   });
   
-  if(addonNames.length > 0) name += ` (+ ${addonNames.join(', ')})`;
+  if(addonNames.length > 0) name += ` + [${addonNames.join(', ')}]`;
   
   const cartId = parts.join('_');
   const match = cart.find(i => i.cartId === cartId);
@@ -648,7 +635,7 @@ function renderCart() {
   } else {
     lines.innerHTML = cart.map(i => `
       <div class="cart-line">
-        <div class="name">${i.name} <small>x${i.qty} &middot; ${i.price.toFixed(2)} DT</small></div>
+        <div class="name">${i.name} <small>x${i.qty}</small></div>
         <div class="amt mono">${(i.price * i.qty).toFixed(2)} DT <button class="remove-x" onclick="removeCartItem('${i.cartId}')">[X]</button></div>
       </div>`).join('');
     document.getElementById('checkoutBtn').disabled = false;
@@ -660,42 +647,19 @@ function renderCart() {
 
 function removeCartItem(id) { cart = cart.filter(i => i.cartId !== id); renderCart(); }
 
-function generateOrderNumber() {
-  const today = new Date();
-  const yyyymmdd = today.toISOString().slice(0,10).replace(/-/g, '');
-  const randomNum = Math.floor(100 + Math.random() * 900);
-  return `ORD-${yyyymmdd}-${randomNum}`;
-}
-
 function openCheckout() {
-  const orderId = generateOrderNumber();
-  document.getElementById('generatedOrderNum').textContent = orderId;
+  const rand = Math.floor(100 + Math.random() * 900);
+  const ticketId = `ORD-${new Date().toISOString().slice(0,10).replace(/-/g, '')}-${rand}`;
   
+  document.getElementById('generatedOrderNum').textContent = ticketId;
   const total = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
-  const formattedItems = cart.map(item => ({
-    itemId: item.cartId,
-    quantity: item.qty,
-    price: item.price
-  }));
-
-  const newOrder = {
-    orderId: orderId,
-    userId: currentUser.id,
-    canteenId: currentUser.canteenId || "LTN-Main",
-    items: formattedItems,
-    orderTime: new Date().toISOString(),
-    status: "pending",
-    totalPrice: total
-  };
-
-  DB.orders.push(newOrder);
-  DB.sales.push({ orderNumber: orderId, total: total, itemsCount: cart.reduce((acc, i) => acc + i.qty, 0), timestamp: newOrder.orderTime });
   
+  DB.sales.push({ orderNumber: ticketId, total: total, itemsCount: cart.reduce((acc, i) => acc + i.qty, 0), timestamp: new Date().toISOString() });
   saveDatabase();
   document.getElementById('checkoutModal').classList.remove('hidden');
 }
 
-// Manager Functions
+// Manager Workspace Engine
 function loadManagerPanel() {
   loadAnalytics();
   renderManagerProducts();
@@ -703,35 +667,37 @@ function loadManagerPanel() {
 
 function loadAnalytics() {
   const filter = document.getElementById('salesDurationFilter').value;
-  const now = new Date();
   let targetedRecords = DB.sales;
-  
   if(filter === 'today') {
-    targetedRecords = DB.sales.filter(s => new Date(s.timestamp).toDateString() === now.toDateString());
-  } else if(filter === '7days') {
-    const limit = new Date(); limit.setDate(now.getDate() - 7);
-    targetedRecords = DB.sales.filter(s => new Date(s.timestamp) >= limit);
+    targetedRecords = DB.sales.filter(s => new Date(s.timestamp).toDateString() === new Date().toDateString());
   }
-  
   const rev = targetedRecords.reduce((acc, s) => acc + s.total, 0);
-  const items = targetedRecords.reduce((acc, s) => acc + s.itemsCount, 0);
-  
   document.getElementById('statRevenue').textContent = rev.toFixed(2) + " DT";
   document.getElementById('statOrders').textContent = targetedRecords.length;
-  document.getElementById('statItemsCount').textContent = items;
+  document.getElementById('statItemsCount').textContent = targetedRecords.reduce((acc, s) => acc + s.itemsCount, 0);
 }
 
 function renderManagerProducts() {
   const tbody = document.getElementById('managerProductTable');
   tbody.innerHTML = '';
-  const keys = ['sandwiches', 'drinks', 'coffees', 'biscuits', 'icecreams'];
+  
+  // Clean looping directly across all component slots, including your dinner structural blocks
+  const keys = ['daily_plate_bases', 'daily_plate_addons', 'sandwiches', 'drinks', 'coffees', 'biscuits', 'icecreams'];
+  
   keys.forEach(key => {
     (DB.products[key] || []).forEach(p => {
+      // Defensive initialization for older objects lacking the availability attribute
+      if(p.available === undefined) p.available = true;
+      
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td><b>${p.name}</b><br><small style="color:var(--muted)">${p.brand || 'Leoni Kitchen'}</small></td>
-        <td><span class="tag">${key.toUpperCase()}</span></td>
-        <td><input type="number" step="0.01" value="${parseFloat(p.price).toFixed(2)}" class="mono" style="padding:4px 8px; width:90px; border:1px solid var(--line); border-radius:6px;" onchange="updateProductPrice('${key}', '${p.id}', this.value)"> DT</td>
+        <td><b>${p.name}</b><br><small style="color:var(--muted)">${p.brand || 'Standard kitchen recipe'}</small></td>
+        <td><span class="tag">${key.replace(/_/g, ' ').toUpperCase()}</span></td>
+        <td><input type="number" step="0.01" value="${parseFloat(p.price).toFixed(2)}" class="mono" style="padding:6px; width:90px; border:1px solid var(--line); border-radius:6px;" onchange="updateProductPrice('${key}', '${p.id}', this.value)"> DT</td>
+        <td>
+          <span class="status-badge ${p.available ? 'available' : 'unavailable'}">${p.available ? 'In Stock' : 'Out of Stock'}</span>
+          <input type="checkbox" ${p.available ? 'checked' : ''} style="margin-left: 8px; cursor:pointer;" onchange="toggleAvailability('${key}', '${p.id}', this.checked)">
+        </td>
         <td><button class="btn btn-ghost btn-small" style="color:#B23A2E; border-color:#F1D8D2;" onclick="deleteProduct('${key}', '${p.id}')">Delete</button></td>
       `;
       tbody.appendChild(tr);
@@ -739,15 +705,24 @@ function renderManagerProducts() {
   });
 }
 
+function toggleAvailability(cat, id, state) {
+  const item = DB.products[cat].find(p => p.id === id);
+  if(item) {
+    item.available = state;
+    saveDatabase();
+    showToast(`${item.name} availability updated.`);
+    renderManagerProducts();
+  }
+}
+
 function updateProductPrice(cat, id, newPrice) {
   const val = parseFloat(newPrice);
-  if(isNaN(val) || val <= 0) { alert("Enter a valid price."); return; }
+  if(isNaN(val) || val <= 0) return;
   const item = DB.products[cat].find(p => p.id === id);
   if(item) {
     item.price = val;
     saveDatabase();
-    showToast(`Updated price for ${item.name}`);
-    loadAnalytics(); 
+    showToast(`Updated price metrics for ${item.name}`);
   }
 }
 
@@ -757,27 +732,26 @@ function addNewProduct() {
   const name = document.getElementById('newProdName').value.trim();
   const price = parseFloat(document.getElementById('newProdPrice').value);
   
-  if(!name || isNaN(price) || price <= 0) { alert("Please complete all product fields."); return; }
+  if(!name || isNaN(price) || price <= 0) { alert("Please complete required entries."); return; }
   
-  const id = "item_" + Date.now();
-  if(!DB.products[cat]) DB.products[cat] = [];
-  DB.products[cat].push({ id, name, price, brand: brand || undefined, available: true });
+  const prefix = cat.startsWith('daily') ? 'comp_' : 'item_';
+  DB.products[cat].push({ id: prefix + Date.now(), name, price, brand: brand || undefined, available: true });
   saveDatabase();
   
   document.getElementById('newProdBrand').value = '';
   document.getElementById('newProdName').value = '';
   document.getElementById('newProdPrice').value = '';
   
-  showToast("Item added successfully.");
+  showToast("Component tracking active.");
   renderManagerProducts();
 }
 
 function deleteProduct(cat, id) {
-  if(!confirm("Delete this item from the menu?")) return;
+  if(!confirm("Remove resource permanently?")) return;
   DB.products[cat] = DB.products[cat].filter(p => p.id !== id);
   saveDatabase();
   renderManagerProducts();
-  showToast("Product deleted.");
+  showToast("Resource dropped.");
 }
 
 function closeModal(id) {
