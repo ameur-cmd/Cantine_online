@@ -6,7 +6,7 @@
   <title>Leoni Cantine</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800&family=Space+Mono:wght=400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -17,53 +17,53 @@
       
       <div id="loginWrapper">
         <div class="auth-header">
-          <div class="eyebrow">Leoni Cantine · Online Ordering</div>
+          <div class="eyebrow">Leoni Cantine Portal</div>
           <h1>Sign in</h1>
-          <p>Access your factory canteen portal layout.</p>
+          <p>Access your facility's daily menu.</p>
         </div>
         
         <form id="loginForm">
           <div class="field">
-            <label>Badge ID / Email</label>
-            <input type="text" id="loginBadgeId" required placeholder="e.g., ameur.essouayed@leoni.com">
+            <label>Badge ID or Email</label>
+            <input type="text" id="loginBadgeId" required placeholder="e.g., ameur@leoni.com">
           </div>
           <div class="field">
             <label>Password</label>
             <input type="password" id="loginPassword" required placeholder="••••••••">
           </div>
-          <div style="margin-top:20px;">
-            <button type="submit" class="btn btn-primary" style="width:100%;">Sign in</button>
+          <div style="margin-top: 32px;">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Sign in to Workspace</button>
           </div>
         </form>
         
-        <p style="text-align:center; font-size:0.84rem; margin-top:16px; color:var(--muted)">
-          New to Cantine? <a href="#" style="color:var(--orange); font-weight:600;" onclick="toggleAuthTab('register')">Create an account</a>
+        <p class="text-center muted" style="font-size: 13px; margin-top: 24px;">
+          New to Cantine? <a href="#" style="color: var(--leoni-blue); font-weight: 600; text-decoration: none;" onclick="toggleAuthTab('register')">Create an account</a>
         </p>
       </div>
 
       <div id="registerWrapper" class="hidden">
         <div class="auth-header">
-          <div class="eyebrow">Leoni Cantine · Registration</div>
+          <div class="eyebrow">Leoni Cantine Portal</div>
           <h1>Create Account</h1>
-          <p>Register your workspace parameters.</p>
+          <p>Configure your workspace parameters.</p>
         </div>
         
         <form id="registerForm">
           <div class="field">
             <label>Full Name</label>
-            <input type="text" id="regName" required placeholder="Ameur Essouayed">
+            <input type="text" id="regName" required placeholder="e.g., Ameur">
           </div>
           <div class="field">
-            <label>Badge ID / Leoni ID</label>
-            <input type="text" id="regBadgeId" required placeholder="e.g., 94821">
+            <label>Leoni Badge ID</label>
+            <input type="text" id="regBadgeId" required placeholder="e.g., 104523">
           </div>
           <div class="field">
             <label>Password</label>
             <input type="password" id="regPassword" required minlength="6" placeholder="Minimum 6 characters">
           </div>
           <div class="field">
-            <label>Assigned Plant</label>
-            <select id="regPlantSelect" required>
+            <label>Assigned Facility</label>
+            <select id="regPlantSelect" class="input-control" required>
               <option value="LTN1">LTN1 — Mateur Plant 1</option>
               <option value="LTN2">LTN2 — Mateur Plant 2</option>
               <option value="BIZ1">BIZ1 — Bizerte Plant</option>
@@ -71,19 +71,19 @@
             </select>
           </div>
           <div class="field">
-            <label>Account Role</label>
-            <select id="regRole" required>
-              <option value="employee">Normal Factory Employee</option>
-              <option value="cantine">Cantine Kitchen Staff</option>
+            <label>System Role</label>
+            <select id="regRole" class="input-control" required>
+              <option value="employee">Factory Employee</option>
+              <option value="cantine">Cantine Manager</option>
             </select>
           </div>
-          <div style="margin-top:20px;">
-            <button type="submit" class="btn btn-primary" style="width:100%;">Register Account</button>
+          <div style="margin-top: 32px;">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Register Account</button>
           </div>
         </form>
         
-        <p style="text-align:center; font-size:0.84rem; margin-top:16px; color:var(--muted)">
-          Already have an account? <a href="#" style="color:var(--orange); font-weight:600;" onclick="toggleAuthTab('login')">Sign in here</a>
+        <p class="text-center muted" style="font-size: 13px; margin-top: 24px;">
+          Already registered? <a href="#" style="color: var(--leoni-blue); font-weight: 600; text-decoration: none;" onclick="toggleAuthTab('login')">Sign in here</a>
         </p>
       </div>
 
@@ -94,25 +94,25 @@
     <div class="navbar">
       <div class="nav-brand"><span class="dot"></span>Leoni Cantine <span>EMPLOYEE</span></div>
       <div class="nav-user">
-        <span class="muted" id="employeeWelcomeName">Loading Profile...</span>
+        <span class="muted" id="employeeWelcomeName">Loading...</span>
         <button class="btn btn-ghost btn-small btn-logout">Sign out</button>
       </div>
     </div>
 
     <div class="app-container">
       <div class="plant-selector-bar">
-        <div class="field" style="margin:0; flex:1;">
-          <label>Target Facility Canteen</label>
-          <select id="plantSelect">
+        <div class="field" style="margin: 0; flex: 1;">
+          <label>Target Facility</label>
+          <select id="plantSelect" class="input-control">
             <option value="LTN1">LTN1 — Mateur Plant 1</option>
             <option value="LTN2">LTN2 — Mateur Plant 2</option>
             <option value="BIZ1">BIZ1 — Bizerte Plant</option>
             <option value="MGD1">MGD1 — Megrine Plant</option>
           </select>
         </div>
-        <div class="field" style="margin:0; flex:1;">
-          <label>Ordering Day Schedule</label>
-          <select id="daySelect">
+        <div class="field" style="margin: 0; flex: 1;">
+          <label>Schedule Day</label>
+          <select id="daySelect" class="input-control">
             <option value="Monday">Monday</option>
             <option value="Tuesday">Tuesday</option>
             <option value="Wednesday">Wednesday</option>
@@ -125,43 +125,45 @@
       <div class="workspace-grid">
         <div id="menuGridContainer" class="menu-grid"></div>
 
-        <div class="section-card">
-          <div class="section-title">Your Order Summary Tray</div>
-          <div class="data-table-wrapper">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Item Details</th>
-                  <th>Qty</th>
-                  <th class="text-right">Price</th>
-                </tr>
-              </thead>
-              <tbody id="cartTableBody">
-                <tr>
-                  <td colspan="3" class="muted text-center">Your cart tray is currently empty</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div style="margin-top: 20px; padding-top:16px; border-top:1px solid var(--line);">
-            <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-              <span class="muted">Estimated Total Summary:</span>
-              <span class="font-bold mono" id="cartTotalSummary" style="color:var(--orange); font-size:1.2rem;">0.00 DT</span>
-            </div>
-            
-            <div class="input-group">
-              <label for="pickupTimeSelect">Preferred Counter Collection Window</label>
-              <select id="pickupTimeSelect" class="input-control">
-                <option value="12:00">12:00 (Morning Shift)</option>
-                <option value="18:30">18:30 (Dinner Shift)</option>
-                <option value="19:30">19:30 (Night Shift)</option>
-              </select>
+        <div style="position: sticky; top: 100px;">
+          <div class="section-card">
+            <div class="section-title">Order Summary</div>
+            <div class="data-table-wrapper" style="box-shadow: none; border: none;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th class="text-right">Price</th>
+                  </tr>
+                </thead>
+                <tbody id="cartTableBody">
+                  <tr>
+                    <td colspan="3" class="muted text-center" style="padding: 32px 16px;">Your tray is empty</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <button class="btn btn-orange" style="width:100%; margin-top:8px;" onclick="submitEmployeeOrder()">
-              Submit Food Ticket
-            </button>
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line-soft);">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px;">
+                <span class="muted" style="font-weight: 600;">Total</span>
+                <span class="font-bold mono" id="cartTotalSummary" style="font-size: 24px; color: var(--text-main);">0.00 DT</span>
+              </div>
+              
+              <div class="field">
+                <label for="pickupTimeSelect">Collection Window</label>
+                <select id="pickupTimeSelect" class="input-control">
+                  <option value="12:00">12:00 (Morning Shift)</option>
+                  <option value="18:30">18:30 (Dinner Shift)</option>
+                  <option value="19:30">19:30 (Night Shift)</option>
+                </select>
+              </div>
+
+              <button class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 15px;" onclick="submitEmployeeOrder()">
+                Submit Ticket
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -170,9 +172,9 @@
 
   <div id="cantineApp" class="hidden">
     <div class="navbar">
-      <div class="nav-brand"><span class="dot"></span>Leoni Cantine <span style="color:var(--blue)">KITCHEN MANAGER</span></div>
+      <div class="nav-brand"><span class="dot"></span>Leoni Cantine <span style="background: var(--status-green-bg); color: var(--status-green); border-color: var(--status-green-bg);">MANAGER</span></div>
       <div class="nav-user">
-        <span class="muted" id="cantinePlantTitle">Kitchen Dashboard</span>
+        <span class="muted font-bold" id="cantinePlantTitle">Kitchen Hub</span>
         <button class="btn btn-ghost btn-small btn-logout">Sign out</button>
       </div>
     </div>
@@ -180,8 +182,8 @@
     <div class="app-container">
       <div class="section-card">
         <div class="section-title">
-          <span>Active Incoming Orders Pipeline</span>
-          <button class="btn btn-outline btn-small" onclick="initCantineDashboard()">🔄 Refresh Live Queue</button>
+          <span>Live Order Pipeline</span>
+          <button class="btn btn-outline btn-small" onclick="initCantineDashboard()">Refresh Queue</button>
         </div>
         
         <div class="data-table-wrapper">
@@ -189,18 +191,18 @@
             <thead>
               <tr>
                 <th>Ticket ID</th>
-                <th>Employee Data</th>
-                <th>Target Day</th>
+                <th>Employee</th>
+                <th>Day</th>
                 <th>Pickup Slot</th>
-                <th>Menu Content Items</th>
-                <th>Total Value</th>
-                <th>Current Status</th>
-                <th>Workflow Action</th>
+                <th>Items</th>
+                <th class="mono">Total</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody id="cantineOrdersTableBody">
               <tr>
-                <td colspan="8" class="text-center muted">No active entries found in sheet database pipeline.</td>
+                <td colspan="8" class="text-center muted" style="padding: 40px;">No active orders in the pipeline.</td>
               </tr>
             </tbody>
           </table>
