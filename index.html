@@ -124,20 +124,6 @@
     transition: border-color .15s ease;
   }
   .field input:focus, .field select:focus{outline:none; border-color:var(--blue); background:var(--paper);}
-  .field-grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-
-  .auth-actions{margin-top:18px; display:flex; flex-direction:column; gap:10px;}
-  .auth-switch{margin-top:16px; text-align:center; font-size:0.84rem; color:var(--muted);}
-  .auth-switch button{background:none; border:none; color:var(--orange); font-weight:700; padding:0;}
-  .auth-error{
-    background:#FBEAE6; color:#B23A2E; padding:10px 14px; border-radius:8px;
-    font-size:0.84rem; margin-bottom:12px;
-  }
-  .auth-hint{
-    margin-top:16px; padding:12px 14px; background:var(--bg); border-radius:9px;
-    font-size:0.76rem; color:var(--muted); line-height:1.5; border:1px solid var(--line);
-  }
-  .auth-hint b{color:var(--ink);}
 
   /* ---------- Section headers ---------- */
   .section-head{
@@ -153,19 +139,15 @@
   /* ---------- Day tabs ---------- */
   .day-tabs{
     display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; margin-bottom:20px;
-    -ms-overflow-style:none; scrollbar-width:none;
   }
-  .day-tabs::-webkit-scrollbar{display:none;}
   .day-tab{
     flex:0 0 auto; background:var(--paper); border:1.5px solid var(--line);
     border-radius:24px; padding:9px 16px; font-weight:600; font-size:0.83rem;
     color:var(--muted); transition:all .15s ease; white-space:nowrap;
   }
-  .day-tab .d{display:block; font-size:0.64rem; font-family:'Space Mono',monospace; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; opacity:0.7;}
   .day-tab.active{background:var(--blue); color:#fff; border-color:var(--blue);}
-  .day-tab.past{opacity:0.35; cursor:not-allowed;}
 
-  /* ---------- Boutique categories ---------- */
+  /* ---------- Categories & Cards ---------- */
   .menu-layout{display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;}
   @media (max-width:920px){ .menu-layout{grid-template-columns:1fr;} }
 
@@ -173,9 +155,6 @@
   .category-title{
     display:flex; align-items:center; gap:10px; margin-bottom:12px;
     font-size:0.95rem; font-weight:700; color:var(--ink);
-  }
-  .category-title .count{
-    font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); font-weight:400;
   }
   .category-line{flex:1; height:1px; background:var(--line);}
 
@@ -191,23 +170,13 @@
   .item-card h4{font-size:0.95rem; line-height:1.25; font-weight:600;}
   .item-card .desc{font-size:0.8rem; color:var(--muted); line-height:1.4; flex:1;}
   .item-card .price{font-family:'Space Mono', monospace; font-weight:700; color:var(--blue); font-size:0.9rem;}
-  .badge{
-    font-family:'Space Mono', monospace; font-size:0.6rem; font-weight:700;
-    text-transform:uppercase; letter-spacing:0.07em; padding:3px 7px; border-radius:6px;
-    white-space:nowrap;
-  }
-  .badge.offer{background:var(--orange-soft); color:var(--orange);}
-  .badge.pack{background:var(--blue-soft); color:var(--blue);}
-  .badge.out{background:var(--line); color:var(--muted);}
   .item-card .bottom-row{display:flex; justify-content:space-between; align-items:center; margin-top:auto;}
+  
   .qty-control{display:flex; align-items:center; gap:8px;}
   .qty-control button{
     width:28px; height:28px; border-radius:7px; border:1.5px solid var(--line);
-    background:var(--bg); font-size:1rem; font-weight:700; line-height:1; color:var(--ink);
-    display:flex; align-items:center; justify-content:center;
+    background:var(--bg); font-size:1rem; font-weight:700; display:flex; align-items:center; justify-content:center;
   }
-  .qty-control button:hover{border-color:var(--blue);}
-  .qty-control .qty{min-width:16px; text-align:center; font-weight:700; font-family:'Space Mono',monospace; font-size:0.85rem;}
   .add-btn{
     background:var(--blue); color:#fff; border:none; border-radius:7px;
     padding:7px 13px; font-weight:600; font-size:0.78rem;
@@ -222,7 +191,6 @@
     border: 1.5px solid var(--line); cursor: pointer; transition: border-color 0.2s;
   }
   .option-label:hover { border-color: var(--blue); }
-  .option-label input:checked + .option-info-wrapper { font-weight: bold; }
   .option-info { display: flex; flex-direction: column; }
   .option-name { font-weight: 600; color: var(--ink); font-size: 0.9rem;}
   .option-desc { font-size: 0.8rem; color: var(--muted); margin-top: 2px;}
@@ -231,101 +199,32 @@
   .order-summary-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--line); }
   .total-display { font-size: 1.15rem; font-weight: 700; color: var(--ink); }
 
-  /* ---------- Cart / ticket ---------- */
+  /* ---------- Cart / Ticket ---------- */
   .ticket{
-    background:var(--paper); border-radius:var(--radius);
-    border:1.5px solid var(--line);
-    padding:20px;
-    position:sticky; top:90px;
+    background:var(--paper); border-radius:var(--radius); border:1.5px solid var(--line);
+    padding:20px; position:sticky; top:90px;
   }
   .ticket h3{font-size:1rem; margin-bottom:2px;}
   .ticket .ticket-sub{font-size:0.78rem; color:var(--muted); margin-bottom:14px;}
-  .cart-line{
-    display:flex; justify-content:space-between; gap:10px; font-size:0.86rem; margin-bottom:10px;
-    align-items:flex-start;
-  }
+  .cart-line{ display:flex; justify-content:space-between; gap:10px; font-size:0.86rem; margin-bottom:10px; align-items:flex-start; }
   .cart-line .name{flex:1;}
   .cart-line .name small{display:block; color:var(--muted); font-size:0.72rem;}
-  .cart-line .amt{font-family:'Space Mono',monospace; font-weight:700; white-space:nowrap; text-align:right;}
+  .cart-line .amt{font-family:'Space Mono',monospace; font-weight:700; text-align:right;}
   .cart-empty{font-size:0.84rem; color:var(--muted); padding:8px 0;}
   .cart-divider{border-top:1px solid var(--line); margin:14px 0;}
   .cart-row{display:flex; justify-content:space-between; font-size:0.86rem; margin-bottom:6px; color:var(--muted);}
-  .cart-total{
-    display:flex; justify-content:space-between; font-weight:800; font-size:1.05rem;
-    padding-top:10px; font-family:'Space Mono',monospace;
-  }
-
+  .cart-total{ display:flex; justify-content:space-between; font-weight:800; font-size:1.05rem; padding-top:10px; font-family:'Space Mono',monospace; }
   .remove-x{background:none; border:none; color:var(--orange); font-size:0.72rem; font-weight:700; padding:0 0 0 8px;}
 
   .pickup-box{margin-top:16px;}
-  .pickup-box label{display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;}
+  .pickup-box label{display:block; font-size:0.74rem; font-weight:700; margin-bottom:6px; color:var(--muted); text-transform:uppercase;}
   .pickup-row{display:flex; flex-direction:column; gap:8px;}
-  .pickup-row select{width:100%; padding:10px; border-radius:9px; border:1.5px solid var(--line); background:var(--bg); font-family:inherit; color:var(--ink);}
-  .deadline-note{
-    font-size:0.76rem; color:var(--muted); margin-top:8px; font-weight:500;
-    display:flex; gap:6px; align-items:flex-start;
-  }
-  .deadline-note.warn{color:var(--orange);}
+  .pickup-row select{width:100%; padding:10px; border-radius:9px; border:1.5px solid var(--line); background:var(--bg); color:var(--ink);}
 
-  .delivery-toggle{
-    margin-top:14px; display:flex; align-items:center; justify-content:space-between;
-    padding:10px 12px; border:1.5px solid var(--line); border-radius:9px; background:var(--bg);
-  }
-  .delivery-toggle label{font-size:0.85rem; font-weight:600; cursor:pointer;}
-  .delivery-toggle .fee{font-size:0.76rem; color:var(--muted); font-family:'Space Mono',monospace;}
-  .switch{position:relative; width:38px; height:22px; flex-shrink:0;}
-  .switch input{opacity:0; width:0; height:0;}
-  .switch .slider{
-    position:absolute; cursor:pointer; inset:0; background:var(--line); border-radius:22px; transition:.2s;
-  }
-  .switch .slider::before{
-    content:""; position:absolute; height:16px; width:16px; left:3px; bottom:3px;
-    background:#fff; border-radius:50%; transition:.2s;
-  }
-  .switch input:checked + .slider{background:var(--blue);}
-  .switch input:checked + .slider::before{transform:translateX(16px);}
-
-  .office-field{margin-top:10px;}
-  .office-field input{
-    width:100%; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line);
-    background:var(--bg); font-family:inherit; font-size:0.86rem; color:var(--ink);
-  }
-  .office-field input:focus{outline:none; border-color:var(--blue); background:var(--paper);}
-
-  /* ---------- Tables & Misc ---------- */
-  .table-wrap{background:var(--paper); border-radius:var(--radius); border:1.5px solid var(--line); overflow:hidden;}
-  table{width:100%; border-collapse:collapse; font-size:0.86rem;}
-  th, td{padding:11px 16px; text-align:left; border-bottom:1px solid var(--line);}
-  th{font-family:'Space Mono',monospace; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:700; background:var(--bg);}
-  tr:last-child td{border-bottom:none;}
-  .status-pill{
-    font-family:'Space Mono',monospace; font-size:0.64rem; font-weight:700; text-transform:uppercase;
-    letter-spacing:0.06em; padding:4px 9px; border-radius:20px; display:inline-block;
-  }
-  .status-pending{background:var(--orange-soft); color:var(--orange);}
-  .status-confirmed{background:var(--blue-soft); color:var(--blue);}
-  .status-ready{background:var(--green-soft); color:var(--green);}
-  .status-completed{background:var(--line); color:var(--muted);}
-  .status-cancelled{background:#F6D8D2; color:#a33;}
-
-  .modal-overlay{
-    position:fixed; inset:0; background:rgba(34,39,46,0.4); display:flex; align-items:center; justify-content:center;
-    z-index:300; padding:20px;
-  }
-  .modal{
-    background:var(--paper); border-radius:14px; padding:26px; max-width:480px; width:100%;
-    max-height:88vh; overflow-y:auto; border:1px solid var(--line);
-  }
+  .modal-overlay{ position:fixed; inset:0; background:rgba(34,39,46,0.4); display:flex; align-items:center; justify-content:center; z-index:300; padding:20px; }
+  .modal{ background:var(--paper); border-radius:14px; padding:26px; max-width:480px; width:100%; max-height:88vh; overflow-y:auto; border:1px solid var(--line); }
   .modal h3{margin-bottom:16px;}
-  .modal-actions{display:flex; gap:10px; justify-content:flex-end; margin-top:18px;}
-
-  .toast{
-    position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff;
-    padding:14px 22px; border-radius:10px; font-size:0.88rem; font-weight:600;
-    box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:200;
-    opacity:0; transform:translateY(12px); transition:all .25s ease; pointer-events:none;
-    max-width:340px;
-  }
+  .toast{ position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff; padding:14px 22px; border-radius:10px; font-size:0.88rem; font-weight:600; opacity:0; transform:translateY(12px); transition:all .25s ease; pointer-events:none; z-index:200;}
   .toast.show{opacity:1; transform:translateY(0);}
 </style>
 </head>
@@ -338,30 +237,9 @@
       <h1 id="authTitle">Sign in</h1>
       <p id="authSubtitle">Order tonight's dinner before the kitchen closes.</p>
     </div>
-    <div class="role-toggle">
-      <button id="roleEmployeeBtn" class="active" onclick="setAuthRole('employee')">Employee</button>
-      <button id="roleCantineBtn" onclick="setAuthRole('cantine')">Cantine staff</button>
-    </div>
-    <div id="authError" class="auth-error hidden"></div>
-    <div id="loginFields">
-      <div class="field"><label>Email</label><input type="email" id="loginEmail" placeholder="you@leoni.com"></div>
-      <div class="field"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
-    </div>
-    <div id="signupFields" class="hidden">
-      <div class="field"><label>Email</label><input type="email" id="signupEmail" placeholder="you@leoni.com"></div>
-      <div class="field"><label>Password</label><input type="password" id="signupPassword" placeholder="Choose a password"></div>
-      <div id="employeeSignupFields">
-        <div class="field"><label>Leoni ID</label><input type="text" id="signupLeoniId"></div>
-        <div class="field"><label>Position</label><input type="text" id="signupPosition"></div>
-        <div class="field"><label>Plant</label><select id="signupPlant" onchange="onSignupPlantChange()"></select></div>
-        <div class="field"><label>Assigned Default Canteen</label><select id="signupEmployeeCanteen"></select></div>
-        <div class="field"><label>Office / workshop location</label><input type="text" id="signupOffice"></div>
-      </div>
-      <div class="field hidden" id="signupCantineField"><label>Cantine you manage</label><select id="signupCantine"></select></div>
-    </div>
-    <div class="auth-actions"><button class="btn btn-primary" id="authSubmitBtn" onclick="handleAuthSubmit()">Sign in</button></div>
-    <div class="auth-switch"><span id="authSwitchText">New here?</span><button id="authSwitchBtn" onclick="toggleAuthMode()">Create an account</button></div>
-    <div class="auth-hint"><b>Demo accounts</b> — Employee: alice@leoni.com / pass123 (LTN3 - Cantine A)</div>
+    <div class="field"><label>Email</label><input type="email" id="loginEmail" value="alice@leoni.com"></div>
+    <div class="field"><label>Password</label><input type="password" id="loginPassword" value="pass123"></div>
+    <div class="auth-actions"><button class="btn btn-primary" onclick="handleAuthSubmit()">Sign in</button></div>
   </div>
 </div>
 
@@ -369,9 +247,7 @@
   <div class="topbar">
     <div class="brand"><span class="dot"></span>Leoni Cantine <span class="tag">EMPLOYEE</span></div>
     <div class="topbar-right">
-      <button class="top-link active" data-emp-view="menu" onclick="switchEmployeeView('menu')">Menu &amp; Order</button>
-      <button class="top-link" data-emp-view="orders" onclick="switchEmployeeView('orders')">My Orders</button>
-      <span class="who" id="empWho"></span>
+      <span class="who" id="empWho">Ameur Ben Salah (LTN3)</span>
       <button class="btn btn-ghost btn-small" onclick="logout()">Sign out</button>
     </div>
   </div>
@@ -380,12 +256,8 @@
     <div id="empMenuView">
       <div class="section-head">
         <div>
-          <div class="eyebrow-label" id="empPlantLabel"></div>
-          <h2>Today's counter</h2>
-        </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <label style="font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase;">Switch Counter:</label>
-          <select id="empCanteenSelect" onchange="onEmpCanteenChange()" style="padding: 6px 12px; border-radius: 8px; border: 1.5px solid var(--line); font-size: 0.85rem; font-weight: 600; background: var(--paper); color: var(--ink);"></select>
+          <div class="eyebrow-label">Leoni Dinner Portal</div>
+          <h2>Tonight's Dinner Menu</h2>
         </div>
       </div>
 
@@ -395,58 +267,36 @@
         <div id="empCategories"></div>
         <div>
           <div class="ticket">
-            <h3>Your order</h3>
-            <div class="ticket-sub" id="ticketDayLabel"></div>
-            <div id="cartLines"><div class="cart-empty">Your tray is empty — pick something from the counter.</div></div>
+            <h3>Your Tray</h3>
+            <div class="ticket-sub" id="ticketDayLabel">Today's Selection</div>
+            <div id="cartLines"><div class="cart-empty">Your tray is empty.</div></div>
 
             <div class="cart-divider"></div>
             <div class="cart-row" id="cartSubtotalRow"><span>Subtotal</span><span class="mono">0.00 DT</span></div>
-            <div class="cart-row hidden" id="cartDeliveryRow"><span>Delivery to office</span><span class="mono">+2.00 DT</span></div>
             <div class="cart-total"><span>Total</span><span id="cartTotal">0.00 DT</span></div>
 
             <div class="pickup-box">
               <label>Ready by</label>
               <div class="pickup-row">
-                <select id="pickupDaySelect" onchange="onPickupDateChange()"></select>
-                <select id="pickupTimeSelect" onchange="renderCart()"></select>
+                <select id="pickupTimeSelect"><option value="18:30">18:30 (Dinner Shift)</option><option value="19:30">19:30 (Dinner Shift)</option></select>
               </div>
-              <div class="deadline-note" id="deadlineNote"></div>
-            </div>
-
-            <div class="delivery-toggle">
-              <div>
-                <label for="deliveryToggle">Deliver to my office</label>
-                <div class="fee">+2.00 DT delivery fee</div>
-              </div>
-              <div class="switch">
-                <input type="checkbox" id="deliveryToggle" onchange="onDeliveryToggle()">
-                <span class="slider"></span>
-              </div>
-            </div>
-            <div class="office-field hidden" id="officeFieldWrap">
-              <input type="text" id="officeOverride" placeholder="Confirm office / workshop location">
             </div>
 
             <div style="margin-top:16px;">
-              <button class="btn btn-primary" style="width:100%;" id="checkoutBtn" onclick="openCheckout()">Pay &amp; place order</button>
+              <button class="btn btn-primary" style="width:100%;" id="checkoutBtn" onclick="openCheckout()" disabled>Place Dinner Order</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    
-    <div id="empOrdersView" class="hidden">
-      <div class="section-head"><div><div class="eyebrow-label">Order history</div><h2>My orders</h2></div></div>
-      <div id="empOrdersList"></div>
     </div>
   </div>
 </div>
 
 <div id="buildItemModal" class="modal-overlay hidden">
   <div class="modal">
-    <h3 id="buildItemTitle">Customize</h3>
+    <h3 id="buildItemTitle">Customize Your Plate</h3>
     
-    <div id="buildBasesSection" class="hidden">
+    <div id="buildBasesSection">
       <label class="step-title">1. Choose Your Base Plate (Required)</label>
       <div id="buildBasesList" class="options-grid"></div>
     </div>
@@ -460,280 +310,130 @@
       <div class="total-display">Total: <span id="buildTotal" class="mono">0.00 DT</span></div>
       <div style="display:flex; gap:10px;">
         <button class="btn btn-outline" onclick="closeModal('buildItemModal')">Cancel</button>
-        <button class="btn btn-primary" id="confirmBuildBtn" onclick="confirmBuildItem()">Add to Tray</button>
+        <button class="btn btn-primary" onclick="confirmBuildItem()">Add to Tray</button>
       </div>
     </div>
   </div>
 </div>
+
 <div id="checkoutModal" class="modal-overlay hidden">
   <div class="modal">
-    <h3>Confirm &amp; pay</h3>
-    <div class="stack-gap" style="margin-bottom:14px;"><div id="checkoutSummary" class="small-muted"></div></div>
-    <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal('checkoutModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="confirmPayment()" id="payButton">Pay &amp; confirm order</button>
-    </div>
-  </div>
-</div>
-
-<div id="confirmModal" class="modal-overlay hidden">
-  <div class="modal">
-    <h3>Order placed</h3>
-    <div class="order-number-box"><div class="lbl">Your order number</div><div class="num" id="confirmOrderNumber"></div></div>
-    <div id="confirmSummary" class="small-muted"></div>
-    <div class="modal-actions"><button class="btn btn-primary" onclick="closeModal('confirmModal')">Done</button></div>
+    <h3>Order placed!</h3>
+    <p>Your dinner order has been sent to the kitchen.</p>
+    <div class="modal-actions"><button class="btn btn-primary" onclick="closeModal('checkoutModal')">Close</button></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-/* ======================================================================
-   LEONI CANTINE — WITH PLATE & SANDWICH BUILDER LOGIC
-   ====================================================================== */
-
-const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-
-const PLANTS = [
-  { id:'LTN3', name:'LTN3 — Mateur 3 Plant', canteens: [{id:'LTN3-A', name:'Cantine A (Boutique & Hot Plates)'}] }
-];
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
 
 const CATEGORIES = [
-  { id:'main',    label:'Main plates' },
-  { id:'sandwiches', label:'Sandwiches & Fast Food' },
-  { id:'salad',   label:'Salads & soups' },
-  { id:'drink',   label:'Drinks & water' },
+  { id:'main',    label:'Dinner Plates (Customizable)' },
+  { id:'sandwiches', label:'Sandwiches & Fast Food (Customizable)' }
 ];
 
-/* ---------------- JSON Data & Date Logic ---------------- */
-// Extracted from food_menu.JSON
+// Data sourced completely from food_menu.JSON
 const FOOD_DATA = {
   sandwiches: [
-    { id: "snd_01", name: "Chapatie El Mahdia", price: 4.50 },
-    { id: "snd_02", name: "Makloub Escalope", price: 5.50 },
-    { id: "snd_03", name: "Kafteji Sandwich", price: 3.50 }
+    { id: "snd_01", name: "Chapatie El Mahdia", price: 4.50, desc: "Tunisian street food flatbread" },
+    { id: "snd_02", name: "Makloub Escalope", price: 5.50, desc: "Folded pizza sandwich with chicken" },
+    { id: "snd_03", name: "Kafteji Sandwich", price: 3.50, desc: "Traditional spicy fried vegetable sandwich" }
   ],
   bases: [
-    { id: "base_01", name: "Couscous Base", price: 4.50, desc: "Traditional Tunisian steamed semolina" },
-    { id: "base_02", name: "Pasta Base (Macarouna)", price: 4.00, desc: "Spicy tomato sauce pasta with chickpea accents" },
+    { id: "base_01", name: "Couscous Dinner Base", price: 4.50, desc: "Traditional Tunisian steamed semolina" },
+    { id: "base_02", name: "Pasta Dinner Base (Macarouna)", price: 4.00, desc: "Spicy tomato sauce pasta with chickpea accents" },
     { id: "base_03", name: "Riz Djerbien Base", price: 4.50, desc: "Steamed seasoned rice mixed with greens" }
   ],
   addons: [
     { id: "add_poisson", name: "Poisson (Fish)", price: 5.50 },
-    { id: "add_escalope", name: "Escalope de Poulet", price: 4.00 },
-    { id: "add_viande", name: "Viande d'Agneau (Lamb)", price: 6.50 },
+    { id: "add_escalope", name: "Escalope de Poulet (Chicken)", price: 4.00 },
+    { id: "add_lamb", name: "Viande d'Agneau (Lamb)", price: 6.50 },
     { id: "add_oeuf", name: "Œuf Dur (Boiled Egg)", price: 1.00 }
   ]
 };
 
-// Extracted from daily_specials.json (For Date: 2026-06-15)
-const TODAY_SPECIALS_FILTER = {
-  availableBases: ["base_01", "base_02"],
-  availableAddons: ["add_poisson", "add_oeuf"]
-};
-
-const ORDER_WINDOW_HOURS_MIN = 1;   
-const DELIVERY_FEE = 2.0;
-
-/* ---------------- Storage helpers ---------------- */
-function loadDB(){
-  let db = JSON.parse(localStorage.getItem('leoniCantineDB_v4') || 'null');
-  if(!db){ db = seedDB(); saveDB(db); }
-  return db;
-}
-function saveDB(db){ localStorage.setItem('leoniCantineDB_v4', JSON.stringify(db)); }
-
-function seedDB(){
-  const db = { users:[], menus:{}, orders:[], orderCounter: 1000 };
-
-  db.users.push({
-    id:'u1', role:'employee', firstName:'Ameur', lastName:'Ben Salah', email:'alice@leoni.com', password:'pass123',
-    leoniId:'104521', position:'Automation Engineer', plant:'LTN3', canteenId:'LTN3-A', office:'Building A, Office 214'
-  });
-
-  const commonDishes = [
-    {id:'plate_builder', name:'Build Your Own Daily Plate', desc:'Select a base (Couscous, Pasta) and customize with additions.', price: 4.0, category:'main', available:true, isBuilder:true},
-    {id:'sdw_1', name:'Chapatie El Mahdia', desc:'Tunisian street food flatbread', price: 4.5, category:'sandwiches', available:true, isBuilder:true, baseItemType:'snd_01'},
-    {id:'sdw_2', name:'Makloub Escalope', desc:'Folded pizza sandwich', price: 5.5, category:'sandwiches', available:true, isBuilder:true, baseItemType:'snd_02'},
-    {id:'sal_1', name:'Tunisian salad', desc:'Tomato, cucumber, pepper, olive oil', price: 2.5, category:'salad', available:true},
-    {id:'drk_1', name:'Mineral water 0.5L', desc:'Bottled still water', price: 1.0, category:'drink', available:true}
-  ];
-
-  PLANTS.forEach(p => {
-    db.menus[p.id] = {};
-    p.canteens.forEach(c => {
-      db.menus[p.id][c.id] = {};
-      DAYS.slice(0,5).forEach(day => {
-        db.menus[p.id][c.id][day] = commonDishes.map(d => ({ ...d }));
-      });
-    });
-  });
-
-  return db;
-}
-
-let DB = loadDB();
-let session = JSON.parse(sessionStorage.getItem('leoniSession') || 'null');
-let authRole = 'employee'; 
-let authMode = 'login'; 
-let cart = []; 
-let empSelectedDay = currentDayName();
-let empPlant = null;
-let empCanteenId = null;
-let deliverToOffice = false;
-
-/* ---------------- Builder State ---------------- */
-let builderState = {
-  type: null, // 'plate' or 'sandwich'
-  basePrice: 0,
-  sandwichId: null
-};
+let cart = [];
+let selectedDay = 'Monday';
+let builderState = { type: null, basePrice: 0, itemId: null };
 
 function init(){
-  populatePlantSelects();
-  if(session) enterApp(); else showAuth();
+  renderDayTabs();
+  renderCategories();
 }
 
-function currentDayName(){
-  const d = new Date(); return DAYS[(d.getDay()+6)%7];
-}
-
-/* ===================== AUTH METHODS ===================== */
-function showAuth(){ document.getElementById('authPage').classList.remove('hidden'); document.getElementById('employeeApp').classList.add('hidden'); }
-function setAuthRole(r){ authRole = r; /* ... ui toggles ... */ }
-function toggleAuthMode(){ /* ... ui toggles ... */ }
-function populatePlantSelects(){ /* ... logic ... */ }
 function handleAuthSubmit(){
-  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-  const user = DB.users.find(u=>u.email.toLowerCase()===email);
-  if(user) { session = { userId:user.id }; sessionStorage.setItem('leoniSession', JSON.stringify(session)); enterApp(); }
-}
-function logout(){ session = null; sessionStorage.removeItem('leoniSession'); showAuth(); }
-function currentUser(){ return DB.users.find(u=>u.id===session.userId); }
-function enterApp(){
-  const user = currentUser();
   document.getElementById('authPage').classList.add('hidden');
   document.getElementById('employeeApp').classList.remove('hidden');
-  initEmployeeApp(user);
+  init();
 }
 
-/* ===================== EMPLOYEE APP ===================== */
-function initEmployeeApp(user){
-  empPlant = user.plant; empCanteenId = user.canteenId;
-  buildPickupDays(); populatePickupTimes(); showEmpMenuView();
-}
-function buildPickupDays(){
-  const dd = document.getElementById('pickupDaySelect'); dd.innerHTML='';
-  dd.innerHTML = `<option value="${currentDayName()}">Today</option>`;
-}
-function populatePickupTimes(){
-  const ts = document.getElementById('pickupTimeSelect'); ts.innerHTML='<option value="12:30">12:30</option><option value="13:00">13:00</option>';
-}
-function onPickupDateChange(){ renderCart(); }
-function onDeliveryToggle(){ deliverToOffice = document.getElementById('deliveryToggle').checked; document.getElementById('officeFieldWrap').classList.toggle('hidden', !deliverToOffice); renderCart(); }
-
-function showEmpMenuView(){
-  document.getElementById('empMenuView').classList.remove('hidden');
-  renderEmpDayTabs(); renderEmpCategories(); renderCart();
+function logout(){
+  document.getElementById('authPage').classList.remove('hidden');
+  document.getElementById('employeeApp').classList.add('hidden');
 }
 
-function renderEmpDayTabs(){
+function renderDayTabs(){
   const wrap = document.getElementById('empDayTabs'); wrap.innerHTML = '';
-  DAYS.slice(0,5).forEach((d, i)=>{
+  DAYS.forEach(d=>{
     const b = document.createElement('button');
-    b.className = 'day-tab ' + (d===empSelectedDay ? 'active' : '');
-    b.textContent = d; wrap.appendChild(b);
+    b.className = 'day-tab ' + (d===selectedDay ? 'active' : '');
+    b.textContent = d;
+    b.onclick = () => { selectedDay = d; renderDayTabs(); };
+    wrap.appendChild(b);
   });
 }
 
-function renderEmpCategories(){
+function renderCategories(){
   const wrap = document.getElementById('empCategories'); wrap.innerHTML = '';
-  const items = DB.menus[empPlant][empCanteenId][empSelectedDay] || [];
 
   CATEGORIES.forEach(cat=>{
-    const catItems = items.filter(i=>i.category===cat.id);
-    if(catItems.length===0) return;
     const block = document.createElement('div');
     block.className = 'category-block';
     block.innerHTML = `<div class="category-title">${cat.label} <div class="category-line"></div></div><div class="item-grid"></div>`;
     const grid = block.querySelector('.item-grid');
-    catItems.forEach(i=> grid.appendChild(buildItemCard(i)));
+
+    if(cat.id === 'main') {
+      // Base plate builder access point card
+      grid.innerHTML += `
+        <div class="item-card builder-card">
+          <h4>Build Your Custom Plate</h4>
+          <div class="desc">Select a base (Couscous, Pasta, Rice) then customize with Fish, Chicken, or Lamb.</div>
+          <div class="bottom-row">
+            <div class="price">From 4.00 DT</div>
+            <button class="btn btn-primary btn-small" onclick="openBuilderModal('plate', null)">Customize Plate</button>
+          </div>
+        </div>`;
+    } else if(cat.id === 'sandwiches') {
+      // List all customizable sandwiches from JSON data
+      FOOD_DATA.sandwiches.forEach(s => {
+        grid.innerHTML += `
+          <div class="item-card builder-card">
+            <h4>${s.name}</h4>
+            <div class="desc">${s.desc}</div>
+            <div class="bottom-row">
+              <div class="price">${s.price.toFixed(2)} DT</div>
+              <button class="btn btn-primary btn-small" onclick="openBuilderModal('sandwich', '${s.id}')">Customize Sandwich</button>
+            </div>
+          </div>`;
+      });
+    }
     wrap.appendChild(block);
   });
 }
 
-function buildItemCard(item){
-  const card = document.createElement('div');
-  card.className = 'item-card ' + (item.isBuilder ? 'builder-card' : '');
-  
-  let actionHtml = '';
-  if(item.isBuilder) {
-    // For customizable plates/sandwiches, just show a Build button
-    const typeArgs = item.id === 'plate_builder' ? "'plate', null" : `'sandwich', '${item.baseItemType}'`;
-    actionHtml = `<button class="btn btn-primary btn-small" onclick="openBuilderModal(${typeArgs})">Customize & Add</button>`;
-  } else {
-    // Normal items use regular add-to-cart logic checking by ID
-    const inCart = cart.find(c=>c.cartId===item.id);
-    const qty = inCart ? inCart.qty : 0;
-    if(qty===0) {
-      actionHtml = `<button class="add-btn" onclick="addStandardToCart('${item.id}', '${item.name}', ${item.price})">Add</button>`;
-    } else {
-      actionHtml = `
-        <div class="qty-control">
-          <button onclick="changeQty('${item.id}',-1)">−</button>
-          <span class="qty">${qty}</span>
-          <button onclick="changeQty('${item.id}',1)">+</button>
-        </div>`;
-    }
-  }
-
-  card.innerHTML = `
-    <div class="top-row"><h4>${item.name}</h4></div>
-    <div class="desc">${item.desc || ''}</div>
-    <div class="bottom-row">
-      <div class="price">${item.price > 0 ? item.price.toFixed(2) + ' DT' : 'Variable'}</div>
-      <div>${actionHtml}</div>
-    </div>
-  `;
-  return card;
-}
-
-/* ===================== CART & BUILDER LOGIC ===================== */
-
-function addStandardToCart(id, name, price){
-  const existing = cart.find(c=>c.cartId===id);
-  if(existing) existing.qty++;
-  else cart.push({ cartId:id, name, price, qty:1 });
-  renderEmpCategories(); renderCart();
-}
-
-function changeQty(cartId, delta){
-  const idx = cart.findIndex(c=>c.cartId===cartId);
-  if(idx===-1) return;
-  cart[idx].qty += delta;
-  if(cart[idx].qty<=0) cart.splice(idx,1);
-  renderEmpCategories(); renderCart();
-}
-
-function removeFromCart(cartId){
-  cart = cart.filter(c=>c.cartId!==cartId);
-  renderEmpCategories(); renderCart();
-}
-
-/* --- Builder Modal Core --- */
-function openBuilderModal(type, sandwichId) {
+/* --- Modal Window Operations --- */
+function openBuilderModal(type, itemId) {
   builderState.type = type;
-  builderState.sandwichId = sandwichId;
+  builderState.itemId = itemId;
   
   const basesSection = document.getElementById('buildBasesSection');
   const basesList = document.getElementById('buildBasesList');
   const addonsList = document.getElementById('buildAddonsList');
   
-  // Filter Addons based on daily_specials.json
-  const validAddons = FOOD_DATA.addons.filter(a => TODAY_SPECIALS_FILTER.availableAddons.includes(a.id));
-
-  // Render Addons Checkboxes
-  addonsList.innerHTML = validAddons.map(addon => `
+  // Render all additions unconditionally (Fish, Lamb, Chicken, Egg)
+  addonsList.innerHTML = FOOD_DATA.addons.map(addon => `
     <label class="option-label">
       <div style="display: flex; gap: 12px; align-items: center;">
         <input type="checkbox" name="build_addon" value="${addon.id}" data-price="${addon.price}" data-name="${addon.name}" onchange="calcBuilderTotal()">
@@ -747,10 +447,8 @@ function openBuilderModal(type, sandwichId) {
     document.getElementById('buildItemTitle').textContent = "Build Your Custom Plate";
     basesSection.classList.remove('hidden');
     
-    // Filter Bases based on daily_specials.json
-    const validBases = FOOD_DATA.bases.filter(b => TODAY_SPECIALS_FILTER.availableBases.includes(b.id));
-
-    basesList.innerHTML = validBases.map((base, idx) => `
+    // Render all available base plates
+    basesList.innerHTML = FOOD_DATA.bases.map(base => `
       <label class="option-label">
         <div style="display: flex; gap: 12px; align-items: center;">
           <input type="radio" name="build_base" value="${base.id}" data-price="${base.price}" data-name="${base.name}" onchange="calcBuilderTotal()">
@@ -763,11 +461,10 @@ function openBuilderModal(type, sandwichId) {
       </label>
     `).join('');
   } else {
-    // It's a sandwich
-    const sandwich = FOOD_DATA.sandwiches.find(s => s.id === sandwichId);
+    // Sandwich customization
+    const sandwich = FOOD_DATA.sandwiches.find(s => s.id === itemId);
     document.getElementById('buildItemTitle').textContent = "Customize: " + sandwich.name;
     basesSection.classList.add('hidden');
-    basesList.innerHTML = ''; // Clear bases
     builderState.basePrice = sandwich.price;
   }
 
@@ -777,12 +474,11 @@ function openBuilderModal(type, sandwichId) {
 
 function calcBuilderTotal() {
   let total = 0;
-  
   if (builderState.type === 'plate') {
     const selectedBase = document.querySelector('input[name="build_base"]:checked');
     if (selectedBase) total += parseFloat(selectedBase.getAttribute('data-price'));
   } else {
-    total += builderState.basePrice; // Sandwich base price
+    total += builderState.basePrice;
   }
 
   const selectedAddons = document.querySelectorAll('input[name="build_addon"]:checked');
@@ -798,22 +494,19 @@ function confirmBuildItem() {
   let unitPrice = 0;
   let cartIdParts = [];
 
-  // Determine Base
   if (builderState.type === 'plate') {
     const selectedBase = document.querySelector('input[name="build_base"]:checked');
     if (!selectedBase) { alert("Please select a base plate first!"); return; }
-    
     finalName = selectedBase.getAttribute('data-name');
     unitPrice += parseFloat(selectedBase.getAttribute('data-price'));
     cartIdParts.push(selectedBase.value);
   } else {
-    const sandwich = FOOD_DATA.sandwiches.find(s => s.id === builderState.sandwichId);
+    const sandwich = FOOD_DATA.sandwiches.find(s => s.id === builderState.itemId);
     finalName = sandwich.name;
     unitPrice += sandwich.price;
     cartIdParts.push(sandwich.id);
   }
 
-  // Determine Addons
   const selectedAddons = document.querySelectorAll('input[name="build_addon"]:checked');
   let addonNames = [];
   selectedAddons.forEach(addon => {
@@ -823,14 +516,12 @@ function confirmBuildItem() {
   });
 
   if (addonNames.length > 0) {
-    finalName += ` (w/ ${addonNames.join(', ')})`;
+    finalName += ` (+ ${addonNames.join(', ')})`;
   }
 
-  // Generate unique Cart ID so different customizations don't stack improperly
   const uniqueCartId = cartIdParts.join('_');
-
-  // Add to cart
   const existing = cart.find(c => c.cartId === uniqueCartId);
+  
   if (existing) {
     existing.qty++;
   } else {
@@ -838,12 +529,10 @@ function confirmBuildItem() {
   }
 
   closeModal('buildItemModal');
-  renderEmpCategories();
   renderCart();
-  showToast("Added to tray!");
+  showToast("Added item to your tray!");
 }
 
-/* --- Render Ticket --- */
 function renderCart(){
   const linesEl = document.getElementById('cartLines');
   if(cart.length===0){
@@ -852,35 +541,26 @@ function renderCart(){
   } else {
     linesEl.innerHTML = cart.map(c=>`
       <div class="cart-line">
-        <div class="name">${c.name} <small>x${c.qty} \u00b7 ${c.price.toFixed(2)} DT each</small></div>
-        <div class="amt">${(c.price*c.qty).toFixed(2)} DT<button class="remove-x" onclick="removeFromCart('${c.cartId}')">remove</button></div>
+        <div class="name">${c.name} <small>x${c.qty} \u00b7 ${c.price.toFixed(2)} DT</small></div>
+        <div class="amt">${(c.price*c.qty).toFixed(2)} DT <button class="remove-x" onclick="removeFromCart('${c.cartId}')">[X]</button></div>
       </div>
     `).join('');
     document.getElementById('checkoutBtn').disabled = false;
   }
   
-  const subtotal = cart.reduce((s,c)=>s+c.price*c.qty,0);
-  const total = subtotal + (deliverToOffice ? DELIVERY_FEE : 0);
-  document.getElementById('cartSubtotalRow').querySelector('.mono').textContent = subtotal.toFixed(2) + ' DT';
+  const total = cart.reduce((s,c)=>s+c.price*c.qty,0);
+  document.getElementById('cartSubtotalRow').querySelector('.mono').textContent = total.toFixed(2) + ' DT';
   document.getElementById('cartTotal').textContent = total.toFixed(2) + ' DT';
 }
 
+function removeFromCart(cartId){
+  cart = cart.filter(c => c.cartId !== cartId);
+  renderCart();
+}
+
+function openCheckout(){ document.getElementById('checkoutModal').classList.remove('hidden'); }
+function closeModal(id){ document.getElementById(id).classList.add('hidden'); if(id==='checkoutModal'){ cart=[]; renderCart(); } }
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2000); }
-function closeModal(id){ document.getElementById(id).classList.add('hidden'); }
-
-// Stub for Checkout UI
-function openCheckout(){
-  document.getElementById('checkoutSummary').innerHTML = `Total: ${document.getElementById('cartTotal').textContent}`;
-  document.getElementById('checkoutModal').classList.remove('hidden');
-}
-function confirmPayment(){
-  closeModal('checkoutModal');
-  cart = []; renderCart(); renderEmpCategories();
-  document.getElementById('confirmOrderNumber').textContent = '#'+Math.floor(Math.random()*9000+1000);
-  document.getElementById('confirmModal').classList.remove('hidden');
-}
-
-init();
 </script>
 </body>
 </html>
