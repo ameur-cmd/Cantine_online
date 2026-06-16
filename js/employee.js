@@ -4,6 +4,10 @@ let cart = [];
 let selectedPlant = "";
 let selectedDay = "";
 
+// ===================== ORDER REVIEW STATE TRACKING =====================
+let currentReviewRating = 0;
+let currentReviewOrderId = null;
+
 // Initialize Employee View UI elements
 async function initEmployeeDashboard() {
   if (currentUser) {
@@ -30,6 +34,174 @@ async function initEmployeeDashboard() {
   showLoader(false);
 
   renderMenuCatalog(items);
+
+  // Initialize star rating event listeners
+  initStarRatingInteraction();
+
+  // Fetch recent orders and evaluate eligibility for review
+  await evaluateAndPresentReviewEligibility();
+}
+
+/**
+ * Initialize star rating click handlers
+ * Sets up the interactive 5-star selection interface
+ */
+function initStarRatingInteraction() {
+  const stars = document.querySelectorAll('.star');
+  stars.forEach(star => {
+    star.addEventListener('click', function() {
+      const value = parseInt(this.getAttribute('data-value'), 10);
+      setUIDisplayRating(value);
+    });
+  });
+}
+
+/**
+ * Update the visual star rating display
+ * @param {number} value - Selected rating value (1-5)
+ */
+function setUIDisplayRating(value) {
+  currentReviewRating = value;
+  const stars = document.querySelectorAll('.star');
+  stars.forEach((star, index) => {
+    if (index < value) {
+      star.classList.add('selected');
+    } else {
+      star.classList.remove('selected');
+    }
+  });
+}
+
+/**
+ * Fetch employee's order history and determine if review is eligible
+ * If latest order is completed and unrated, show the review card
+ */
+async function evaluateAndPresentReviewEligibility() {
+  try {
+    // Fetch all orders for the current employee
+    const orders = await CantineAPI.getAllOrders(selectedPlant);
+    if (!orders || orders.length === 0) {
+      return;
+    }
+
+    // Find the most recent completed order without a rating
+    let eligibleOrder = null;
+    for (let i = orders.length - 1; i >= 0; i--) {
+      const order = orders[i];
+      // Check if order belongs to current user, is completed, and has no rating
+      if (
+        order.status === "completed" &&
+        (!order.rating || order.rating === null || order.rating === "")
+      ) {
+        eligibleOrder = order;
+        break;
+      }
+    }
+
+    // If an eligible order is found, present the review block
+    if (eligibleOrder) {
+      presentReviewBlockIfEligible(eligibleOrder);
+    }
+  } catch (error) {
+    console.error("Error evaluating review eligibility:", error);
+  }
+}
+
+/**
+ * Display the review feedback card if order is eligible
+ * Injects order reference data and reveals the card
+ * @param {Object} lastOrder - Order object with id, status, and other details
+ */
+function presentReviewBlockIfEligible(lastOrder) {
+  if (!lastOrder || !lastOrder.id) {
+    return;
+  }
+
+  // Store the order ID for submission
+  currentReviewOrderId = lastOrder.id;
+
+  // Reset rating UI state
+  currentReviewRating = 0;
+  setUIDisplayRating(0);
+
+  // Clear the comment box
+  const commentBox = document.getElementById('reviewCommentBox');
+  if (commentBox) {
+    commentBox.value = "";
+  }
+
+  // Make the review card visible
+  const reviewCard = document.getElementById('recentOrdersSection');
+  if (reviewCard) {
+    reviewCard.classList.remove('hidden');
+    // Optional: scroll to the card for better UX
+    reviewCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+/**
+ * Submit the order review (rating + comment) to the backend
+ * Performs validation, shows loader, handles response, and hides card on success
+ */
+async function submitSavedOrderFeedback() {
+  // Validate that a rating was selected
+  if (currentReviewRating === 0) {
+    alert("Please select a star rating before submitting.");
+    return;
+  }
+
+  // Validate that we have an order ID
+  if (!currentReviewOrderId) {
+    alert("No order found to review. Please try again.");
+    return;
+  }
+
+  // Get the comment text
+  const commentBox = document.getElementById('reviewCommentBox');
+  const comment = commentBox ? commentBox.value.trim() : "";
+
+  // Show loading state
+  showLoader(true);
+
+  try {
+    // Submit the review via API
+    const success = await CantineAPI.submitOrderReview(
+      currentReviewOrderId,
+      currentReviewRating,
+      comment
+    );
+
+    showLoader(false);
+
+    if (success) {
+      // Provide user feedback
+      alert("Thank you! Your feedback has been submitted successfully.");
+
+      // Reset state
+      currentReviewRating = 0;
+      currentReviewOrderId = null;
+
+      // Hide the review card
+      const reviewCard = document.getElementById('recentOrdersSection');
+      if (reviewCard) {
+        reviewCard.classList.add('hidden');
+      }
+
+      // Clear the comment box
+      if (commentBox) {
+        commentBox.value = "";
+      }
+
+      // Reset star rating display
+      setUIDisplayRating(0);
+    } else {
+      alert("Failed to submit your feedback. Please check your connection and try again.");
+    }
+  } catch (error) {
+    showLoader(false);
+    console.error("Error submitting order review:", error);
+    alert("An unexpected error occurred. Please try again.");
+  }
 }
 
 // Render available items onto the grid UI
