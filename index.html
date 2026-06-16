@@ -148,6 +148,33 @@
 
           <button class="btn btn-orange" style="width:100%; margin-top:16px;" onclick="submitEmployeeOrder()">Place Order</button>
         </div>
+
+        <!-- ===================== ORDER REVIEW FEEDBACK CARD ===================== -->
+        <div id="recentOrdersSection" class="section-card hidden">
+          <div class="section-title"><span>Your Recent Orders & Feedback</span></div>
+
+          <div class="review-order-status">
+            <span class="status-pill status-completed">✓ Received</span>
+          </div>
+
+          <div class="input-group" style="margin-top:20px;">
+            <label>Rate This Meal</label>
+            <div class="star-rating-container" id="starRatingContainer">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+            </div>
+          </div>
+
+          <div class="input-group" style="margin-top:16px;">
+            <label for="reviewCommentBox">Your Feedback (Optional)</label>
+            <textarea id="reviewCommentBox" class="input-control" placeholder="Share your thoughts about this meal..." rows="4" style="resize: vertical;"></textarea>
+          </div>
+
+          <button class="btn btn-orange" style="width:100%; margin-top:16px;" onclick="submitSavedOrderFeedback()">Submit Review</button>
+        </div>
       </div>
     </div>
   </div>
