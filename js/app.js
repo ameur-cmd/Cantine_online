@@ -59,31 +59,13 @@ function showLoader(show) {
 }
 
 /**
- * GLOBAL SCOPE WRAPPERS
- * Because GitHub Pages runs standard ES5/ES6 sequential script attachments, 
- * button interactions using inline attributes (e.g., onclick="handleOrderAdvance()")
- * require target actions to be explicitly mounted or mapped onto the global window object.
+ * NOTE: No global wrappers needed here.
+ * auth.js, employee.js, and cantine.js declare their functions as plain
+ * top-level `function` statements, which are already attached to `window`
+ * automatically in a browser. Inline onclick="..." attributes in index.html
+ * can call them directly. (A previous version of this file wrapped them
+ * in window.X = () => { if (typeof X === "function") X() } — but since
+ * window.X IS X in the global scope, that caused infinite self-recursion
+ * and a "Maximum call stack size exceeded" crash as soon as any of them
+ * were triggered.)
  */
-window.addItemToCart = (id, name, price) => {
-  if (typeof addItemToCart === "function") addItemToCart(id, name, price);
-};
-
-window.updateCartQty = (id, delta) => {
-  if (typeof updateCartQty === "function") updateCartQty(id, delta);
-};
-
-window.submitEmployeeOrder = () => {
-  if (typeof submitEmployeeOrder === "function") submitEmployeeOrder();
-};
-
-window.advanceCantineOrder = (id, currentStatus) => {
-  if (typeof advanceCantineOrder === "function") advanceCantineOrder(id, currentStatus);
-};
-
-window.cancelCantineOrder = (id) => {
-  if (typeof cancelCantineOrder === "function") cancelCantineOrder(id);
-};
-
-window.toggleAuthTab = (tab) => {
-  if (typeof toggleAuthTab === "function") toggleAuthTab(tab);
-};
