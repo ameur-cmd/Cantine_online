@@ -170,5 +170,19 @@ const CantineAPI = {
     }, { method: "POST" });
 
     return response && response.success;
+  },
+
+  /**
+   * 4. ORDER REVIEW & FEEDBACK SERVICES
+   */
+  async submitOrderReview(orderId, rating, comment) {
+    const response = await this._request({
+      action: "submitOrderReview",
+      id: orderId,
+      rating: parseInt(rating, 10),
+      comment: (comment || "").trim()
+    }, { method: "POST" });
+
+    return response && response.success;
   }
 };
